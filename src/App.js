@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,16 +8,14 @@ import Home from './routes/Home';
 import Auth from './routes/Auth';
 
 export default function App() {
-
-
   return (
     <Router>
       <Switch>
-          <Route path="/auth">
-            <Auth />
+          <Route path="/home">
+            <Home />
           </Route>
           <Route path="/">
-            <Home />
+            <Auth />
           </Route>
         </Switch>
     </Router>

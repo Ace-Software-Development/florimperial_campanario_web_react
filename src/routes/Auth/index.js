@@ -2,74 +2,66 @@
 import "./Auth.css";
 import React, { useState } from "react";
 import Parse from "parse";
-import { useHistory } from 'react-router-dom' 
+import { useHistory } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css' 
 
 const Auth = () => {
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const [isRegistering, setIsRegistering] = useState(false);
-
   const history = useHistory();
 
-  const handleLogin = () => {
+  const logIn = () => {
     const user = new Parse.User();
-    
-    user.set('username', userName);
+    user.set('username', username);
     user.set('password', password);
 
     user.logIn().then((user) => {
-      history.push('/')
-    }).catch(err => {      
+      history.push('/home');
+    }).catch(err => {
       alert(err.message);
     });
-  };
-  const handleRegister = () => {
-    const user = new Parse.User();
-    
-    user.set('username', userName);
-    user.set('password', password);
-
-    user.signUp().then(() => {
-      handleLogin();
-    }).catch(err => alert(err.message));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isRegistering) {
-      handleRegister();
-      return;
-    }
-    handleLogin();
-  };
-  const toggleIsRegistering = () => setIsRegistering(!isRegistering);
-
-  const [toggleRegisterText, authActiontext] = isRegistering
-    ? ["use an existing account", "Register"]
-    : ["Create an account", "Login"];
+  }
 
   return (
-    <div className="auth-container">
-      <h1>Auth</h1>
-
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <span onClick={toggleIsRegistering}>{toggleRegisterText}</span>
-        <button type="submit">{authActiontext}</button>
-      </form>
-    </div>
+    <section className="vh-100" style={{ background: '#508bfc' }}>
+      <div className="container py-5 h-100">
+        <div className="row d-flex justify-content-center align-items-center h-100">
+          <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div className="card shadow-2-strong">
+              <div className="card-body p-5 text-center"> 
+                <h3 className="mb-5">Iniciar sesión</h3>
+                <form className="auth-form" onSubmit={ logIn }>
+                  <div className="form-outline mb-4">
+                    <label className="form-label" htmlFor="username">No. Nómina</label>
+                    <input 
+                      type="text" 
+                      name="username"
+                      id="username"
+                      value={ username }
+                      onChange={ (e) => setUsername(e.target.value) }
+                      className="form-control form-control-lg" 
+                      />
+                  </div>
+                  <div className="form-outline mb-4">
+                    <label className="form-label" htmlFor="password">Contraseña</label>
+                    <input 
+                      type="password" 
+                      name="password" 
+                      id="password" 
+                      value={ password } 
+                      onChange={ (e) => setPassword(e.target.value) }
+                      className="form-control form-control-lg" 
+                      />
+                  </div>
+                  <div> </div>
+                  <button className="btn btn-primary btn-lg btn-block" type="submit" name="action" id="enviar">Iniciar sesión</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

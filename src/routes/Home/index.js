@@ -16,7 +16,7 @@ export default function Home() {
       const currentUser = await Parse.User.currentAsync();
       if (!currentUser) {
         alert('You need to be logged in to access this page');
-        history.push("/auth");
+        history.push("/");
       }
     }
     checkUser();
