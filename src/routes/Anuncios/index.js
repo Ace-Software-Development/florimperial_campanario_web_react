@@ -10,15 +10,21 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
+import Form from 'react-bootstrap/Form'
+
 export default function Anuncios() {
   const history = useHistory();
   const [postText, setPostText] = useState('');
-
-
-
   const [anuncios, setAnuncios] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
 
   async function getAnuncios() {
     const query = new Parse.Query('Anuncio');
@@ -136,13 +142,58 @@ export default function Anuncios() {
        
         
       </div>
+
+
+      <div onClick={e => e.stopPropagation()}> 
+      <Modal size = "lg" show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Crear anuncio</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+      <Form>
+         <Form.Group className="mb-3" controlId="formTitulo">
+            <Form.Label>Título del anuncio</Form.Label>
+            <Form.Control type="text" placeholder="Ingresa el título del anuncio" />
+          </Form.Group>        
+
+          <Form.Group className="mb-3" controlId="formContenido">
+            <Form.Label>Contenido del anuncio</Form.Label>
+            <Form.Control as="textarea" type="text" placeholder="Ingresa el contenido del anuncio" />
+          </Form.Group>    
+
+          <Form.Group controlId="formFile" className="mb-3">
+            <Form.Label>Agregar imagen para el anuncio</Form.Label>
+            <Form.Control type="file" />
+          </Form.Group>
+
+
+      </Form>
+
+
+
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Publicar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      </div>
+
+
       <Container>
         <Row  xs={1} s={2} md={3} className="g-4">
           <Col>
-          <Card className="bg-dark text-white text-align-center " style={{ width: '100%', height: '12rem', 'border-radius': '5%' }} >
+          <Card className="bg-dark text-white text-align-center " style={{ width: '100%', height: '12rem', 'border-radius': '5%' }} onClick={handleShow} >
           
-            <Card.Title className="text-center"> <br/> Agregar un anuncio</Card.Title>
-         
+           <Card.Title className="text-center"> <br/> Agregar un anuncio</Card.Title>
+
+
+
             <Card.Text>
              
             </Card.Text>
