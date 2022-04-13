@@ -7,52 +7,68 @@ import ParseObject from 'parse/lib/browser/ParseObject';
 
 export default function Home() {
   const history = useHistory();
+  const [postText, setPostText] = useState('');
 
+
+
+  const [anuncios, setAnuncios] = useState(null);
+  const [loading, setLoading] = useState(true);
   async function getAnuncios() {
     const query = new Parse.Query('Anuncio');
-    // query donde noe sten eliminados
+    // query donde no esten eliminados
     const anuncios = await query.find();
     const postArray = new Array();
     
     for (var i = 0; i < anuncios.length; i++){
-      console.log(anuncios[i].get("titulo"));
+    //  console.log(anuncios[i].get("titulo"));
       postArray.push(anuncios[i].get("titulo"));
     }
 
-    return anuncios;
+    return postArray;
   }
 
-  const loadPage = () => {
-    const [anuncios, setAnuncios] = useState(null);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-      async function checkUser() {
-        const currentUser = await Parse.User.currentAsync();
-        if (!currentUser) {
-          alert('Necesitas haber ingresado al sistema para consultar esta página.');
-          history.push('/');
-        }
+  useEffect(async() => {
+    async function checkUser() {
+      const currentUser = await Parse.User.currentAsync();
+      if (!currentUser) {
+        alert('Necesitas haber ingresado al sistema para consultar esta página.');
+        history.push('/');
       }
-      
-      checkUser();
+    }
+    
+    checkUser();
 
-      try {
-        setLoading(true);
-        const anuncios = await getAnuncios();
-        setAnuncios(anuncios);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.log(error);
-      }
-    }, []);
+    try {
+      setLoading(true);
+      const anuncios = await getAnuncios();
+      setAnuncios(anuncios);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  }, []);
 
-    return (
-      <div> Hola </div>
-    )
-  }
+  // return a Spinner when loading is true
+  if(loading) return (
+    <span>Loading</span>
+  );
+/*
+  // data will be null when fetch call fails
+  if (!anuncios) return (
+    <span>Data not available</span>
+  );
 
+  // when data is available, title is shown
+  return (
+    <span>
+      {anuncios[0].get("title")}
+    </span>
+  );
+*/
+
+//console.log(anuncios[0]);
   
   const handleSubmitPost = (e) => {
     e.preventDefault();
@@ -75,6 +91,9 @@ export default function Home() {
   //   <li>{ anuncio }</li>
   // );
   
+  const listItems = anuncios.map((anuncio) =>
+  <li key={anuncio}>{anuncio}</li> 
+);
 
   return (
     <div className="App">
@@ -89,14 +108,17 @@ export default function Home() {
           <textarea value={postText} onChange={event => setPostText(event.currentTarget.value)}/>
           <button type="submit">post</button>
           <ul>
-            {items.map((item,index)=>{
-              <li key={index}>{item}</li>
-            })}
+          
+           
           </ul>
         </form>
+        {listItems}
       </div>
+
       <div>
-        <ul> { items } </ul>
+
+      
+
       </div>
     </div>
   );
