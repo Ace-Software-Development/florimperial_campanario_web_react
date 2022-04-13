@@ -10,7 +10,9 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const history = useHistory();
 
-  const logIn = () => {
+  const logIn = (e) => {
+    e.preventDefault();
+    
     const user = new Parse.User();
     user.set('username', username);
     user.set('password', password);
