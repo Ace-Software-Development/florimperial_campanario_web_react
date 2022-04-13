@@ -1,4 +1,3 @@
-
 import "./Auth.css";
 import React, { useState } from "react";
 import Parse from "parse";
@@ -12,7 +11,7 @@ const Auth = () => {
 
   const logIn = (e) => {
     e.preventDefault();
-    
+
     const user = new Parse.User();
     user.set('username', username);
     user.set('password', password);
