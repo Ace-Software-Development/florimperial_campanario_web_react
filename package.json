@@ -11,6 +11,7 @@
     "Layout": "^0.0.1",
     "parse": "^3.4.1",
     "react": "^17.0.2",
+    "react-bootstrap": "^2.2.3",
     "react-dom": "^17.0.2",
     "react-layout": "^1.1.0",
     "react-router-dom": "^5.2.0",

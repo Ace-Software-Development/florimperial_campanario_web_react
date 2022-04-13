@@ -4,7 +4,8 @@ import Parse from 'parse';
 import './Home.css'
 import {useParseQuery} from '@parse/react';
 import ParseObject from 'parse/lib/browser/ParseObject';
-
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 export default function Home() {
   const history = useHistory();
   const [postText, setPostText] = useState('');
@@ -17,14 +18,17 @@ export default function Home() {
     const query = new Parse.Query('Anuncio');
     // query donde no esten eliminados
     const anuncios = await query.find();
-    const postArray = new Array();
-    
+    const titleArray = new Array();
+    const contentArray = new Array();
     for (var i = 0; i < anuncios.length; i++){
     //  console.log(anuncios[i].get("titulo"));
-      postArray.push(anuncios[i].get("titulo"));
+      titleArray.push(anuncios[i].get("titulo"));
+      contentArray.push(anuncios[i].get("contenido"));
     }
-
-    return postArray;
+    const result = new Array();
+    result.push(titleArray);
+    result.push(contentArray);
+    return result;
   }
 
 
@@ -92,7 +96,18 @@ export default function Home() {
   // );
   
   const listItems = anuncios.map((anuncio) =>
-  <li key={anuncio}>{anuncio}</li> 
+  <Card style={{ width: '18rem' }}>
+     <Card.Img variant="top" src="logo512.png" />
+    <Card.Body>
+    <Card.Title>
+    {anuncio[0]}
+    </Card.Title>
+    <Card.Text>
+    {anuncio[1]}  
+    </Card.Text>
+    <Button variant="primary">Go somewhere</Button>
+    </Card.Body>
+ </Card>
 );
 
   return (
@@ -112,6 +127,7 @@ export default function Home() {
            
           </ul>
         </form>
+       
         {listItems}
       </div>
 
