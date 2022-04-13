@@ -5,40 +5,55 @@ import './Home.css'
 import {useParseQuery} from '@parse/react';
 import ParseObject from 'parse/lib/browser/ParseObject';
 
-
 export default function Home() {
-  const [postText, setPostText] = useState('');
   const history = useHistory();
-  //const parseQuery = new Parse.Query('Post');
 
-  useEffect(() => {
-    async function checkUser() {
-      const currentUser = await Parse.User.currentAsync();
-      if (!currentUser) {
-        alert('You need to be logged in to access this page');
-        history.push("/");
-      }
+  async function getAnuncios() {
+    const query = new Parse.Query('Anuncio');
+    // query donde noe sten eliminados
+    const anuncios = await query.find();
+    const postArray = new Array();
+    
+    for (var i = 0; i < anuncios.length; i++){
+      console.log(anuncios[i].get("titulo"));
+      postArray.push(anuncios[i].get("titulo"));
     }
-    checkUser();
-  }, []);
-  
 
-  async function getPosts(){
-  //const Post = Parse.Object.extend("Post");
-  const query = new Parse.Query('Post');
-  const Post = await query.find();
-  const postArray = new Array();
-  console.log(Post[0].get("text"));
- for (var i = 0; i < Post.length; i++){
-    console.log(Post[i].get("text"));
-    postArray.push(Post[i].get("text"));
+    return anuncios;
   }
-   //alert("Successfully retrieved " + Post.length + " posts.");
 
+  const loadPage = () => {
+    const [anuncios, setAnuncios] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  return postArray;
-} 
+    useEffect(() => {
+      async function checkUser() {
+        const currentUser = await Parse.User.currentAsync();
+        if (!currentUser) {
+          alert('Necesitas haber ingresado al sistema para consultar esta página.');
+          history.push('/');
+        }
+      }
+      
+      checkUser();
 
+      try {
+        setLoading(true);
+        const anuncios = await getAnuncios();
+        setAnuncios(anuncios);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    }, []);
+
+    return (
+      <div> Hola </div>
+    )
+  }
+
+  
   const handleSubmitPost = (e) => {
     e.preventDefault();
     const Post = Parse.Object.extend("Post");
@@ -55,13 +70,13 @@ export default function Home() {
     setPostText("");
   };
 
+  // var items =  new Array();  
+  // items = anunciosGlobal.map((anuncio) =>
+  //   <li>{ anuncio }</li>
+  // );
+  
 
-
-  var items =  new Array();
-  items = Array.from(getPosts());
-  console.log("hola", items);
   return (
-    
     <div className="App">
       <header className="app-header">
       <img className="logo" alt="back4app's logo" src={'https://blog.back4app.com/wp-content/uploads/2019/05/back4app-white-logo-500px.png'} />
@@ -70,23 +85,18 @@ export default function Home() {
       </header>
       
       <div className="posts-container">
-      <form onSubmit={handleSubmitPost}className="actions">
-        <textarea value={postText} onChange={event => setPostText(event.currentTarget.value)}/>
-        <button type="submit">post</button>
-
-        <ul>
-     {items.map((item,index)=>{
-          <li key={index}>{item}</li>
-          
-     })}
- </ul>
-
-
-      </form>
-
-    
-
-
+        <form onSubmit={handleSubmitPost}className="actions">
+          <textarea value={postText} onChange={event => setPostText(event.currentTarget.value)}/>
+          <button type="submit">post</button>
+          <ul>
+            {items.map((item,index)=>{
+              <li key={index}>{item}</li>
+            })}
+          </ul>
+        </form>
+      </div>
+      <div>
+        <ul> { items } </ul>
       </div>
     </div>
   );
