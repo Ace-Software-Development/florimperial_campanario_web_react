@@ -16,24 +16,33 @@ export default function SalidasGolf() {
     const [appointments, setAppointments] = useState([]);
 
     async function getGolfAppointments() {
-        const query = new Parse.Query('Reservacion');
-        query.include("socio");
+        // TODO
+        // 1. Obtener reservaciones para esta semana nada mas...
+        // 2. Arreglar la hora de la fechaInicio para que aparezca local o mexicana...
+        // 3. La hora en Parse se guarda como UTC y ya al pasarla la convierte a local automaticamente... Entonces cuidar que al crear un horario desde la app se guarde
+        // en utc en Parse para que al obtenerla si se ponga bien...
+        const query = new Parse.Query('ReservacionGolf');
+        query.include("reservacion");
+        query.include(["reservacion.socio"]);
         const salidas = await query.find();
         const results = new Array();
         
         for (var i = 0; i < salidas.length; i++) {
-            console.log(salidas[i].get("fechaInicio"));
+            console.log(salidas[i].get("carritosReservados"));
+            console.log(salidas[i].get("carritosNecesarios"));
+            console.log(salidas[i].get("reservacion").get("fechaInicio"));
+            console.log(salidas[i].get("reservacion").get("socio").get("nombre"));
             // console.log(salidas[i].get("socio").get("nombre"));
-            results.push({'title': salidas[i].get("socio").get("nombre"), 'startDate': salidas[i].get("fechaInicio")});
+            // results.push({'title': salidas[i].get("socio").get("nombre"), 'startDate': salidas[i].get("fechaInicio")});
         }
 
-        // return [
-        //     { title: 'Mail New Leads for Follow Up', startDate: '2022-04-13T10:00' },
-        //     { title: 'Product Meeting', startDate: '2022-04-14T10:30', endDate: '2022-04-14T11:30' },
-        //     { title: 'Send Territory Sales Breakdown', startDate: '2022-04-14T12:35' },
-        // ];
+        return [
+            { title: 'Mail New Leads for Follow Up', startDate: '2022-04-13T10:00' },
+            { title: 'Product Meeting', startDate: '2022-04-14T10:30', endDate: '2022-04-14T11:30' },
+            { title: 'Send Territory Sales Breakdown', startDate: '2022-04-14T12:35' },
+        ];
 
-        return results;
+        // return results;
     }
 
     useEffect(async() => {
