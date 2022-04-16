@@ -7,14 +7,19 @@ import { ViewState } from '@devexpress/dx-react-scheduler';
 
 import {
     Scheduler,
+    DayView,
     WeekView,
     Appointments,
+    Toolbar,
+    ViewSwitcher,
+    CurrentTimeIndicator
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 export default function SalidasGolf() {
     const [loading, setLoading] = useState(true);
     const [appointments, setAppointments] = useState([]);
-
+    const updateInterval = 10000;
+    
     async function getGolfAppointments() {
         // TODO
         // 1. Obtener reservaciones para esta semana nada mas...
@@ -128,13 +133,22 @@ export default function SalidasGolf() {
             height={660}
             >
             <ViewState />
+            <DayView
+                startDayHour={9}
+                endDayHour={18}
+            />
             <WeekView
                 startDayHour={9}
                 endDayHour={19}
                 timeTableCellComponent={TimeTableCell}
                 dayScaleCellComponent={DayScaleCell}
             />
+            <Toolbar />
+            <ViewSwitcher />
             <Appointments />
+            <CurrentTimeIndicator 
+                updateInterval={ updateInterval }
+            />
             </Scheduler>
         </Paper>
     );
