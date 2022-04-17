@@ -13,10 +13,16 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form'
+import { useForm } from "react-hook-form";
+
 
 export default function Anuncios() {
   const history = useHistory();
-  const [postText, setPostText] = useState('');
+  const [anuncioTitle, setAnuncioTitle] = useState('');
+  const [anuncioContent, setAnuncioContent] = useState('');
+  const [imgForm, setImgForm] = useState('');
+  const  {register, getValues} = useForm();
+
   const [anuncios, setAnuncios] = useState(null);
   const [loading, setLoading] = useState(true);
   
@@ -90,20 +96,60 @@ export default function Anuncios() {
 
 //console.log(anuncios[0]);
   
+function getBase64(file) {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    console.log(reader.result);
+  };
+  reader.onerror = function (error) {
+    console.log('Error: ', error);
+  };
+}
+
+
+
   const handleSubmitPost = (e) => {
     e.preventDefault();
-    const Post = Parse.Object.extend("Post");
-    const newPost = new Post();
-    newPost.save()
-    .then((newPost) => {
-      // Execute any logic that should take place after the object is saved.
-      alert('New object created with objectId: ' + newPost.text);
-    }, (error) => {
-      // Execute any logic that should take place if the save fails.
-      // error is a Parse.Error with an error code and message.
-      alert('Failed to create new object, with error code: ' + error.message);
+    const Anuncio = Parse.Object.extend("Anuncio");
+    const fileUploadControl = document.getElementById("formImg").files[0];
+
+    console.log("imprimiendo register:", fileUploadControl);
+   // console.log(getValues("formImg")[0]);
+   // const img = getValues("formImg")[0];
+    //console.log(img2);
+    const img64 = getBase64(fileUploadControl); // prints the base64 string<
+    //console.log(img64);
+    const img2 = new Parse.File(`img-${anuncioTitle}`, fileUploadControl);
+    img2.save().then(function() {
+
+      // The file has been saved to Parse.
+        const newAnuncio = new Anuncio();
+        newAnuncio.save({
+          titulo: anuncioTitle,
+          contenido: anuncioContent,
+          imagen: img2
+        })
+        .then((newAnuncio) => {
+          // Execute any logic that should take place after the object is saved.
+          alert('New object created with objectId: ' + newAnuncio.id );
+        }, (error) => {
+          // Execute any logic that should take place if the save fails.
+          // error is a Parse.Error with an error code and message.
+          alert('Failed to create new object, with error code: ' + error.message);
+          console.log(error.message);
+        });
+        setAnuncioContent("");
+        setAnuncioTitle("");
+        handleClose();
+  
+
+    }, function(error) {
+      // The file either could not be read, or could not be saved to Parse.
+      alert("the parse file could not be created, with error: ", error)
     });
-    setPostText("");
+
+   // window.location.reload();
   };
 
   // var items =  new Array();  
@@ -114,7 +160,7 @@ export default function Anuncios() {
   const listItems = anuncios.map((anuncio) =>
 
     <Col >
-  <Card className="bg-dark text-white" style={{ width: '100%', height: '12rem' , 'border-radius': '5%' }} >
+  <Card className="bg-dark text-white" style={{ width: '100%', height: '12rem' , 'borderRadius': '5%' }} >
      <Card.Img variant="top" src="logo512.png"className='w-50 h-100 rounded mx-auto d-block' />
     <Card.ImgOverlay>
     <Card.Title>{anuncio[0]}</Card.Title>
@@ -151,22 +197,23 @@ export default function Anuncios() {
         </Modal.Header>
         <Modal.Body>
 
-      <Form>
+      <Form  onSubmit={handleSubmitPost}>
          <Form.Group className="mb-3" controlId="formTitulo">
             <Form.Label>Título del anuncio</Form.Label>
-            <Form.Control type="text" placeholder="Ingresa el título del anuncio" />
+            <Form.Control type="text" placeholder="Ingresa el título del anuncio"  onChange={event => setAnuncioTitle(event.currentTarget.value)}/>
           </Form.Group>        
 
           <Form.Group className="mb-3" controlId="formContenido">
             <Form.Label>Contenido del anuncio</Form.Label>
-            <Form.Control as="textarea" type="text" placeholder="Ingresa el contenido del anuncio" />
+            
+            <Form.Control as="textarea" type="text" placeholder="Ingresa el contenido del anuncio"  onChange={event => setAnuncioContent(event.currentTarget.value)}/>
           </Form.Group>    
 
-          <Form.Group controlId="formFile" className="mb-3">
+          <Form.Group controlId="formImg" className="mb-3">
             <Form.Label>Agregar imagen para el anuncio</Form.Label>
-            <Form.Control type="file" />
+            <Form.Control required = "true" type="file" id="formImg" accept="image/png" />
           </Form.Group>
-
+       
 
       </Form>
 
@@ -177,7 +224,7 @@ export default function Anuncios() {
           <Button variant="secondary" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSubmitPost}>
             Publicar
           </Button>
         </Modal.Footer>
@@ -188,7 +235,7 @@ export default function Anuncios() {
       <Container>
         <Row  xs={1} s={2} md={3} className="g-4">
           <Col>
-          <Card className="bg-dark text-white text-align-center " style={{ width: '100%', height: '12rem', 'border-radius': '5%' }} onClick={handleShow} >
+          <Card className="bg-dark text-white text-align-center " style={{ width: '100%', height: '12rem', 'borderRadius': '5%' }} onClick={handleShow} >
           
            <Card.Title className="text-center"> <br/> Agregar un anuncio</Card.Title>
 
