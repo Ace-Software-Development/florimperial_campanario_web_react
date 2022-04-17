@@ -1,6 +1,4 @@
 import * as React from 'react';
-import {useEffect, useState } from 'react'
-import { styled, alpha } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Parse from "parse";
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
@@ -24,7 +22,7 @@ export default class SalidasGolf extends React.PureComponent {
         super(props);
         this.state = {
             data: [],
-            currentDate: '2022-04-17',
+            currentDate: new Date(),
             updateInterval: 10000,
 
             addedAppointment: {},
@@ -67,11 +65,35 @@ export default class SalidasGolf extends React.PureComponent {
                 data = [...data, { id: startingAddedId, ...added }];
             }
             if (changed) {
+                // Crear objeto de tipo Reservacion y ReservacionGolf
+                // Settear sus atributos (numero de hoyos) 
                 data = data.map(appointment => (
-                changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment));
+                    changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment));
             }
             if (deleted !== undefined) {
-                data = data.filter(appointment => appointment.id !== deleted);
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].id === deleted) {
+                        const ReservacionGolf = new Parse.Object.extend("ReservacionGolf");
+                        const Reservacion = new Parse.Object.extend("Reservacion");
+                        const ReservacionInvitado = new Parse.Object.extend("ReservacionInvitado");
+
+                        const golfAppointment = new ReservacionGolf();
+                        const guestAppointment = new ReservacionInvitado();
+                        const appointment = new Reservacion();
+
+                        golfAppointment.set("id", deleted);
+                        guestAppointment.set("reservacion", data[i].reservacion);
+                        appointment.set("id", data[i].reservacion);
+
+                        console.log(appointment.id);
+                        golfAppointment.destroy().then(() => {
+                            data = data.splice(i, 1);
+                        }, (error) => {
+                            console.log('No se pudo eliminar sorry');
+                        });
+                        // https://docs.parseplatform.org/js/guide/#distinct
+                    }
+                }
             }
             return { data };
         });
@@ -81,7 +103,7 @@ export default class SalidasGolf extends React.PureComponent {
         const query = new Parse.Query('ReservacionGolf');
         query.include("reservacion");
         query.include(["reservacion.socio"]);
-        
+
         const salidas = await query.find();
         const results = new Array();
         
@@ -89,7 +111,8 @@ export default class SalidasGolf extends React.PureComponent {
             results.push({
                 'id': salidas[i].id,
                 'title': salidas[i].get("reservacion").get("socio").get("nombre"), 
-                'startDate': salidas[i].get("reservacion").get("fechaInicio")
+                'startDate': salidas[i].get("reservacion").get("fechaInicio"),
+                'reservacion': salidas[i].get("reservacion").id,
             });
         }
 
@@ -105,7 +128,7 @@ export default class SalidasGolf extends React.PureComponent {
             editingAppointment,
         } = this.state;
     
-        return(
+        return( 
             <Paper>
                 <Scheduler
                 data={data}
@@ -123,11 +146,11 @@ export default class SalidasGolf extends React.PureComponent {
                     editingAppointment={editingAppointment}
                     onEditingAppointmentChange={this.changeEditingAppointment}
                 />
-                <DayView
+                <WeekView
                     startDayHour={7}
                     endDayHour={19}
                 />
-                <WeekView
+                <DayView
                     startDayHour={7}
                     endDayHour={19}
                 />
