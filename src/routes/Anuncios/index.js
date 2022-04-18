@@ -41,7 +41,8 @@ export default function Anuncios() {
     for (var i = 0; i < anuncios.length; i++){
       console.log(anuncios[i].get("titulo"));
     
-     result.push(new Array(anuncios[i].get("titulo"), anuncios[i].get("contenido")));
+     result.push(new Array(anuncios[i].get("titulo"), anuncios[i].get("contenido"), anuncios[i].get("imagen").url()));
+  
     }
    
    
@@ -161,11 +162,11 @@ function getBase64(file) {
 
     <Col >
   <Card className="bg-dark text-white" style={{ width: '100%', height: '12rem' , 'borderRadius': '5%' }} >
-     <Card.Img variant="top" src="logo512.png"className='w-50 h-100 rounded mx-auto d-block' />
+     <Card.Img variant="top"  src={`${anuncio[2]}`} className=' rounded mx-auto d-block' onmouseover="" style={{ width: '50%', height: '12rem', cursor: "hand" }} />
     <Card.ImgOverlay>
     <Card.Title>{anuncio[0]}</Card.Title>
     <Card.Text>
-    {anuncio[1]}  
+  
     </Card.Text>
     <Button variant="primary">Go somewhere</Button>
     </Card.ImgOverlay>

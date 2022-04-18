@@ -2,7 +2,7 @@
     padding: 0;
     margin: 0;
   }
-  
+  a.menu_links { cursor: pointer; }
   
   header.app-header{
     background-color: #208AEC;
