@@ -1,13 +1,13 @@
 import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import { DialogContent, DialogActions, FormControlLabel, RadioGroup, TextField } from '@mui/material';
-import Radio from '@mui/material/Radio';
+import { DialogContent, DialogActions, TextField } from '@mui/material';
 import { Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 export default (props) => {
     const { register, handleSubmit } = useForm();
+    const {ref, ...rest} = register('socio');
 
     const handleClose = () => {
         props.onClose(false);
@@ -15,6 +15,7 @@ export default (props) => {
 
     const handleData = (data) => {
         console.log(data);
+        handleClose();
     }
 
     return(
@@ -22,11 +23,7 @@ export default (props) => {
             <DialogTitle>Prueba de Arquitectura</DialogTitle>
             <DialogContent> 
                 <form onSubmit={handleSubmit(handleData)}>
-                    <RadioGroup inputRef={register} name="hoyoSalida" label="Hoyo de salida">
-                        <FormControlLabel value="1" control={<Radio />} label="1" />
-                        <FormControlLabel value="10" control={<Radio />} label="10" />
-                    </RadioGroup>
-                    <TextField inputRef={register} name="socio" label="Socio"></TextField>
+                    <TextField inputRef={ref}{...rest} />
                     <DialogActions>
                         <Button onClick={handleClose}>Cancelar</Button>
                         <Button type="submit">Crear</Button>
