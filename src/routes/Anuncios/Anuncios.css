@@ -5,13 +5,14 @@
   a.menu_links { cursor: pointer; }
   
   header.app-header{
-    background-color: #208AEC;
+    background-color: #2B4066;
     display: flex;
     flex-direction: column;
     padding: 20px 100px;
     justify-content: center;
     align-items: center;
     color: white;
+    font-family: 'Lato', sans-serif;
   }
   
   .spacing{
@@ -64,7 +65,7 @@
     padding: 0 15px;
     border: none;
     color: white;
-    background-color: #208AEC;
+    background-color: #2B4066;
     font-weight: 600;
     cursor: pointer;
     text-transform: uppercase;
@@ -89,4 +90,9 @@
   .post p{
     margin-left: 20px;
     margin-top: 10px;
+  }
+
+  ion-icon {
+    margin: 1em 4.5em;
+   text-align: center;
   }

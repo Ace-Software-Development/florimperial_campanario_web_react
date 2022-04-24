@@ -2,7 +2,7 @@
     padding: 0;
     margin: 0;
   }
-  
+  a.menu_links { cursor: pointer; }
   
   header.app-header{
     background-color: #2B4066;
@@ -90,4 +90,9 @@
   .post p{
     margin-left: 20px;
     margin-top: 10px;
+  }
+
+  ion-icon {
+    font-size: 32px;
+    
   }
