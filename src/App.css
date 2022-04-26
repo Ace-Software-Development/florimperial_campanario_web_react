@@ -29,10 +29,19 @@ main{
   align-items: center;
   flex-direction: column;
   margin-top: 20px;
+  font-family: 'Lato', sans-serif;
+
 }
 
 main h1{
   margin-bottom: 20px;
+  font-family: 'Lato', sans-serif;
+
+}
+
+.h3{
+  font-family: 'Lato', sans-serif;
+
 }
 
 .posts-container{

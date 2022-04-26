@@ -172,7 +172,7 @@ export default function Anuncios() {
         >
           <Card.Text>{anuncio[0]}</Card.Text>
          </Card.Body>
-        <a href={`${url}/${anuncio[4]}`} class="stretched-link"></a>
+        <a href={`${url}/${anuncio[4]}`} className="stretched-link"></a>
       </Card>
     </Col>
   ));
@@ -211,6 +211,8 @@ export default function Anuncios() {
               (newAnuncio) => {
                 // Execute any logic that should take place after the object is saved.
                 alert("New object created with objectId: " + newAnuncio.id);
+                 window.location.reload();
+
               },
               (error) => {
                 // Execute any logic that should take place if the save fails.
@@ -226,7 +228,7 @@ export default function Anuncios() {
           setAnuncioContent("");
           setAnuncioTitle("");
           handleClose();
-          window.location.reload();
+        //  window.location.reload();
           setValidated(true);
         },
         function (error) {

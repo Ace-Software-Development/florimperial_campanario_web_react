@@ -93,6 +93,19 @@
   }
 
   ion-icon {
-    font-size: 32px;
+    font-size: 2em;
+
+  }
+
+  .arrow-icon{
+    margin-left: -1em;
+  }
+
+  .img-anuncio{
+     width: 30em;
     
+  }
+
+  .btn-trash{
+     width: 30em;
   }
