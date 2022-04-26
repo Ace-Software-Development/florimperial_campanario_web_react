@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import { DialogContent, DialogActions, TextField } from '@mui/material';
+import { DialogContent, DialogActions } from '@mui/material';
 import { Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Datetime from 'react-datetime';
@@ -39,8 +39,15 @@ export default function (props) {
                 reservacion.set("estatus", 1);
                 
                 return reservacion.save();
-            }).then(function(result) {
-                alert('La reservación se creó correctamente.');
+            }).then(function(reservacionId) {
+                const ReservacionGolf = Parse.Object.extend("ReservacionGolf");
+                const reservacionGolf = new ReservacionGolf();
+                
+                reservacionGolf.set("reservacion", reservacionId);
+
+                return reservacionGolf.save();
+            }).then(function(reservacionGolfId) {
+                prompt('La reservación se creó correctamente.');
                 handleClose();
             }, function(error) {
                 alert(error);

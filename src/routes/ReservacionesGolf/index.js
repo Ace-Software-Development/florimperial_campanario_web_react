@@ -7,7 +7,7 @@ import SaveGolfAppointment from './saveGolfAppointment';
 
 export default function ReservacionesGolf() {
     const [openSave, setOpenSave] = useState(false);
-    const [appointments, setAppointments] = useState([])
+    const [appointments, setAppointments] = useState([]);
 
     useEffect(() => {
         async function getGolfAppointments() {
@@ -21,9 +21,17 @@ export default function ReservacionesGolf() {
                 const results = new Array();
             
                 for (var i = 0; i < reservaciones.length; i++) {
+                    let title = '';
+                    
+                    if (!reservaciones[i].get("reservacion").get("socio")) {
+                        title = 'Disponible';
+                    } else {
+                        title = reservaciones[i].get("reservacion").get("socio").get("nombre");
+                    }
+
                     results.push({
                         'id': reservaciones[i].id,
-                        'title': reservaciones[i].get("reservacion").get("socio").get("nombre"), 
+                        'title': title, 
                         'date': reservaciones[i].get("reservacion").get("fechaInicio"),
                         'reservacion': reservaciones[i].get("reservacion").id,
                     });
@@ -58,6 +66,10 @@ export default function ReservacionesGolf() {
         setOpenSave(true);
     }
 
+    const editAppointment = (appointment) => {
+        console.log(appointment);
+    }
+
     return (
         <div>
             <FullCalendar
@@ -65,6 +77,7 @@ export default function ReservacionesGolf() {
                 dateClick={handleDateClick}
                 events={appointments}
                 dayCellContent={injectCellContent}
+                eventClick={data => editAppointment(data)}
             />
             <SaveGolfAppointment open={openSave} onClose={setOpenSave} />
         </div>
