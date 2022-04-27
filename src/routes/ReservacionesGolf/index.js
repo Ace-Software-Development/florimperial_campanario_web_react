@@ -4,9 +4,12 @@ import FullCalendar from "@fullcalendar/react";
 import daygridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import SaveGolfAppointment from './saveGolfAppointment';
+import EditGolfAppointment from './editGolfAppointment';
 
 export default function ReservacionesGolf() {
     const [openSave, setOpenSave] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
+    const [editData, setEditData] = useState('');
     const [appointments, setAppointments] = useState([]);
 
     useEffect(() => {
@@ -31,12 +34,15 @@ export default function ReservacionesGolf() {
 
                     results.push({
                         'id': reservaciones[i].id,
-                        'title': title, 
-                        'date': reservaciones[i].get("reservacion").get("fechaInicio"),
+                        'title': title,
                         'reservacion': reservaciones[i].get("reservacion").id,
+                        'date': reservaciones[i].get("reservacion").get("fechaInicio"),
+                        'socio': reservaciones[i].get("reservacion").get("socio"),
+                        'maximoJugadores': reservaciones[i].get("reservacion").get("maximoJugadores"),
+                        'hoyoSalida': reservaciones[i].get("reservacion").get("sitio"),
                     });
                 }
-        
+
                 setAppointments(results);
             } catch (error) {
                 console.log(`Ha ocurrido un error: ${ error }`);
@@ -66,8 +72,14 @@ export default function ReservacionesGolf() {
         setOpenSave(true);
     }
 
-    const editAppointment = (appointment) => {
-        console.log(appointment);
+    const editAppointment = (eventClick) => {
+        const data = [ 
+            'Pasando al hijo',
+            'k82n9v8apif'
+        ]
+        setEditData(data);
+        setOpenEdit(true);
+        // tal vez buscar el objeto en el array... y ya obtenerlo...
     }
 
     return (
@@ -77,9 +89,10 @@ export default function ReservacionesGolf() {
                 dateClick={handleDateClick}
                 events={appointments}
                 dayCellContent={injectCellContent}
-                eventClick={data => editAppointment(data)}
+                eventClick={editAppointment}   
             />
             <SaveGolfAppointment open={openSave} onClose={setOpenSave} />
+            <EditGolfAppointment open={openEdit} onClose={setOpenEdit} parentToChild={editData} />
         </div>
     )
 }
