@@ -12,6 +12,7 @@
     "parse": "^3.4.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.3",
+    "react-confirm-alert": "^2.8.0",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.29.0",
     "react-layout": "^1.1.0",

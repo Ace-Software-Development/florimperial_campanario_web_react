@@ -18,11 +18,7 @@
   .spacing{
     margin: 10px;
   }
-  
-  .logo{
-    width: 400px; 
-  }
-  
+
   main{
     display: flex;
     justify-content: center;
@@ -35,64 +31,102 @@
     margin-bottom: 20px;
   }
   
-  .posts-container{
-    padding: 0 10%;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .actions{
-    border: 1px solid #ececec;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  
-  .posts-container .actions{
-    display: flex;
-    width: 500px;
-  }
-  .posts-container .actions textarea{
-    flex: 9;
-    padding: 10px 5px;
-    resize: none;
-    border: none;
-  }
-  .posts-container .actions button{
-    flex: 1;
-    padding: 0 15px;
-    border: none;
-    color: white;
-    background-color: #2B4066;
-    font-weight: 600;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-  .posts-container .actions textarea:focus,button:focus{
-    outline: none;
-  }
-  
-  .post{
-    width: 500px;
-    border: solid 1px #e8e8e8;
-    border-radius: 8px;
-    background: #ffffe8;
-    padding: 10px 0;
-    margin-top: 15px;
-  }
-  
-  .post span{
-    margin-left: 10px;
-  }
-  
-  .post p{
-    margin-left: 20px;
-    margin-top: 10px;
-  }
 
-  ion-icon {
+  .icon-plus {
     margin: 1em 4.5em;
    text-align: center;
   }
+
+  .btn-campanario{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #2B4066;
+ 
+  }
+
+  .btn-campanario:active{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+ 
+  }
+  .btn-campanario:hover{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+ 
+  }
+  .btn-campanario:focus{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+ 
+  }
+
+  .btn-publicar{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+ 
+  }
+
+  .btn-publicar:active{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+ 
+  }
+  .btn-publicar:hover{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+ 
+  }
+  .btn-publicar:focus{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+ 
+  }
+  .react-confirm-alert{
+    font-family: 'Lato', sans-serif;
+
+  }
+
+  .react-confirm-alert-button-group button:last-child{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+  }
+
+  .react-confirm-alert-button-group button:first-child{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+  }
+
+  .react-confirm-alert-button-group button:last-child:hover{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+  }
+
+  .react-confirm-alert-button-group button:hover{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+  }
+
+  .btn-trash{
+    background: #EBEBEB;  
+    height: 1rem;
+    width: 4rem;
+    margin: 1rem 1rem;
+    font-family: 'Lato', sans-serif;
+    color: #2B4066;
+ 
+ }
+
+ 
+
+  
