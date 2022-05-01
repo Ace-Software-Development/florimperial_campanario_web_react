@@ -1,0 +1,132 @@
+*{
+    padding: 0;
+    margin: 0;
+  }
+  a.menu_links { cursor: pointer; }
+  
+  header.app-header{
+    background-color: #2B4066;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 100px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Lato', sans-serif;
+  }
+  
+  .spacing{
+    margin: 10px;
+  }
+
+  main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  
+  main h1{
+    margin-bottom: 20px;
+  }
+  
+
+  .icon-plus {
+    margin: 1em 4.5em;
+   text-align: center;
+  }
+
+  .btn-campanario{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #2B4066;
+ 
+  }
+
+  .btn-campanario:active{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+ 
+  }
+  .btn-campanario:hover{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+ 
+  }
+  .btn-campanario:focus{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+ 
+  }
+
+  .btn-publicar{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+ 
+  }
+
+  .btn-publicar:active{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+ 
+  }
+  .btn-publicar:hover{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+ 
+  }
+  .btn-publicar:focus{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+ 
+  }
+  .react-confirm-alert{
+    font-family: 'Lato', sans-serif;
+
+  }
+
+  .react-confirm-alert-button-group button:last-child{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+  }
+
+  .react-confirm-alert-button-group button:first-child{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+  }
+
+  .react-confirm-alert-button-group button:last-child:hover{
+    background: #EBEBEB;
+    font-family: 'Lato', sans-serif;
+    color: #56738B;
+  }
+
+  .react-confirm-alert-button-group button:hover{
+    background: #56738B;
+    font-family: 'Lato', sans-serif;
+    color: #EBEBEB;
+  }
+
+  .btn-trash{
+    background: #EBEBEB;  
+    height: 1rem;
+    width: 4rem;
+    margin: 1rem 1rem;
+    font-family: 'Lato', sans-serif;
+    color: #2B4066;
+ 
+ }
+
+ 
+
+  
