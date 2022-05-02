@@ -4,10 +4,10 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import Home from './routes/Home';
-import Auth from './routes/Auth';
-import Anuncios from './routes/Anuncios'
-import DetalleAnun from './routes/DetalleAnun'
+import Home from './pages/Home';
+import Auth from './pages/Auth';
+import Anuncios from './pages/Anuncios'
+import DetalleAnun from './pages/DetalleAnun'
 export default function App() {
   return (
     <Router>

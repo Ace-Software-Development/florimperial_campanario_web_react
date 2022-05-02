@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {render} from "react-dom";
 import Parse from "parse";
-import "./Anuncios.css";
-import { useParseQuery } from "@parse/react";
-import ParseObject from "parse/lib/browser/ParseObject";
+import "../css/Anuncios.css";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import React from "react";
@@ -12,10 +9,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
-import Spinner from "react-bootstrap/Spinner";
 import Form from "react-bootstrap/Form";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import CirculoCarga from "../components/CirculoCarga";
+
 
 
 
@@ -83,11 +81,7 @@ export default function Anuncios() {
   // return a Spinner when loading is true
   if (loading)
     return (
-      <Row className="d-flex justify-content-center">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </Row>
+    <CirculoCarga/>
     );
 
   function getBase64(file) {

@@ -1,7 +1,7 @@
 import {useEffect, useState } from 'react'
 import {useHistory} from 'react-router-dom';
 import Parse from 'parse';
-import './Home.css'
+import '../css/Home.css'
 import {useParseQuery} from '@parse/react';
 import ParseObject from 'parse/lib/browser/ParseObject';
 import Card from 'react-bootstrap/Card';
@@ -56,7 +56,7 @@ export default function Home() {
 
   // return a Spinner when loading is true
   if(loading) return (
-    <span>Loading</span>
+    <span>Cargando</span>
   );
 /*
   // data will be null when fetch call fails

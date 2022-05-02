@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Parse from "parse";
-import "./DetalleAnun.css";
+import "../css/DetalleAnun.css";
 import { useParseQuery } from "@parse/react";
 import ParseObject from "parse/lib/browser/ParseObject";
 import Card from "react-bootstrap/Card";
