@@ -28,7 +28,7 @@ export default function ReservacionesGolf() {
                 const query = new Parse.Query('ReservacionGolf');
                 query.include("reservacion");
                 
-                query.include(["reservacion.socio"]);
+                query.include(["reservacion.user"]);
                 query.include(["reservacion.sitio"]);
 
                 const reservaciones = await query.find();
@@ -49,7 +49,7 @@ export default function ReservacionesGolf() {
                         'start': reservaciones[i].get("reservacion").get("fechaInicio"),
                         'startString': reservaciones[i].get("reservacion").get("fechaInicio").toString(),
                         'reservacion': reservaciones[i].get("reservacion").id,
-                        'socio': reservaciones[i].get("reservacion").get("socio"),
+                        'user': reservaciones[i].get("reservacion").get("user"),
                         'maximoJugadores': reservaciones[i].get("reservacion").get("maximoJugadores"),
                         'hoyoSalida': reservaciones[i].get("reservacion").get("sitio"),
                         'carritosReservados': reservaciones[i].get("carritosReservados")
@@ -85,12 +85,12 @@ export default function ReservacionesGolf() {
         setOpenSave(true);
     }
 
-    const editAppointment = (eventClick)=> {
+    const editAppointment = (eventClick) => {
         const reservacionGolfId = eventClick.event._def.publicId;
         const titulo = eventClick.event._def.title;
         const reservacionId = eventClick.event._def.extendedProps.reservacion;
         const horaSalida = eventClick.event._def.extendedProps.startString;
-        const socioId = eventClick.event._def.extendedProps.socio;
+        const socioId = eventClick.event._def.extendedProps.user;
         const maximoJugadores = eventClick.event._def.extendedProps.maximoJugadores;
         const hoyoSalidaId = eventClick.event._def.extendedProps.hoyoSalida.id;
         const hoyoSalidaNombre = eventClick.event._def.extendedProps.hoyoSalida.attributes.nombre;
@@ -105,7 +105,34 @@ export default function ReservacionesGolf() {
         setHoyoSalidaId(hoyoSalidaId);
         setHoyoSalidaNombre(hoyoSalidaNombre);
         setHoyoUnoChecked(hoyoUnoChecked);
+
         setOpenEdit(true);
+    }
+
+    if (openEdit) {
+        return(
+            <div>
+                <FullCalendar
+                    plugins={[daygridPlugin, interactionPlugin]}
+                    dateClick={handleDateClick}
+                    events={appointments}
+                    dayCellContent={injectCellContent}
+                    eventClick={editAppointment} />
+                <EditGolfAppointment 
+                    open={openEdit}
+                    onClose={setOpenEdit}
+                    reservacionGolfId={reservacionGolfId}
+                    titulo={titulo}
+                    reservacionId={reservacionId}
+                    horaSalida={horaSalida}
+                    socioId={socioId}
+                    maximoJugadores={maximoJugadores}
+                    hoyoSalidaId={hoyoSalidaId}
+                    hoyoSalidaNombre={hoyoSalidaNombre}
+                    hoyoUnoChecked={hoyoUnoChecked}
+                    carritosReservados={carritosReservados} />
+            </div>
+        );
     }
 
     return (
@@ -118,19 +145,6 @@ export default function ReservacionesGolf() {
                 eventClick={editAppointment}   
             />
             <SaveGolfAppointment open={openSave} onClose={setOpenSave} />
-            <EditGolfAppointment 
-                open={openEdit}
-                onClose={setOpenEdit}
-                reservacionGolfId={reservacionGolfId}
-                titulo={titulo}
-                reservacionId={reservacionId}
-                horaSalida={horaSalida}
-                socioId={socioId}
-                maximoJugadores={maximoJugadores}
-                hoyoSalidaId={hoyoSalidaId}
-                hoyoSalidaNombre={hoyoSalidaNombre}
-                hoyoUnoChecked={hoyoUnoChecked}
-                carritosReservados={carritosReservados} />
         </div>
     )
 }
