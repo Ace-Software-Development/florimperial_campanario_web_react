@@ -17,7 +17,17 @@ const Auth = () => {
     user.set('password', password);
 
     user.logIn().then((user) => {
+      if (user.attributes.isAdmin == false) {
+        alert(
+          "Necesitas ser administrador para acceder al sistema."
+        );
+        Parse.User.logOut().then(() => {
+          const user = Parse.User.current();  // this will now be null
+        });
+        }
+        else {
       history.push('/home');
+      }
     }).catch(err => {
       alert(err.message);
     });
