@@ -29,7 +29,20 @@ const Auth = () => {
       history.push('/home');
       }
     }).catch(err => {
-      alert(err.message);
+      if (err.message=="username/email is required."){
+        alert("Se debe introducir el nombre de usuario / correo electrónico.");
+      }
+      else if (err.message=="password is required."){
+        alert("Por favor, introduzca su contraseña.");
+      }
+      else if (err.message=="Invalid username/password."){
+        alert("El nombre de usuario o la contraseña son incorrectos.");
+      }
+      else {
+        alert(err.message);
+      }
+
+      
     });
   }
 
