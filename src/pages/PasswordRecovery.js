@@ -22,12 +22,13 @@ export default function PasswordRecovery() {
     event.preventDefault();
     Parse.User.requestPasswordReset(email)
       .then(() => {
-        console.log("xd0");
-        alert("Se envió el email de recuperación de contraseña.");
+    
+        alert("Se enviará un correo de recuperación de contraseña si el usuario se encuentra registrado en El Campanario.");
+        history.push("/");
         // Password reset request was sent successfully
       }).catch((error) => {
         // Show the error message somewhere
-        console.log("xd1");
+        
         alert("Error: " + error.code + " " + error.message);
       });
        
