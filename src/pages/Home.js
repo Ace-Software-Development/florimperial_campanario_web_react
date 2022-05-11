@@ -41,14 +41,13 @@ export default function Home() {
         );  
         history.push("/");
       }
-      if (currentUser.attributes.isAdmin == false) {
+      else if (currentUser.attributes.isAdmin == false) {
         alert(
           "Necesitas ser administrador para acceder al sistema."
         );
         history.push("/");
       }
-      console.log(currentUser);
-
+ 
     }
     
     checkUser();
