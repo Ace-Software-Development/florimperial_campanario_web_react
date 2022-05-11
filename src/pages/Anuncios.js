@@ -60,9 +60,16 @@ export default function Anuncios() {
       if (!currentUser) {
         alert(
           "Necesitas haber ingresado al sistema para consultar esta página."
+        );  
+        history.push("/");
+      }
+      else if (currentUser.attributes.isAdmin == false) {
+        alert(
+          "Necesitas ser administrador para acceder al sistema."
         );
         history.push("/");
       }
+ 
     }
 
     checkUser();

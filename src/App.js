@@ -9,6 +9,7 @@ import Auth from './pages/Auth';
 import Anuncios from './pages/Anuncios'
 import DetalleAnun from './pages/DetalleAnun'
 import SalidasGolf from './pages/Golf/SalidasGolf'
+import PasswordRecovery from './pages/PasswordRecovery';
 
 export default function App() {
   return (
@@ -31,6 +32,9 @@ export default function App() {
         </Route>
           <Route path="/anuncios">
             <Anuncios />
+          </Route>
+          <Route path="/recovery">
+            <PasswordRecovery  />
           </Route>
           <Route path="/">
             <Auth />
