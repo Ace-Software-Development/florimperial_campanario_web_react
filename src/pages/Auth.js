@@ -80,6 +80,7 @@ const Auth = () => {
                   <div> </div>
                   <button className="btn btn-primary btn-lg btn-block" type="submit" name="action" id="enviar">Iniciar sesión</button>
                 </form>
+                <a href="/recovery" >Olvidé mi contraseña.  </a>
               </div>
             </div>
           </div>

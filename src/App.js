@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Auth from './pages/Auth';
 import Anuncios from './pages/Anuncios'
 import DetalleAnun from './pages/DetalleAnun'
+import PasswordRecovery from './pages/PasswordRecovery';
 export default function App() {
   return (
     <Router>
@@ -29,6 +30,9 @@ export default function App() {
         
           <Route path="/anuncios">
             <Anuncios />
+          </Route>
+          <Route path="/recovery">
+            <PasswordRecovery  />
           </Route>
           <Route path="/">
             <Auth />
