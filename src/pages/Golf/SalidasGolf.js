@@ -3,9 +3,13 @@ import Parse from 'parse';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import CreateGolfAppointmentSlot from './CreateGolfAppointmentSlot';
 
 export default function SalidasGolf() {
     const [appointments, setAppointments] = useState([]);
+    const [openCreate, setOpenCreate] = useState(false);
+    const [newSlotStart, setNewSlotStart] = useState("");
 
     useEffect(() => {
        async function getGolfAppointments() {
@@ -32,9 +36,7 @@ export default function SalidasGolf() {
                         'title': title,
                         'start': reservaciones[i].get("reservacion").get("fechaInicio"),
                         'hole': reservaciones[i].get("reservacion").get("sitio").get("nombre")
-                    })
-                    
-                    console.log(reservaciones[i].get("reservacion").get("sitio").get("nombre"));
+                    })                    
                 }
 
                 setAppointments(resultados);
@@ -48,29 +50,69 @@ export default function SalidasGolf() {
         return;
     }, [appointments.length])
 
+    const addAppointmentSlot = (dateClickInfo) => {
+        setNewSlotStart(dateClickInfo.dateStr);
+        setOpenCreate(true);
+    }
+
+    if (openCreate) {
+        return(
+            <div>
+                <FullCalendar
+                    dateClick={addAppointmentSlot}
+                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                    views={{
+                        customMonth : {
+                            buttonText : 'Mes'
+                        },
+                        customWeek : {
+                            buttonText : 'Semana'
+                        },
+                        customDay : {
+                            buttonText : 'Día'
+                        }
+                    }}
+                    headerToolbar={{
+                        left: 'today prev,next',
+                        center: 'title',
+                        right: 'dayGridMonth,dayGridWeek,timeGridDay'
+                    }}
+                    initialView='dayGridMonth'
+                    events={appointments}
+                    />
+                <CreateGolfAppointmentSlot 
+                    open={openCreate} 
+                    onClose={setOpenCreate}
+                    startingDate={newSlotStart}
+                    />
+            </div>
+        );
+    }
+
     return (
         <div>
-        <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin]}
-            views={{
-                customMonth : {
-                    buttonText : 'Mes'
-                },
-                customWeek : {
-                    buttonText : 'Semana'
-                },
-                customDay : {
-                    buttonText : 'Día'
-                }
-            }}
-            headerToolbar={{
-                left: 'today prev,next',
-                center: 'title',
-                right: 'dayGridMonth,dayGridWeek,timeGridDay'
-            }}
-            initialView='dayGridMonth'
-            events={appointments}
-            />
+            <FullCalendar
+                dateClick={addAppointmentSlot}
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                views={{
+                    customMonth : {
+                        buttonText : 'Mes'
+                    },
+                    customWeek : {
+                        buttonText : 'Semana'
+                    },
+                    customDay : {
+                        buttonText : 'Día'
+                    }
+                }}
+                headerToolbar={{
+                    left: 'today prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,timeGridDay'
+                }}
+                initialView='dayGridMonth'
+                events={appointments}
+                />
         </div>
     );
 }
