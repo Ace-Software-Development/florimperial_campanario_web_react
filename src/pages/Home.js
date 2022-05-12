@@ -6,6 +6,8 @@ import {useParseQuery} from '@parse/react';
 import ParseObject from 'parse/lib/browser/ParseObject';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Sidebar from '../components/Sidebar';
+
 export default function Home() {
   const history = useHistory();
   const [postText, setPostText] = useState('');
@@ -121,22 +123,12 @@ export default function Home() {
 
   return (
     <div className="App">
+      <Sidebar/>
       <header className="app-header">
-      <img className="logo" alt="back4app's logo" src={'https://blog.back4app.com/wp-content/uploads/2019/05/back4app-white-logo-500px.png'} />
-        <h2 className="spacing">parseaaa hooks</h2>
-        <span>social network</span>
+        <h1 className="spacing">Inicio</h1>
       </header>
       
       <div className="posts-container">
-        <form onSubmit={handleSubmitPost}className="actions">
-          <textarea value={postText} onChange={event => setPostText(event.currentTarget.value)}/>
-          <button type="submit">post</button>
-          <ul>
-          
-           
-          </ul>
-        </form>
-       
         {listItems}
       </div>
 

@@ -1,6 +1,6 @@
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import './Dashboard.css';
+import '../css/Dashboard.css';
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,11 +15,12 @@ function Sidebar(){
     <Route render={({ location, history }) => (
         <React.Fragment>
             <SideNav
-                onSelect={(selected) => {
+                onSelect={(selected) => {   
                     const to = '/' + selected;
                     if (location.pathname !== to) {
                         history.push(to);
                     }
+                    window.location.reload();
                 }}
             >
                 <SideNav.Toggle />

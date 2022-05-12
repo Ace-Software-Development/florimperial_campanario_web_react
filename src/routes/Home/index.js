@@ -1,7 +1,7 @@
 import {useEffect, useState } from 'react'
 import {useHistory} from 'react-router-dom';
 import Parse from 'parse';
-import './Home.css'
+import '../css/Home.css'
 import Sidebar from '../../components/Sidebar'
 import {useParseQuery} from '@parse/react';
 import ParseObject from 'parse/lib/browser/ParseObject';
