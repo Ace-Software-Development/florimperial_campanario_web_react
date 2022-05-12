@@ -2,6 +2,7 @@ import {useEffect, useState } from 'react'
 import {useHistory} from 'react-router-dom';
 import Parse from 'parse';
 import './Home.css'
+import Sidebar from '../../components/Sidebar'
 import {useParseQuery} from '@parse/react';
 import ParseObject from 'parse/lib/browser/ParseObject';
 
@@ -63,6 +64,7 @@ export default function Home() {
   return (
     
     <div className="App">
+      <Sidebar/>
       <header className="app-header">
       <img className="logo" alt="back4app's logo" src={'https://blog.back4app.com/wp-content/uploads/2019/05/back4app-white-logo-500px.png'} />
         <h2 className="spacing">parseaaa hooks</h2>
@@ -75,6 +77,7 @@ export default function Home() {
         <button type="submit">post</button>
 
         <ul>
+          
      {items.map((item,index)=>{
           <li key={index}>{item}</li>
           

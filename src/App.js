@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Home from './routes/Home';
 import Auth from './routes/Auth';
+import Sidebar from './components/Sidebar';
 
 export default function App() {
   return (
