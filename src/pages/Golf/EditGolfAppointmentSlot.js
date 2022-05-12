@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Parse from 'parse';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -10,35 +10,70 @@ import "react-datetime/css/react-datetime.css";
 // import moment from 'moment';
 
 export default function EditGolfAppointmentSlot(props) {
-    const [firstOpen, setFirstOpen] = useState(true);
-    const [appointment, setAppointment] = useState();
+    const [isLoading, setLoading] = useState(true);
     const [startingDate, setStartingDate] = useState(new Date());
     const [startingHole, setStartingHole] = useState("");
     const [holeOneChecked, setHoleOneChecked] = useState(false);
     const [maxPlayers, setMaxPlayers] = useState();
+    const [reservedKarts, setReservedKarts] = useState(0);
+    const [invitadosSocios, setInvitadosSocios] = useState([]);
+    const [invitados, setInvitados] = useState([]);
+
     // const { register, handleSubmit } = useForm();
+
+
+    useEffect(() => {
+        async function getAppointmentData() {
+            try {
+                const appointmentId = String(props.appointmentId);
     
-    if (firstOpen) {
-        getAppointmentData();
-        setFirstOpen(false);
-    }
+                const getAppointment = new Parse.Query("ReservacionGolf");            
+                getAppointment.include("reservacion");
+                getAppointment.include(["reservacion.sitio"]);
+                getAppointment.include(["reservacion.user"]);
+                getAppointment.equalTo("objectId", appointmentId);
+    
+                getAppointment.find().then(function(results) {
+                    return results;
+                }).then(function(results) {
+                    if (results.length === 0) return null;
 
-    async function getAppointmentData() {
-        try {
-            const appointmentId = String(props.appointmentId);
+                    setStartingDate(results[0].get("reservacion").get("fechaInicio"));
+                    setMaxPlayers(results[0].get("reservacion").get("maximoJugadores"));
+                    setStartingHole(results[0].get("reservacion").get("sitio").get("nombre"));
+                    if (results[0].get("carritosReservados") !== undefined) {
+                        setReservedKarts(results[0].get("carritosReservados"));
+                    }
 
-            const getAppointment = Parse.Query('ReservacionGolf');
-            getAppointment.include("reservacion");
-            getAppointment.equalTo("id", appointmentId);
+                    // aca abajo va lo de invitados   
+                    // if (results[0].get("reservacion").get("socio")) return null;
 
-            const results = await getAppointment.find();
-            console.log(results);
-        } catch (error) {
-            console.log(`Ha ocurrido un error ${ error }`);
+                    // // get invitados del socio...
+                    // const getGuests = new Parse.Query("ReservacionInvitado");
+                    // // getGuests.include("")
+                    // getGuests.equalTo("reservacion", results[0].get("reservacion"));
+
+                    // return getGuests.find();
+                }, function(error) {
+                    alert(`Ha ocurrido un error: ${ error }`);
+                });
+
+                // asignar los atributros a los campos del dialogo
+                // checar si el estatus no es 1 o si hay socio, entonces obtener los invitados del socio para esta reservacion
+                // tambien obtener sus numbers de accion
+                    
+            } catch (error) {
+                console.log(`Ha ocurrido un error ${ error }`);
+            }
+        }
+        if (isLoading) {
+            getAppointmentData();
+            setLoading(false);
         }
 
         return;
-    }
+    });
+
 
     function changeStartingHole(hole, isChecked) {
         setStartingHole(hole);
@@ -100,7 +135,7 @@ export default function EditGolfAppointmentSlot(props) {
                     </div>
                     <DialogActions>
                         <Button onClick={handleClose}>Cancelar</Button>
-                        <Button type="submit">Crear</Button>
+                        <Button type="submit">Actualizar</Button>
                     </DialogActions> 
                 </form>
             </DialogContent>
