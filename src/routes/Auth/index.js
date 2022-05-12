@@ -45,7 +45,6 @@ const Auth = () => {
                       placeholder="Número de nomina"
                       />
                   </div>
-                  <div className="form-outline mb-4">
                     <label className="form-label" htmlFor="password"></label>
                     <input 
                       type="password" 
@@ -56,7 +55,6 @@ const Auth = () => {
                       className="form-control form-control-lg" 
                       placeholder="Contraseña"
                       />
-                  </div>
                   <div> </div>
                   <button className="btn btn-primary btn-lg btn-block" type="submit" name="action" id="enviar">Iniciar sesión</button>
                 </form>

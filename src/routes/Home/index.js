@@ -66,9 +66,7 @@ export default function Home() {
     <div className="App">
       <Sidebar/>
       <header className="app-header">
-      <img className="logo" alt="back4app's logo" src={'https://blog.back4app.com/wp-content/uploads/2019/05/back4app-white-logo-500px.png'} />
-        <h2 className="spacing">parseaaa hooks</h2>
-        <span>social network</span>
+        <h1>Inicio</h1>
       </header>
       
       <div className="posts-container">

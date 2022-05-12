@@ -81,7 +81,7 @@ function Sidebar(){
         
         <NavItem eventKey="reglas">
             <NavIcon>
-                <ion-icon name="home-sharp" style={{ fontSize: '1.25em' }}></ion-icon>
+                <ion-icon name="book" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
                 Reglas
