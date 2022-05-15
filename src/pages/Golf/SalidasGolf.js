@@ -6,6 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import CreateGolfAppointmentSlot from './CreateGolfAppointmentSlot';
 import EditGolfAppointmentSlot from './EditGolfAppointmentSlot';
+import esLocale from '@fullcalendar/core/locales/es';
 
 export default function SalidasGolf() {
     const [appointments, setAppointments] = useState([]);
@@ -68,6 +69,7 @@ export default function SalidasGolf() {
         return(
             <div>
                 <FullCalendar
+                    locale={esLocale}
                     dateClick={addAppointmentSlot}
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                     views={{
@@ -102,7 +104,9 @@ export default function SalidasGolf() {
     if (openEdit) {
         return(
             <div>
+                <script src='fullcalendar/lang/es.js'></script>
                 <FullCalendar
+                    locale={esLocale}
                     dateClick={addAppointmentSlot}
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                     views={{
@@ -137,6 +141,7 @@ export default function SalidasGolf() {
     return (
         <div>
             <FullCalendar
+                locale={esLocale}
                 dateClick={addAppointmentSlot}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 views={{
