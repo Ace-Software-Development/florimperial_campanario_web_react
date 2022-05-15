@@ -123,7 +123,7 @@ export default function EditGolfAppointmentSlot(props) {
     }
 
     const handleClose = () => {
-        window.location.reload();
+       // window.location.reload();
         props.onClose(false);
     }
     
@@ -206,6 +206,7 @@ export default function EditGolfAppointmentSlot(props) {
                     </div>
                     <div>
                         <label>
+                            Máximo número de jugadores   
                             <input
                                 type="number"
                                 min="1"
@@ -213,16 +214,16 @@ export default function EditGolfAppointmentSlot(props) {
                                 defaultValue={maxPlayers}
                                 onChange={newMax => changeMaxPlayers(newMax)}
                             />
-                            Máximo número de jugadores
                         </label>
                     </div>
                     <div> 
                         <label>
+                            Socio que reservó   :
+
                             <input
                                 type="text"
                                 defaultValue={/* user.get("account").get("noAccion") + */ user.get("username")}
                             />
-                            Socio que reservó
                         </label>
                     </div>
                     <div>

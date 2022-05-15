@@ -58,7 +58,13 @@ export default function SalidasGolf() {
     }, [appointments.length])
 
     const addAppointmentSlot = (dateClickInfo) => {
-        setNewSlotStart(dateClickInfo.dateStr);
+        let selectedDate = (dateClickInfo.dateStr);
+        if  (selectedDate.length === 10 ){
+        
+            selectedDate+="T00:00:00-05:00";
+        }
+        setNewSlotStart(selectedDate);
+        console.log(selectedDate, "size: ", dateClickInfo.dateStr.length);
         setOpenCreate(true);
     }
 

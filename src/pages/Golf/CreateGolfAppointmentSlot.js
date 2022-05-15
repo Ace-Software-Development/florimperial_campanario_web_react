@@ -26,7 +26,7 @@ export default function CreateGolfAppointmentSlot(props) {
     }
 
     const handleClose = () => {
-        window.location.reload();
+        //window.location.reload();
         props.onClose(false);
     }
 
