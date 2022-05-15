@@ -7,6 +7,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import CreateGolfAppointmentSlot from './CreateGolfAppointmentSlot';
 import EditGolfAppointmentSlot from './EditGolfAppointmentSlot';
 import esLocale from '@fullcalendar/core/locales/es';
+import CirculoCarga from "../../components/CirculoCarga";
 
 export default function SalidasGolf() {
     const [appointments, setAppointments] = useState([]);
@@ -14,8 +15,9 @@ export default function SalidasGolf() {
     const [editAppointmentId, setEditAppointmentId] = useState("");
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+    useEffect(async() => {
        async function getGolfAppointments() {
             try {
                 const query = new Parse.Query('ReservacionGolf');
@@ -49,9 +51,9 @@ export default function SalidasGolf() {
                console.log(`Ha ocurrido un error: ${ error }`);
            }
         }
-        
-        getGolfAppointments();
-
+        setLoading(true);
+        const appointments = await getGolfAppointments();
+        setLoading(false);
         return;
     }, [appointments.length])
 
@@ -65,6 +67,8 @@ export default function SalidasGolf() {
         setOpenEdit(true);
     }
 
+    if (loading)
+    return (   <CirculoCarga/>);
     if (openCreate) {
         return(
             <div>
