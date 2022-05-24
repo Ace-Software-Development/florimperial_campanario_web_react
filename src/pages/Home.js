@@ -14,6 +14,9 @@ export default function Home() {
 
   const [anuncios, setAnuncios] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [permissions, setPermissions] = useState({});
+
+
   async function getAnuncios() {
     const query = new Parse.Query('Anuncio');
     // query donde no esten eliminados
@@ -32,6 +35,24 @@ export default function Home() {
   }
 
 
+  async function getPermissions(idRol) {
+    const query = new Parse.Query('RolePermissions');
+    query.equalTo('objectId', idRol);
+    console.log("obteniendo permisos...");
+    const permisosQuery = await query.find();
+    console.log(permisosQuery);
+   
+    const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
+      "Raqueta": permisosQuery[0].get("Raqueta"),
+      "Salones_gym": permisosQuery[0].get("Salones_gym"),
+      "Anuncios": permisosQuery[0].get("Anuncios"),
+      "Gestion": permisosQuery[0].get("Gestion"),
+      "Alberca": permisosQuery[0].get("Alberca")}
+    
+    return permissionsJson;
+  }
+
+
   useEffect(async() => {
     async function checkUser() {
       const currentUser = await Parse.User.currentAsync();
@@ -47,10 +68,13 @@ export default function Home() {
         );
         history.push("/");
       }
- 
+      const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
+      return(permissionsJson);
     }
     
-    checkUser();
+    const permissionsJson = await checkUser();
+    setPermissions(permissionsJson);
+  
 
     try {
       setLoading(true);
@@ -63,6 +87,10 @@ export default function Home() {
     }
   }, []);
 
+  console.log(permissions);
+  if (permissions.Alberca === true)  {
+    history.push('/');
+  };
   // return a Spinner when loading is true
   if(loading) return (
     <span>Cargando</span>

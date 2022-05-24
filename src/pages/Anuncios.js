@@ -69,6 +69,12 @@ export default function Anuncios() {
         );
         history.push("/");
       }
+      else if (currentUser.attributes.adminRole != "Superadmin" || currentUser.attributes.adminRole != "marketing"  ) {
+        alert(
+          "No tienes acceso a esta página. Para más ayuda contacta con tu administrador."
+        );
+        history.push("/");
+      }
  
     }
 
