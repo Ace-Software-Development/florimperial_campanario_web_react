@@ -24,9 +24,9 @@ function Sidebar(){
                 }}
             >
                 <SideNav.Toggle />
-    <SideNav.Nav defaultSelected="inicio">
+    <SideNav.Nav defaultSelected="home">
         
-        <NavItem eventKey="inicio">
+        <NavItem eventKey="home">
             <NavIcon>
                 <ion-icon name="home" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -35,14 +35,14 @@ function Sidebar(){
             </NavText>
         </NavItem>
         
-        <NavItem eventKey="socios">
+        {/* <NavItem eventKey="socios">
             <NavIcon>
                 <ion-icon name="people" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
                 Socios
             </NavText>
-        </NavItem>
+        </NavItem> */}
         
         <NavItem eventKey="anuncios">
             <NavIcon>
@@ -53,7 +53,7 @@ function Sidebar(){
             </NavText>
         </NavItem>
         
-        <NavItem eventKey="sugerencias">
+        {/* <NavItem eventKey="sugerencias">
             <NavIcon>
                 <ion-icon name="bulb" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -153,7 +153,7 @@ function Sidebar(){
                     Reservaciones
                 </NavText>
             </NavItem>
-        </NavItem>
+        </NavItem> */}
         
         <NavItem eventKey="cerrar-sesion">
             <NavIcon>
