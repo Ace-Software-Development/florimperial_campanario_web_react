@@ -10,6 +10,7 @@ import Anuncios from './pages/Anuncios'
 import DetalleAnun from './pages/DetalleAnun'
 import SalidasGolf from './pages/Golf/SalidasGolf'
 import PasswordRecovery from './pages/PasswordRecovery';
+import Sidebar from './components/Sidebar';
 
 export default function App() {
   return (

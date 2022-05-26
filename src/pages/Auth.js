@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Parse from "parse";
 import { useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css' 
+import Logo from '../img/logo-campanario-azul.png';
 
 const Auth = () => {
   const [username, setUsername] = useState("");
@@ -47,16 +48,16 @@ const Auth = () => {
   }
 
   return (
-    <section className="vh-100" style={{ background: '#508bfc' }}>
+    <section className="vh-100" style={{ background: '#fafafa' }}>
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-            <div className="card shadow-2-strong">
+            <div className="card shadow-2-strong" style={{ background: '#ebebeb'}}>
               <div className="card-body p-5 text-center"> 
-                <h3 className="mb-5">Iniciar sesión</h3>
+                <img className="logo-campanario "src={Logo} alt="Logo" />
                 <form className="auth-form" onSubmit={ logIn }>
                   <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="username">No. Nómina</label>
+                    <label className="form-label" htmlFor="username"></label>
                     <input 
                       type="text" 
                       name="username"
@@ -64,10 +65,10 @@ const Auth = () => {
                       value={ username }
                       onChange={ (e) => setUsername(e.target.value) }
                       className="form-control form-control-lg" 
+                      placeholder="Número de nomina"
                       />
                   </div>
-                  <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="password">Contraseña</label>
+                    <label className="form-label" htmlFor="password"></label>
                     <input 
                       type="password" 
                       name="password" 
@@ -75,13 +76,13 @@ const Auth = () => {
                       value={ password } 
                       onChange={ (e) => setPassword(e.target.value) }
                       className="form-control form-control-lg" 
+                      placeholder="Contraseña"
                       />
-                  </div>
                   <div> </div>
                   <button className="btn btn-primary btn-lg btn-block" type="submit" name="action" id="enviar">Iniciar sesión</button>
                 </form>
-                <a href="/recovery" >Olvidé mi contraseña.  </a>
               </div>
+              <a className="recuperar-contrasena" href="#"> ¿Olvidaste tu contraseña?</a>
             </div>
           </div>
         </div>

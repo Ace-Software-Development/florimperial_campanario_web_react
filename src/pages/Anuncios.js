@@ -13,6 +13,7 @@ import Form from "react-bootstrap/Form";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from "../components/CirculoCarga";
+import Sidebar from '../components/Sidebar';
 
 
 
@@ -153,30 +154,21 @@ export default function Anuncios() {
   const listItems = anuncios.map((anuncio) => (
     <Col >
       <Card
-        className=" text-white"
-        style={{
-          width: "100%",
-          height: "32rem",
-          borderRadius: "5%"
-          , "background-color": "#2B4066"
-        }}
+        className="card-container top-10 start-50 translate-middle"
       > 
       <div class ="d-flex justify-content-center">    
       
-      <Card.Img variant="top" src={`${anuncio[2]}`} style={{borderRadius:"5%",  "maxHeight": "27rem" , "maxWidth":"80%"  }} />
+      <Card.Img className= "card-img card-anouncements" variant="top" src={`${anuncio[2]}`} />
       </div>
- 
-      
-         <Card.Footer className="d-flex justify-content-between mt-auto">  
-            <h5> {anuncio[3]} </h5> 
+      <Card.ImgOverlay>
+         <Card.Text className="d-flex justify-content-between mt-auto">  
+            <h5 className= "card-title-anouncement"> {anuncio[3]} </h5> 
             <Button variant="primary" class="btn-trash" className="btn-campanario" onClick= {() => {  confirmDelete(anuncio[4]);}}  >
               <ion-icon name="trash-outline" />
             </Button>  
             
-          </Card.Footer>
-
-
-        
+          </Card.Text>
+          </Card.ImgOverlay>
       </Card>
     </Col>
   ));
@@ -276,8 +268,9 @@ export default function Anuncios() {
 
   return (
     <div className="App">
+      <Sidebar/>
       <header className="app-header">
-        <h2 className="spacing"> Anuncios </h2>
+        <h1 className="spacing"> Anuncios </h1>
       </header>
   
       <div className="posts-container"></div>
@@ -307,17 +300,16 @@ export default function Anuncios() {
         <Row xs={1} s={2} md={3} className="g-4">
           <Col>
             <Card
-              className=" d-flex text-align-center justify-content-md-center"
-              style={{ width: "100%", height: "32rem", borderRadius: "5%" }}
+              className="card-img top-50 start-50 translate-middle "
               onClick={handleShow}
             >
-              <Card.Title className="text-center">
-                {" "}
+              <Card.Title className="text-center card-title">
+
                 <br /> Agregar un anuncio
 
               </Card.Title>
               <div className="d-flex">
-                <ion-icon name="add-circle-outline" class="icon-plus"  style={{ width: "100%", height: "100%" }}></ion-icon>
+                <ion-icon name="add-circle-outline" class="icon-plus" ></ion-icon>
                 </div>
 
             
