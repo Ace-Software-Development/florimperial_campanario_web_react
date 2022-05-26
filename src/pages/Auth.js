@@ -82,7 +82,7 @@ const Auth = () => {
                   <button className="btn btn-primary btn-lg btn-block" type="submit" name="action" id="enviar">Iniciar sesión</button>
                 </form>
               </div>
-              <a className="recuperar-contrasena" href="#"> ¿Olvidaste tu contraseña?</a>
+              <a className="recuperar-contrasena" href="/recovery"> ¿Olvidaste tu contraseña?</a>
             </div>
           </div>
         </div>

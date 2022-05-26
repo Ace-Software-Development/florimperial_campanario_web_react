@@ -29,6 +29,7 @@ export default function Anuncios() {
   
   const [validated, setValidated] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [permissions, setPermissions] = useState({});
 
 
 
@@ -55,6 +56,23 @@ export default function Anuncios() {
     return result;
   }
 
+    async function getPermissions(idRol) {
+    const query = new Parse.Query('RolePermissions');
+    query.equalTo('objectId', idRol);
+    console.log("obteniendo permisos...");
+    const permisosQuery = await query.find();
+    console.log(permisosQuery);
+   
+    const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
+      "Raqueta": permisosQuery[0].get("Raqueta"),
+      "Salones_gym": permisosQuery[0].get("Salones_gym"),
+      "Anuncios": permisosQuery[0].get("Anuncios"),
+      "Gestion": permisosQuery[0].get("Gestion"),
+      "Alberca": permisosQuery[0].get("Alberca")}
+    
+    return permissionsJson;
+  }
+
   useEffect(async () => {
     async function checkUser() {
       const currentUser = await Parse.User.currentAsync();
@@ -70,14 +88,12 @@ export default function Anuncios() {
         );
         history.push("/");
       }
-      else if (currentUser.attributes.adminRole != "Superadmin" || currentUser.attributes.adminRole != "marketing"  ) {
-        alert(
-          "No tienes acceso a esta página. Para más ayuda contacta con tu administrador."
-        );
-        history.push("/");
-      }
- 
+      const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
+      return(permissionsJson);
     }
+    
+    const permissionsJson = await checkUser();
+    setPermissions(permissionsJson);
 
     checkUser();
 
@@ -92,6 +108,12 @@ export default function Anuncios() {
     }
   }, []);
 
+    console.log(permissions);
+
+    if (permissions.Anuncios === false)  {
+      alert("No tienes acceso a esta página. Para más ayuda contacta con tu administrador.");
+      history.push('/home');
+    };
   // return a Spinner when loading is true
   if (loading)
     return (

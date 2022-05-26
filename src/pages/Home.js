@@ -90,9 +90,9 @@ export default function Home() {
   }, []);
 
   console.log(permissions);
-  if (permissions.Alberca === true)  {
-    history.push('/');
-  };
+  // if (permissions.Alberca === true)  {
+  //   history.push('/');
+  // };
   // return a Spinner when loading is true
   if(loading) return (
     <span>Cargando</span>
