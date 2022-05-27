@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Parse from 'parse';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -8,6 +7,7 @@ import CreateGolfAppointmentSlot from './CreateGolfAppointmentSlot';
 import EditGolfAppointmentSlot from './EditGolfAppointmentSlot';
 import esLocale from '@fullcalendar/core/locales/es';
 import CirculoCarga from "../../components/CirculoCarga";
+import {getAllGolfAppointmentSlots} from '../../utils/client';
 
 export default function SalidasGolf() {
     const [appointments, setAppointments] = useState([]);
@@ -18,44 +18,29 @@ export default function SalidasGolf() {
     const [loading, setLoading] = useState(true);
 
     useEffect(async() => {
-       async function getGolfAppointments() {
-            try {
-                const query = new Parse.Query('ReservacionGolf');
-                query.include("reservacion");
-                query.include(["reservacion.user"]);
-                query.include(["reservacion.sitio"]);
-
-                const reservaciones = await query.find();
-                const resultados = new Array(0);
-
-                for (let i = 0; i < reservaciones.length; i++) {
-                    let title = '';
-
-                    if (!reservaciones[i].get("reservacion").get("user")) {
-                        title = 'Disponible';
-                    } else {
-                        title = reservaciones[i].get("reservacion").get("user").get("username");
-                    }
-                    
-                    resultados.push({
-                        'id': reservaciones[i].id,
-                        'title': title,
-                        'start': reservaciones[i].get("reservacion").get("fechaInicio"),
-                        'hole': reservaciones[i].get("reservacion").get("sitio").get("nombre"),
-                        'status': reservaciones[i].get("reservacion").get("estatus")
-                    })                    
-                }
-
-                setAppointments(resultados);
-           } catch (error) {
-               console.log(`Ha ocurrido un error: ${ error }`);
-           }
-        }
         setLoading(true);
-        const appointments = await getGolfAppointments();
+        const appointments = await getAllGolfAppointmentSlots();
+        const resultados = [];
+
+		for (let i = 0; i < appointments.length; i++) {
+			let title = '';
+
+			if (appointments[i].get("estatus") == 1) {
+				title = 'Disponible';
+			} else {
+				title = appointments[i].get("user").get("username");
+			}
+			resultados.push({
+				'id': appointments[i].id,
+				'title': title,
+				'start': appointments[i].get("fechaInicio"),
+				'hole': appointments[i].get("sitio").get("nombre")
+			})
+		}
+        setAppointments(resultados);
         setLoading(false);
         return;
-    }, [appointments.length])
+    }, [])
 
     const addAppointmentSlot = (dateClickInfo) => {
         let selectedDate = (dateClickInfo.dateStr);
@@ -64,7 +49,6 @@ export default function SalidasGolf() {
             selectedDate+="T00:00:00-05:00";
         }
         setNewSlotStart(selectedDate);
-        console.log(selectedDate, "size: ", dateClickInfo.dateStr.length);
         setOpenCreate(true);
     }
 
