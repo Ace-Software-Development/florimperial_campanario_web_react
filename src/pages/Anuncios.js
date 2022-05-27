@@ -60,9 +60,22 @@ export default function Anuncios() {
       if (!currentUser) {
         alert(
           "Necesitas haber ingresado al sistema para consultar esta página."
+        );  
+        history.push("/");
+      }
+      else if (currentUser.attributes.isAdmin == false) {
+        alert(
+          "Necesitas ser administrador para acceder al sistema."
         );
         history.push("/");
       }
+      else if (currentUser.attributes.adminRole != "Superadmin" || currentUser.attributes.adminRole != "marketing"  ) {
+        alert(
+          "No tienes acceso a esta página. Para más ayuda contacta con tu administrador."
+        );
+        history.push("/");
+      }
+ 
     }
 
     checkUser();
