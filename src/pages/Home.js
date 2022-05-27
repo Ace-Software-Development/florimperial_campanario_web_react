@@ -7,6 +7,8 @@ import ParseObject from 'parse/lib/browser/ParseObject';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Sidebar from '../components/Sidebar';
+import Header from '../components/Header';
+import SidenavOverlay from '../components/SidenavOverlay';
 
 export default function Home() {
   const history = useHistory();
@@ -152,18 +154,12 @@ export default function Home() {
   return (
     <div className="App">
       <Sidebar/>
-      <header className="app-header">
-        <h1 className="spacing">Inicio</h1>
-      </header>
+      <Header processName={"Inicio"}/>
       
       <div className="posts-container">
         {listItems}
       </div>
-
       <div>
-
-      
-
       </div>
     </div>
   );

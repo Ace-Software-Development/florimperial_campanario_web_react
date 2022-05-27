@@ -14,6 +14,7 @@ import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from "../components/CirculoCarga";
 import Sidebar from '../components/Sidebar';
+import Header from '../components/Header';
 
 
 
@@ -291,9 +292,7 @@ export default function Anuncios() {
   return (
     <div className="App">
       <Sidebar/>
-      <header className="app-header">
-        <h1 className="spacing"> Anuncios </h1>
-      </header>
+      <Header processName={"Anuncios"}/>
   
       <div className="posts-container"></div>
 

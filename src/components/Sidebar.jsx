@@ -11,7 +11,7 @@ import React from "react"
 
 function Sidebar(){
     return(
-        <Router>
+    <Router>
     <Route render={({ location, history }) => (
         <React.Fragment>
             <SideNav
@@ -154,7 +154,6 @@ function Sidebar(){
                 </NavText>
             </NavItem>
         </NavItem> */}
-        
         <NavItem eventKey="cerrar-sesion">
             <NavIcon>
                 <ion-icon name="log-out" style={{ fontSize: '1.25em' }}></ion-icon>
@@ -163,9 +162,8 @@ function Sidebar(){
                 Cerrar sesión
             </NavText>
         </NavItem>
-
     </SideNav.Nav>
-</SideNav>
+    </SideNav>
         </React.Fragment>
     )}
     />
