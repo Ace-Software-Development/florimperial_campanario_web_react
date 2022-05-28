@@ -1,6 +1,7 @@
 import Parse from 'parse';
 
 const RESERVACION_MODEL = Parse.Object.extend('Reservacion');
+const RESERVACION_GOLF_MODEL = Parse.Object.extend('ReservacionGolf');
 const AREA_MODEL = Parse.Object.extend("Area");
 const SITIO_MODEL = Parse.Object.extend("Sitio");
 const USER_MODEL = Parse.Object.extend("_User");
@@ -24,6 +25,7 @@ export async function getAllGolfAppointmentSlots(){
 		reservationQuery.matchesQuery('sitio', sitiosQuery);
 		reservationQuery.include('sitio');
 		reservationQuery.include('profesor');
+		reservationQuery.include('user');
 		let data = await reservationQuery.find();
 		return data;
 		
@@ -35,11 +37,14 @@ export async function getAllGolfAppointmentSlots(){
 
 export async function getReservationGolf(appointmentId) {
 	try {
-		const getAppointment = new Parse.Query("ReservacionGolf");            
-		getAppointment.equalTo("objectId", appointmentId);
+		const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+		reservationQuery.equalTo('objectId', appointmentId);
 
-		let results = await getAppointment.find();
-		return results[0];
+		const golfReservationQuery = new Parse.Query(RESERVACION_GOLF_MODEL);            
+		golfReservationQuery.matchesQuery('reservacion', reservationQuery);
+
+		let results = await golfReservationQuery.find();
+		return results.length ? results[0] : null;
 	} catch (error) {
 		console.log(`Ha ocurrido un error ${ error }`);
 	}

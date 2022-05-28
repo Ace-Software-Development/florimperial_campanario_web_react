@@ -21,23 +21,23 @@ export default function SalidasGolf() {
         setLoading(true);
         const appointments = await getAllGolfAppointmentSlots();
         const resultados = [];
-
-		for (let i = 0; i < appointments.length; i++) {
-			let title = '';
-
-			if (appointments[i].get("estatus") == 1) {
-				title = 'Disponible';
-			} else {
-				title = appointments[i].get("user").get("username");
-			}
-            console.log(appointments[i].get('fechaInicio'))
+		appointments.forEach( appointment => {
+            console.log(appointment.get("fechaInicio"));
 			resultados.push({
-				'id': appointments[i].id,
-				'title': title,
-				'start': appointments[i].get("fechaInicio"),
-				'hole': appointments[i].get("sitio").get("nombre")
+				'id': appointment.id,
+				'title': appointment.get("estatus") == 1 ? 'Disponible' : appointment.get("user").get("username"),
+				'start': appointment.get("fechaInicio"),
+				'estatus': appointment.get("estatus"),
+				'sitio': appointment.get("sitio").get('nombre'),
+				'maximoJugadores': appointment.get("maximoJugadores"),
+				'profesor': appointment.get("profesor") ? appointment.get("profesor").get("nombre") : null,
+                'hole': appointment.get("sitio").get("nombre"),
+				'user': appointment.get("user") ? {
+                    "id": appointment.get("user").id,
+                    "name": appointment.get("user").get("username")
+                } : null
 			})
-		}
+        });
         setAppointments(resultados);
         setLoading(false);
         return;
@@ -45,10 +45,9 @@ export default function SalidasGolf() {
 
     const addAppointmentSlot = (dateClickInfo) => {
         let selectedDate = (dateClickInfo.dateStr);
-        if  (selectedDate.length === 10 ){
-        
-            selectedDate+="T00:00:00-05:00";
-        }
+        //if  (selectedDate.length === 10 ){
+        //    selectedDate+="T00:00:00-05:00";
+        //}
         setNewSlotStart(selectedDate);
         setOpenCreate(true);
     }

@@ -22,7 +22,6 @@ export default function Anuncios() {
   const [anuncios, setAnuncios] = useState(null);
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   
@@ -36,25 +35,23 @@ export default function Anuncios() {
     // query donde no esten eliminados
     const anuncios = await query.find();
 
-    const result = new Array();
+    const result = [];
     for (var i = 0; i < anuncios.length; i++) {
       console.log(anuncios[i].get("titulo"));
       const fecha = new Date(anuncios[i].get("updatedAt").toString());
-      result.push(
-        new Array(
+      result.push([
           anuncios[i].get("titulo"),
           anuncios[i].get("contenido"),
           anuncios[i].get("imagen").url(),
           fecha.getDate() + "/" + (fecha.getMonth() +1) + "/" + fecha.getFullYear(),
           anuncios[i].id
-        )
-      );
+        ]);
     }
 
     return result;
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     async function checkUser() {
       const currentUser = await Parse.User.currentAsync();
       if (!currentUser) {
@@ -63,13 +60,13 @@ export default function Anuncios() {
         );  
         history.push("/");
       }
-      else if (currentUser.attributes.isAdmin == false) {
+      else if (!currentUser.attributes.isAdmin) {
         alert(
           "Necesitas ser administrador para acceder al sistema."
         );
         history.push("/");
       }
-      else if (currentUser.attributes.adminRole != "Superadmin" || currentUser.attributes.adminRole != "marketing"  ) {
+      else if (currentUser.attributes.adminRole !== "Superadmin" || currentUser.attributes.adminRole !== "marketing"  ) {
         alert(
           "No tienes acceso a esta página. Para más ayuda contacta con tu administrador."
         );
@@ -79,16 +76,15 @@ export default function Anuncios() {
     }
 
     checkUser();
-
-    try {
-      setLoading(true);
-      const anuncios = await getAnuncios();
+    setLoading(true);
+    getAnuncios().then(anuncios => {
       setAnuncios(anuncios);
       setLoading(false);
-    } catch (error) {
+    })
+    .catch(error => {
       setLoading(false);
       console.log(error);
-    }
+    })
   }, []);
 
   // return a Spinner when loading is true
