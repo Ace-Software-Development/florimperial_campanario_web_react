@@ -1,93 +1,148 @@
-*{
-    padding: 0;
-    margin: 0;
-  }
-  
-  
-  header.app-header{
-    background-color: #2B4066;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 100px;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-family: 'Lato', sans-serif;
-  }
-  
-  .spacing{
-    margin: 10px;
-  }
-  
-  .logo{
-    width: 400px; 
-  }
-  
-  main{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-top: 20px;
-  }
-  
-  main h1{
-    margin-bottom: 20px;
-  }
-  
-  .posts-container{
-    padding: 0 10%;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .actions{
-    border: 1px solid #ececec;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  
-  .posts-container .actions{
-    display: flex;
-    width: 500px;
-  }
-  .posts-container .actions textarea{
-    flex: 9;
-    padding: 10px 5px;
-    resize: none;
-    border: none;
-  }
-  .posts-container .actions button{
-    flex: 1;
-    padding: 0 15px;
-    border: none;
-    color: white;
-    background-color: #208AEC;
-    font-weight: 600;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-  .posts-container .actions textarea:focus,button:focus{
-    outline: none;
-  }
-  
-  .post{
-    width: 500px;
-    border: solid 1px #e8e8e8;
-    border-radius: 8px;
-    background: #ffffe8;
-    padding: 10px 0;
-    margin-top: 15px;
-  }
-  
-  .post span{
-    margin-left: 10px;
-  }
-  
-  .post p{
-    margin-left: 20px;
-    margin-top: 10px;
-  }
+* {
+  padding: 0;
+  margin: 0;
+}
+
+header.app-header {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 100px;
+  text-align:left;
+  color: white;
+  position: relative;
+}
+header.app-header h1 {
+  color: #2b4066;
+  text-decoration: underline #519D78 5px;
+
+}
+
+.spacing {
+  margin: 10px;
+}
+
+.logo {
+  width: 400px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+main h1 {
+  margin-bottom: 20px;
+}
+
+.posts-container {
+  padding: 0 10%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.actions {
+  border: 1px solid #ececec;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.posts-container .actions {
+  display: flex;
+  width: 500px;
+}
+.posts-container .actions textarea {
+  flex: 9;
+  padding: 10px 5px;
+  resize: none;
+  border: none;
+}
+.posts-container .actions button {
+  flex: 1;
+  padding: 0 15px;
+  border: none;
+  color: white;
+  background-color: #208aec;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.posts-container .actions textarea:focus,
+button:focus {
+  outline: none;
+}
+
+.post {
+  width: 500px;
+  border: solid 1px #e8e8e8;
+  border-radius: 8px;
+  background: #ffffe8;
+  padding: 10px 0;
+  margin-top: 15px;
+}
+
+.post span {
+  margin-left: 10px;
+}
+
+.post p {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+#sidebar.active {
+  min-width: 80px;
+  max-width: 80px;
+  text-align: center;
+}
+
+/* Toggling the sidebar header content, hide the big heading [h3] and showing the small heading [strong] and vice versa*/
+#sidebar .sidebar-header strong {
+  display: none;
+}
+#sidebar.active .sidebar-header h3 {
+  display: none;
+}
+#sidebar.active .sidebar-header strong {
+  display: block;
+}
+
+#sidebar ul li a {
+  text-align: left;
+}
+
+#sidebar.active ul li a {
+  padding: 20px 10px;
+  text-align: center;
+  font-size: 0.85em;
+}
+
+#sidebar.active ul li a i {
+  margin-right: 0;
+  display: block;
+  font-size: 1.8em;
+  margin-bottom: 5px;
+}
+
+/* Same dropdown links padding*/
+#sidebar.active ul ul a {
+  padding: 10px !important;
+}
+
+/* Changing the arrow position to bottom center position, 
+ translateX(50%) works with right: 50% 
+ to accurately  center the arrow */
+#sidebar.active .dropdown-toggle::after {
+  top: auto;
+  bottom: 10px;
+  right: 50%;
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  transform: translateX(50%);
+}

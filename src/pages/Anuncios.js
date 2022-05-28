@@ -13,6 +13,8 @@ import Form from "react-bootstrap/Form";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from "../components/CirculoCarga";
+import Sidebar from '../components/Sidebar';
+import Header from '../components/Header';
 
 
 
@@ -28,6 +30,7 @@ export default function Anuncios() {
   
   const [validated, setValidated] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [permissions, setPermissions] = useState({});
 
 
 
@@ -54,6 +57,23 @@ export default function Anuncios() {
     return result;
   }
 
+    async function getPermissions(idRol) {
+    const query = new Parse.Query('RolePermissions');
+    query.equalTo('objectId', idRol);
+    console.log("obteniendo permisos...");
+    const permisosQuery = await query.find();
+    console.log(permisosQuery);
+   
+    const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
+      "Raqueta": permisosQuery[0].get("Raqueta"),
+      "Salones_gym": permisosQuery[0].get("Salones_gym"),
+      "Anuncios": permisosQuery[0].get("Anuncios"),
+      "Gestion": permisosQuery[0].get("Gestion"),
+      "Alberca": permisosQuery[0].get("Alberca")}
+    
+    return permissionsJson;
+  }
+
   useEffect(async () => {
     async function checkUser() {
       const currentUser = await Parse.User.currentAsync();
@@ -69,8 +89,12 @@ export default function Anuncios() {
         );
         history.push("/");
       }
- 
+      const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
+      return(permissionsJson);
     }
+    
+    const permissionsJson = await checkUser();
+    setPermissions(permissionsJson);
 
     checkUser();
 
@@ -85,6 +109,12 @@ export default function Anuncios() {
     }
   }, []);
 
+    console.log(permissions);
+
+    if (permissions.Anuncios === false)  {
+      alert("No tienes acceso a esta página. Para más ayuda contacta con tu administrador.");
+      history.push('/home');
+    };
   // return a Spinner when loading is true
   if (loading)
     return (
@@ -147,30 +177,21 @@ export default function Anuncios() {
   const listItems = anuncios.map((anuncio) => (
     <Col >
       <Card
-        className=" text-white"
-        style={{
-          width: "100%",
-          height: "32rem",
-          borderRadius: "5%"
-          , "background-color": "#2B4066"
-        }}
+        className="card-container top-10 start-50 translate-middle"
       > 
       <div class ="d-flex justify-content-center">    
       
-      <Card.Img variant="top" src={`${anuncio[2]}`} style={{borderRadius:"5%",  "maxHeight": "27rem" , "maxWidth":"80%"  }} />
+      <Card.Img className= "card-img card-anouncements" variant="top" src={`${anuncio[2]}`} />
       </div>
- 
-      
-         <Card.Footer className="d-flex justify-content-between mt-auto">  
-            <h5> {anuncio[3]} </h5> 
+      <Card.ImgOverlay>
+         <Card.Text className="d-flex justify-content-between mt-auto">  
+            <h5 className= "card-title-anouncement"> {anuncio[3]} </h5> 
             <Button variant="primary" class="btn-trash" className="btn-campanario" onClick= {() => {  confirmDelete(anuncio[4]);}}  >
               <ion-icon name="trash-outline" />
             </Button>  
             
-          </Card.Footer>
-
-
-        
+          </Card.Text>
+          </Card.ImgOverlay>
       </Card>
     </Col>
   ));
@@ -270,9 +291,8 @@ export default function Anuncios() {
 
   return (
     <div className="App">
-      <header className="app-header">
-        <h2 className="spacing"> Anuncios </h2>
-      </header>
+      <Sidebar/>
+      <Header processName={"Anuncios"}/>
   
       <div className="posts-container"></div>
 
@@ -301,17 +321,16 @@ export default function Anuncios() {
         <Row xs={1} s={2} md={3} className="g-4">
           <Col>
             <Card
-              className=" d-flex text-align-center justify-content-md-center"
-              style={{ width: "100%", height: "32rem", borderRadius: "5%" }}
+              className="card-img top-50 start-50 translate-middle "
               onClick={handleShow}
             >
-              <Card.Title className="text-center">
-                {" "}
+              <Card.Title className="text-center card-title">
+
                 <br /> Agregar un anuncio
 
               </Card.Title>
               <div className="d-flex">
-                <ion-icon name="add-circle-outline" class="icon-plus"  style={{ width: "100%", height: "100%" }}></ion-icon>
+                <ion-icon name="add-circle-outline" class="icon-plus" ></ion-icon>
                 </div>
 
             
