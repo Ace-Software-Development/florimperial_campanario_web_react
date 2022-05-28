@@ -10,6 +10,7 @@ import Anuncios from './pages/Anuncios'
 import DetalleAnun from './pages/DetalleAnun'
 import SalidasGolf from './pages/Golf/SalidasGolf'
 import PasswordRecovery from './pages/PasswordRecovery';
+import GestionSocios from './pages/GestionSocios';
 import Sidebar from './components/Sidebar';
 
 export default function App() {
@@ -34,16 +35,15 @@ export default function App() {
           <Route path="/anuncios">
             <Anuncios />
           </Route>
+          <Route path="/gestion-de-socios">
+            <GestionSocios />
+          </Route>
           <Route path="/recovery">
             <PasswordRecovery  />
           </Route>
           <Route path="/">
             <Auth />
           </Route>
-
-         
-
-
         </Switch>
     </Router>
   );

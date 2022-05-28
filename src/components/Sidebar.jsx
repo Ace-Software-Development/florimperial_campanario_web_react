@@ -34,15 +34,15 @@ function Sidebar(){
                 Inicio
             </NavText>
         </NavItem>
-        
-        {/* <NavItem eventKey="socios">
+         
+         <NavItem eventKey="gestion-de-socios">
             <NavIcon>
                 <ion-icon name="people" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
-                Socios
+                Gestión de socios
             </NavText>
-        </NavItem> */}
+        </NavItem>
         
         <NavItem eventKey="anuncios">
             <NavIcon>
