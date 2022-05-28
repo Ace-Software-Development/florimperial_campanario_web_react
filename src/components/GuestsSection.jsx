@@ -58,9 +58,9 @@ export default function GuestsSection(props) {
                 guestsSet.add(j.id);
             }
         }
-        console.log(i.username.toLowerCase(), guest.nativeEvent.data);
+
         if(!guestsSet.has(i.id)){
-            return i.username.toLowerCase().includes(guest.nativeEvent.data.toLowerCase());
+            return i.username.toLowerCase().includes(guest.toLowerCase());
         }else{
             return false;
         }
@@ -96,7 +96,7 @@ export default function GuestsSection(props) {
                     type="text"
                     placeholder={'Escribe el nombre del invitado'}
                     value={guest}
-                    onChange={text => setGuest(text)}
+                    onChange={(text) => setGuest(text.target.value)}
                 />
                 <div onClick={() => handleAddGuests()}>
                     <div>

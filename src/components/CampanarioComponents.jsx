@@ -13,7 +13,8 @@ export function Guests(props) {
                 <p>{props.text}</p>
             </div>
 			<div  
-				onPress={() => deleteGuest(props.index)}>
+				onClick={() => deleteGuest(props.index)}>
+					<p>-</p>
 			</div>
         </div>
     )
