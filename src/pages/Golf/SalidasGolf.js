@@ -12,7 +12,7 @@ import {getAllGolfAppointmentSlots} from '../../utils/client';
 export default function SalidasGolf() {
     const [appointments, setAppointments] = useState([]);
     const [newSlotStart, setNewSlotStart] = useState("");
-    const [editAppointmentId, setEditAppointmentId] = useState("");
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -30,6 +30,7 @@ export default function SalidasGolf() {
 			} else {
 				title = appointments[i].get("user").get("username");
 			}
+            console.log(appointments[i].get('fechaInicio'))
 			resultados.push({
 				'id': appointments[i].id,
 				'title': title,
@@ -53,7 +54,8 @@ export default function SalidasGolf() {
     }
 
     const editAppointment = (eventClick) => {
-        setEditAppointmentId(eventClick.event._def.publicId);
+        const id = eventClick.event._def.publicId;
+        setSelectedAppointment(appointments.filter(row => row.id == id)[0]);
         setOpenEdit(true);
     }
 
@@ -99,34 +101,10 @@ export default function SalidasGolf() {
         return(
             <div>
                 <script src='fullcalendar/lang/es.js'></script>
-                <FullCalendar
-                    locale={esLocale}
-                    dateClick={addAppointmentSlot}
-                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                    views={{
-                        customMonth : {
-                            buttonText : 'Mes'
-                        },
-                        customWeek : {
-                            buttonText : 'Semana'
-                        },
-                        customDay : {
-                            buttonText : 'Día'
-                        }
-                    }}
-                    headerToolbar={{
-                        left: 'today prev,next',
-                        center: 'title',
-                        right: 'dayGridMonth,dayGridWeek,timeGridDay'
-                    }}
-                    initialView='dayGridMonth'
-                    events={appointments}
-                    eventClick={editAppointment}
-                    />
                 <EditGolfAppointmentSlot 
                     open={openEdit} 
                     onClose={setOpenEdit}
-                    appointmentId={editAppointmentId}
+                    appointmentData={selectedAppointment}
                     />
             </div>
         );
