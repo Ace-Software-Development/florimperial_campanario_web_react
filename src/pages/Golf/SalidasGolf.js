@@ -22,7 +22,6 @@ export default function SalidasGolf() {
         const appointments = await getAllGolfAppointmentSlots();
         const resultados = [];
 		appointments.forEach( appointment => {
-            console.log(appointment.get("fechaInicio"));
 			resultados.push({
 				'id': appointment.id,
 				'title': appointment.get("estatus") == 1 ? 'Disponible' : appointment.get("user").get("username"),

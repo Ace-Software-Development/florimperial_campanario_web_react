@@ -7,12 +7,14 @@ import { useForm } from 'react-hook-form';
 import "react-datetime/css/react-datetime.css";
 import { getReservationGolf } from '../../utils/client';
 import { Button } from '@mui/material';
+import GuestsSection from '../../components/GuestsSection';
 
 export default function EditGolfAppointmentSlot(props) {
     const [isLoading, setLoading] = useState(true);
     const [appointment, setAppointment] = useState(props.appointmentData);
-    const [holeOneChecked, setHoleOneChecked] = useState(false);
+    const [maxGuests, setMaxGuests] = useState(appointment.maximoJugadores);
     const { register, handleSubmit } = useForm();
+    const [guests, setGuests] = useState([]);
     const [golfAppointment, setGolfAppointment] = useState({
                     id: null,
                     reservationId: null,
@@ -21,7 +23,6 @@ export default function EditGolfAppointmentSlot(props) {
                 });
 
     useEffect(async () => {
-        console.log("componentDidMount", appointment);
         try {
             const appointment = await getReservationGolf(props.appointmentData.id);
             if (appointment){
@@ -120,8 +121,8 @@ export default function EditGolfAppointmentSlot(props) {
                                         type="number"
                                         min="1"
                                         max="5"
-                                        defaultValue={appointment.maximoJugadores}
-                                        //onChange={newMax => changeMaxPlayers(newMax)}
+                                        defaultValue={maxGuests}
+                                        onChange={newMax => setMaxGuests(newMax)}
                                     />
                                 </td>
                             </tr>
@@ -164,6 +165,8 @@ export default function EditGolfAppointmentSlot(props) {
                             </tr>
                         </tbody>
                     </table>
+
+                    <GuestsSection maxGuests={maxGuests} guests={guests} setGuests={setGuests} />
 
                     <DialogActions>
                         <Button onClick={handleClose}>Cancelar</Button>

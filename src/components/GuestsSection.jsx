@@ -4,7 +4,7 @@ import { Guests } from './CampanarioComponents';
 
 export default function GuestsSection(props) {
     //Invitados
-	const [guest, setGuest] = useState();
+	const [guest, setGuest] = useState("");
     const [partnersList, setPartnersList] = useState([]);
     const maxGuests = props.maxGuests;
 	var pressed = 0;
@@ -22,7 +22,6 @@ export default function GuestsSection(props) {
 
     /* Se agregan invitado a la lista unicamente si no se ha alcanzado el máximo de invitados */
     const handleAddGuests = () => {
-		Keyboard.dismiss();
         if(props.guests.length < maxGuests && guest != null){
             let guestDic = {id: "", username: guest}
             props.setGuests([...props.guests, guestDic]);
@@ -30,15 +29,11 @@ export default function GuestsSection(props) {
         }else if(guest == null){
 			pressed++;
 			if(pressed > 5){
-				Alert.alert('No se ha introducido ningún nombre', 'Escriba el nombre del invitado', [
-					{text: 'Aceptar'}
-				])
+				window.alert('No se ha introducido ningún nombre')
 				pressed = 0;
 			}
 		}else{
-			Alert.alert('Máximo alcanzado', 'Ya no se pueden agregar mas invitados', [
-				{text: 'Aceptar'}
-			])
+			window.alert('Ya no se pueden agregar mas invitados')
         }
     }
 
@@ -49,7 +44,7 @@ export default function GuestsSection(props) {
             props.setGuests([...props.guests, {id: index.id, username: index.username}]);
             setGuest(null);
         }else{
-			Alert.alert('Máximo alcanzado', 'Ya no se pueden agregar mas invitados', [
+			window.alert('Ya no se pueden agregar mas invitados', [
 				{text: 'Aceptar'}
 			])
         }
@@ -63,9 +58,9 @@ export default function GuestsSection(props) {
                 guestsSet.add(j.id);
             }
         }
-
+        console.log(i.username.toLowerCase(), guest.nativeEvent.data);
         if(!guestsSet.has(i.id)){
-            return i.username.toLowerCase().includes(guest.toLowerCase());
+            return i.username.toLowerCase().includes(guest.nativeEvent.data.toLowerCase());
         }else{
             return false;
         }
@@ -86,7 +81,7 @@ export default function GuestsSection(props) {
                                 return (
                                         <div
                                             key={index.id}
-                                            onPress={() => handleAddPartners(index)}>
+                                            onClick={() => handleAddPartners(index)}>
                                                 <p>{index.username}</p>
                                         </div>
                                 )
@@ -101,9 +96,9 @@ export default function GuestsSection(props) {
                     type="text"
                     placeholder={'Escribe el nombre del invitado'}
                     value={guest}
-                    onchange={text => setGuest(text)}
+                    onChange={text => setGuest(text)}
                 />
-                <div onPress={() => handleAddGuests()}>
+                <div onClick={() => handleAddGuests()}>
                     <div>
                         <p>+</p>
                     </div>
