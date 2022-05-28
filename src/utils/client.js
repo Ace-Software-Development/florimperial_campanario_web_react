@@ -44,3 +44,19 @@ export async function getReservationGolf(appointmentId) {
 		console.log(`Ha ocurrido un error ${ error }`);
 	}
 }
+
+// General API calls
+export async function getAllActiveUsers(){
+	// Get current user loged in
+	const userObj = await Parse.User.currentAsync();
+
+	// Query all Users
+	const userQuery = new Parse.Query(USER_MODEL);
+	userQuery.equalTo('isAdmin', false);
+	userQuery.equalTo('active', true);
+	userQuery.notEqualTo('objectId', userObj.id);
+	userQuery.descending('username');
+
+	let data = await userQuery.find();
+	return data;
+}
