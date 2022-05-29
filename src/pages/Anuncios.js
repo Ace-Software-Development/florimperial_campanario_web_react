@@ -15,6 +15,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from "../components/CirculoCarga";
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
+import {getPermissions} from '../utils/client'
 
 
 
@@ -291,7 +292,7 @@ export default function Anuncios() {
 
   return (
     <div className="App">
-      <Sidebar/>
+      <Sidebar permissions = {permissions}/>
       <Header processName={"Anuncios"}/>
   
       <div className="posts-container"></div>
