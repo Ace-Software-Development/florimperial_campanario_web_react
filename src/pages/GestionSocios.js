@@ -105,7 +105,7 @@ export default function GestionSocios() {
     <div onClick={(e) => e.stopPropagation()}>
         <Modal size="lg" show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Crear anuncio</Modal.Title>
+            <Modal.Title>Registrar socios en el sistema</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 

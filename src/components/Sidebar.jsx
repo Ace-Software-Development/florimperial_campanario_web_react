@@ -1,6 +1,8 @@
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import '../css/Dashboard.css';
+import Parse from "parse";
+
 import {
   BrowserRouter as Router,
   Switch,
