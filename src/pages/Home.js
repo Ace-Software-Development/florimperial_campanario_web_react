@@ -17,7 +17,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
 
-
   useEffect(async() => {
     async function checkUser() {
       const currentUser = await Parse.User.currentAsync();

@@ -11,7 +11,7 @@ import DetalleAnun from './pages/DetalleAnun'
 import SalidasGolf from './pages/Golf/SalidasGolf'
 import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
-import Sidebar from './components/Sidebar';
+import LogOut from './pages/CerrarSesion';
 
 export default function App() {
   return (
@@ -40,6 +40,9 @@ export default function App() {
           </Route>
           <Route path="/recovery">
             <PasswordRecovery  />
+          </Route>
+          <Route path="/cerrar-sesion">
+            <LogOut  />
           </Route>
           <Route path="/">
             <Auth />

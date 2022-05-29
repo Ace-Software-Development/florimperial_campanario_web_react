@@ -17,18 +17,13 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import {getPermissions} from '../utils/client'
 
-
-
-
 export default function Anuncios() {
   const history = useHistory();
   const [anuncios, setAnuncios] = useState(null);
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  
+  const handleShow = () => setShow(true);  
   const [validated, setValidated] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [permissions, setPermissions] = useState({});
@@ -58,22 +53,6 @@ export default function Anuncios() {
     return result;
   }
 
-    async function getPermissions(idRol) {
-    const query = new Parse.Query('RolePermissions');
-    query.equalTo('objectId', idRol);
-    console.log("obteniendo permisos...");
-    const permisosQuery = await query.find();
-    console.log(permisosQuery);
-   
-    const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
-      "Raqueta": permisosQuery[0].get("Raqueta"),
-      "Salones_gym": permisosQuery[0].get("Salones_gym"),
-      "Anuncios": permisosQuery[0].get("Anuncios"),
-      "Gestion": permisosQuery[0].get("Gestion"),
-      "Alberca": permisosQuery[0].get("Alberca")}
-    
-    return permissionsJson;
-  }
 
   useEffect(async () => {
     async function checkUser() {
@@ -84,7 +63,7 @@ export default function Anuncios() {
         );  
         history.push("/");
       }
-      else if (currentUser.attributes.isAdmin == false) {
+      else if (currentUser.attributes.isAdmin === false) {
         alert(
           "Necesitas ser administrador para acceder al sistema."
         );
@@ -122,22 +101,7 @@ export default function Anuncios() {
     <CirculoCarga/>
     );
 
-  function getBase64(file) {
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      console.log(reader.result);
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-    };
-  }
-
   const confirmDelete = (ObjId) => {
-    
-
-   
-
     confirmAlert({
       title: 'Eliminar anuncio',
       message: '¿Estas seguro que deseas eliminar este anuncio?',
@@ -205,18 +169,13 @@ export default function Anuncios() {
         event.preventDefault();
         event.stopPropagation();
         setValidated(true);
-      
       }
       
       else {
       const Anuncio = Parse.Object.extend("Anuncio");
-      const fileUploadControl = document.getElementById("formImg").files[0];
-  
-      console.log("imprimiendo register:", fileUploadControl);
-      const img64 = getBase64(fileUploadControl); // prints the base64 string<
+      const fileUploadControl = document.getElementById("formImg").files[0];  
       const img2 = new Parse.File(`img-anuncio`, fileUploadControl);
       setButtonDisabled(true); // <-- disable the button here
-
       img2.save().then(
         function () {
           // The file has been saved to Parse.
@@ -230,7 +189,7 @@ export default function Anuncios() {
             .then(
               (newAnuncio) => {
                 // Execute any logic that should take place after the object is saved.
-                alert("New object created with objectId: " + newAnuncio.id);
+                alert("Se ha creado un nuevo anuncio");
                  window.location.reload();
 
               },
@@ -240,7 +199,7 @@ export default function Anuncios() {
                 setButtonDisabled(false); // <-- disable the button here
 
                 alert(
-                  "Failed to create new object, with error code: " + error.message
+                  "Ha ocurrido un error al crear el anuncio:  " + error.message
                 );
                 console.log(error.message);
               }
@@ -251,7 +210,7 @@ export default function Anuncios() {
         },
         function (error) {
           // The file either could not be read, or could not be saved to Parse.
-          alert("the parse file could not be created, with error: ", error);
+          alert("No se pudo crear el anuncio. El error es: ", error);
         }
       );
      
@@ -265,9 +224,6 @@ export default function Anuncios() {
     return (
       <Form noValidate validated={validated} onSubmit={handleSubmit}   id = "createAnnouncementForm">
         <Row className="mb-3">
-       
-
-         
           <Form.Group as={Col} md="12" controlId="formImg">
             <Form.Label >Agregar una imagen para el anuncio</Form.Label>
             <Form.Control 

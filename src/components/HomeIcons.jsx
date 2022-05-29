@@ -1,11 +1,5 @@
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import '../css/Dashboard.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import React from "react"
 import Row from "react-bootstrap/Row";

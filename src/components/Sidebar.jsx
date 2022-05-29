@@ -1,12 +1,10 @@
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
+import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import '../css/Dashboard.css';
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
 } from "react-router-dom";
-
 import React from "react"
 
 function Sidebar(permissions){
