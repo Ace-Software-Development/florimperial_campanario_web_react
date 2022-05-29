@@ -36,16 +36,9 @@ function HomeIcons(permissions){
 
     return(
     <div className="d-flex">
-        <Container>
+        <Container className="home-icons-container">
             <Row xs={1} s={2} md={3} className="g-4">
-                <Col>
-                    <Card className="bg-dark text-white" style={{width: "100%",display: `${anuncios}` }}>
-                        <Card.Img src="holder.js/100px270" alt="Card image" />
-                        <Card.ImgOverlay>
-                            <Card.Title>Anuncios</Card.Title>
-                        </Card.ImgOverlay>
-                    </Card> 
-                </Col>
+
                 <Col>
                     <Card className="bg-dark text-white" style={{width: "100%",display: `${golf}`}}>
                         <Card.Img src="holder.js/100px270" alt="Card image" />
@@ -103,14 +96,7 @@ function HomeIcons(permissions){
                     </Card> 
                 </Col>
             </Row>
-
-
       </Container>
-
-           
-           
-          
-
         </div>
     )
 }

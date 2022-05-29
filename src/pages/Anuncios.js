@@ -181,7 +181,7 @@ export default function Anuncios() {
       > 
       <div class ="d-flex justify-content-center">    
       
-      <Card.Img className= "card-img card-anouncements" variant="top" src={`${anuncio[2]}`} />
+      <Card.Img className= "card-imgs card-anouncements" variant="top" src={`${anuncio[2]}`} />
       </div>
       <Card.ImgOverlay>
          <Card.Text className="d-flex justify-content-between mt-auto">  
@@ -321,7 +321,7 @@ export default function Anuncios() {
         <Row xs={1} s={2} md={3} className="g-4">
           <Col>
             <Card
-              className="card-img top-50 start-50 translate-middle "
+              className="card-imgs top-50 start-50 translate-middle "
               onClick={handleShow}
             >
               <Card.Title className="text-center card-title">

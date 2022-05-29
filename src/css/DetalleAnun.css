@@ -4,20 +4,6 @@
   }
   a.menu_links { cursor: pointer; }
   
-  header.app-header{
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 100px;
-    text-align:left;
-    color: white;
-    font-family: 'Lato', sans-serif;
-  }
-  
-  .spacing{
-    margin-left: 75px;
-  }
-  
   .logo{
     width: 400px; 
   }

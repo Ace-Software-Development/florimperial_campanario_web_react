@@ -54,10 +54,11 @@ export default function PasswordRecovery() {
               <br/><br/>
               <Card.Text>Por favor, ingrese su correo electrónico. Recibirá una liga para recuperar su contraseña</Card.Text>
               <br/>
-              <Form id = "recoverPassword"  onSubmit={handleSubmit}   >
+              <Form id = "recoverPassword"  onSubmit={handleSubmit} >
                 <Row className="mb-3">
                   <Form.Group as={Col} md="12">
-                    <Form.Control 
+                    <Form.Control
+                    className="form-recovery" 
                     type="email" 
                     id = "email"
                     required 

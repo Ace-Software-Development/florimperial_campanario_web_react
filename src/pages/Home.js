@@ -67,11 +67,9 @@ export default function Home() {
       <Sidebar permissions = {permissions} />
       <Header processName={"Inicio"}/>
 
-      <div style ={{"margin-left" :"100px" }}>
+      <div className="home-cards">
         <HomeIcons permissions = {permissions}  />
       </div>
-      
-      
     </div>
   );
 }
