@@ -5,18 +5,17 @@
   a.menu_links { cursor: pointer; }
   
   header.app-header{
-    background-color: #2B4066;
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     padding: 20px 100px;
-    justify-content: center;
-    align-items: center;
+    text-align:left;
     color: white;
     font-family: 'Lato', sans-serif;
   }
   
   .spacing{
-    margin: 10px;
+    margin-left: 75px;
   }
   
   .logo{
@@ -106,6 +105,3 @@
     
   }
 
-  .btn-trash{
-     width: 30em;
-  }
