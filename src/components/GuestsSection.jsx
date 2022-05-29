@@ -70,8 +70,7 @@ export default function GuestsSection(props) {
         /* Agrega los invitados */
         <div>
             <h3>Agrega más socios o invitados</h3>
-            <p>Máximo de invitados: {maxGuests}</p>
-
+            
             {/* Partners list */}
             {guest ? (
                 <div>

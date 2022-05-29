@@ -6,8 +6,7 @@ import {useParseQuery} from '@parse/react';
 import ParseObject from 'parse/lib/browser/ParseObject';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
+import Screen from '../components/Screen';
 import SidenavOverlay from '../components/SidenavOverlay';
 
 export default function Home() {
@@ -28,7 +27,6 @@ export default function Home() {
     const titleArray = new Array();
     const contentArray = new Array();
     for (var i = 0; i < anuncios.length; i++){
-    //  console.log(anuncios[i].get("titulo"));
       titleArray.push(anuncios[i].get("titulo"));
       contentArray.push(anuncios[i].get("contenido"));
     }
@@ -42,9 +40,7 @@ export default function Home() {
   async function getPermissions(idRol) {
     const query = new Parse.Query('RolePermissions');
     query.equalTo('objectId', idRol);
-    console.log("obteniendo permisos...");
     const permisosQuery = await query.find();
-    console.log(permisosQuery);
    
     const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
       "Raqueta": permisosQuery[0].get("Raqueta"),
@@ -91,7 +87,6 @@ export default function Home() {
     }
   }, []);
 
-  console.log(permissions);
   // if (permissions.Alberca === true)  {
   //   history.push('/');
   // };
@@ -113,8 +108,6 @@ export default function Home() {
   );
 */
 
-//console.log(anuncios[0]);
-  
   const handleSubmitPost = (e) => {
     e.preventDefault();
     const Post = Parse.Object.extend("Post");
@@ -152,15 +145,19 @@ export default function Home() {
 );
 
   return (
-    <div className="App">
-      <Sidebar/>
-      <Header processName={"Inicio"}/>
-      
-      <div className="posts-container">
-        {listItems}
+    <Screen title="Home" className="App">
+      <h1 className="title-1">Header 1</h1>
+      <h2 className="title-2">Header 2</h2>
+      <h3 className="subtitle-1">Subtitle 1</h3>
+
+      <div className='card-bg' style={{height: 400, width:400, marginLeft: '10%'}}>
+      <h4 className='subtitle-2'>Subtitle 2</h4>
+      <p className="text">Card text.....</p>
+      <input type="text" className='input input-text'></input>
+      <button className="primary-btn">Botón Principal</button>
+      <button className="secondary-btn">Botón Secundario</button>
+
       </div>
-      <div>
-      </div>
-    </div>
+    </Screen>
   );
 }

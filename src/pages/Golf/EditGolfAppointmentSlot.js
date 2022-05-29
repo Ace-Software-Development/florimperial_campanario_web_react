@@ -3,7 +3,6 @@ import Dialog from '@mui/material/Dialog';
 import Datetime from 'react-datetime';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent, DialogActions } from '@mui/material';
-import { useForm } from 'react-hook-form';
 import "react-datetime/css/react-datetime.css";
 import { getReservationGolf } from '../../utils/client';
 import { Button } from '@mui/material';
@@ -13,7 +12,6 @@ export default function EditGolfAppointmentSlot(props) {
     const [isLoading, setLoading] = useState(true);
     const [appointment, setAppointment] = useState(props.appointmentData);
     const [maxGuests, setMaxGuests] = useState(appointment.maximoJugadores);
-    const { register, handleSubmit } = useForm();
     const [guests, setGuests] = useState([]);
     const [golfAppointment, setGolfAppointment] = useState({
                     id: null,
@@ -45,31 +43,15 @@ export default function EditGolfAppointmentSlot(props) {
         props.onClose(false);
     }
     
-    // 4. Ya que este todo guardado, en editAppointmentSlot() vamos a settear las variables del objeto de ReservacionGolf, Reservacion, ReservacionInvitado
-    async function editAppointmentSlot(data) {
-        // 5. Guardar cambios de ReservacionGolf
-
-        // EXTRA: Checar pases. Una idea es hacer una tabla de pases(fecha, pointer a user, pointer a invitado, usado)
-            // Con la tabla ya solamente tenemos que consultar si hay un pase para cierto invitado en cierto dia. No se asigna el pase para actividad sino al dia
-
-        // Ejemplo de funciones anidadas: CreateGolfAppointmentSlot.js
-        // BUGS: Desde la vista de mes no se crea bien la reservacion, desde la de dia si. Es por la fecha. Igual en ambas la fecha aparece diferente en el dialogo. 
+    function appointmentOnChange(table, key, data) {
+        
     }
-    
-    // if (user.get("username") == undefined)
-    // return (
-    //     <Dialog open={props.open} onClose={handleClose} >
-    //     <DialogTitle>Editar Espacio de Reservación</DialogTitle>
-    //     <DialogContent>     
-    //         <CirculoCarga/>
-    //     </DialogContent>
-    // </Dialog>
-    // );
+
     return(
         <Dialog open={props.open} onClose={handleClose}>
             <DialogTitle>Editar Espacio de Reservación</DialogTitle>
-            <DialogContent> 
-                <form onSubmit={handleSubmit(editAppointmentSlot)}>
+            <DialogContent>
+                <form>
                     <table>
                         <tbody>
 
@@ -79,9 +61,9 @@ export default function EditGolfAppointmentSlot(props) {
                                 </td>
                                 <td>
                                     <Datetime 
-                                        value={appointment.start}
+                                        initialValue={appointment.start}
                                         id={`${appointment.id}-datetime`}
-                                        //onChange={date => setStartingDate(date)} 
+                                        onChange={date => appointmentOnChange('reservacion', 'fechaInicio', new Date(date.toISOString()))} 
                                     />
                                 </td>
                             </tr>
@@ -95,9 +77,10 @@ export default function EditGolfAppointmentSlot(props) {
                                             type="radio"
                                             id={`${appointment.id}-hoyo1`}
                                             value="Hoyo 1"
+                                            name="hoyo"
                                             defaultChecked={appointment.hole == "Hoyo 1"}
-                                            //onChange={hole => changeStartingHole('Hoyo 1', true)}
-                                            />
+                                            onChange={event => appointmentOnChange('reservacion', 'sitio', event.target.value)}
+                                        />
                                         <label htmlFor={`${appointment.id}-hoyo1`}>Hoyo 1</label>
                                     </div>
                                     <div>
@@ -105,8 +88,9 @@ export default function EditGolfAppointmentSlot(props) {
                                             type="radio"
                                             id={`${appointment.id}-hoyo10`}
                                             value="Hoyo 10"
+                                            name="hoyo"
                                             defaultChecked={appointment.hole == "Hoyo 10"}
-                                            //onChange={hole => changeStartingHole('Hoyo 10', true)}
+                                            onChange={event => appointmentOnChange('reservacion', 'sitio', event.target.value)} 
                                             />
                                         <label htmlFor={`${appointment.id}-hoyo10`}>Hoyo 10</label>
                                     </div>
@@ -122,7 +106,7 @@ export default function EditGolfAppointmentSlot(props) {
                                         min="1"
                                         max="5"
                                         defaultValue={maxGuests}
-                                        onChange={newMax => setMaxGuests(newMax)}
+                                        onChange={event => appointmentOnChange('reservacion', 'maximoJugadores', event.target.value)} 
                                     />
                                 </td>
                             </tr>
@@ -134,6 +118,7 @@ export default function EditGolfAppointmentSlot(props) {
                                     <input
                                         type="text"
                                         defaultValue={appointment.user ? appointment.user.name : ''}
+                                        onChange={event => appointmentOnChange('recervacion', 'user', event.target.value)}
                                     />
                                 </td>
                             </tr>
@@ -145,9 +130,8 @@ export default function EditGolfAppointmentSlot(props) {
                                     <input
                                         type="number"
                                         min="0"
-                                        max="5"
                                         defaultValue={golfAppointment.carritosReservados}
-                                        //onChange={newKarts => changeReserveredKarts(newKarts)}
+                                        onChange={event => appointmentOnChange('reservacionGolf','carritosReservados', event.target.value)} 
                                     />
                                 </td>
                             </tr>
@@ -156,7 +140,7 @@ export default function EditGolfAppointmentSlot(props) {
                                     <p>Estatus</p>
                                 </td>
                                 <td>
-                                    <select defaultValue={appointment.estatus}>
+                                    <select defaultValue={appointment.estatus} onChange={event => appointmentOnChange('reservacion', 'estatus', event.target.value)}>
                                         <option value={1}>Disponible</option>
                                         <option value={2}>Reservado</option>
                                         <option value={3}>Reservado permanente</option>

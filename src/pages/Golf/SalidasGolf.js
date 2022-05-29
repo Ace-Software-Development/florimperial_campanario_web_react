@@ -7,6 +7,7 @@ import CreateGolfAppointmentSlot from './CreateGolfAppointmentSlot';
 import EditGolfAppointmentSlot from './EditGolfAppointmentSlot';
 import esLocale from '@fullcalendar/core/locales/es';
 import CirculoCarga from "../../components/CirculoCarga";
+import Screen from "../../components/Screen";
 import {getAllGolfAppointmentSlots} from '../../utils/client';
 
 export default function SalidasGolf() {
@@ -109,7 +110,7 @@ export default function SalidasGolf() {
     }
 
     return (
-        <div>
+        <Screen title='Reservaciones de Golf'>
             <FullCalendar
                 locale={esLocale}
                 dateClick={addAppointmentSlot}
@@ -134,6 +135,6 @@ export default function SalidasGolf() {
                 events={appointments}
                 eventClick={editAppointment}
                 />
-        </div>
+        </Screen>
     );
 }
