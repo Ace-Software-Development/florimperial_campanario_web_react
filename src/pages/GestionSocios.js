@@ -24,6 +24,9 @@ export default function GestionSocios() {
   const [permissions, setPermissions] = useState({});
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showHelp, setShowHelp] = useState(false);
+  const handleCloseHelp = () => setShowHelp(false);
+  const handleShowHelp = () => setShowHelp(true);
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -145,10 +148,28 @@ export default function GestionSocios() {
         </Modal>
       </div>
 
+      <div onClick={(e) => e.stopPropagation()}>
+        <Modal size="lg" show={showHelp} onHide={handleCloseHelp}>
+          <Modal.Header closeButton>
+            <Modal.Title>Ayuda</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          Contenido de aiuda aqui
+
+          </Modal.Body>
+          <Modal.Footer>
+            <Button className="btn-publicar" onClick={handleCloseHelp}>
+              Cerrar
+            </Button>
+           
+          </Modal.Footer>
+        </Modal>
+      </div>
+
       <Sidebar permissions = {permissions}/>
       <header className="app-header">
         <h1 className="spacing">Gestión de Socios
-        <button type="button" className= "btn-information">
+        <button type="button" className= "btn-information" onClick={handleShowHelp}>
           <ion-icon name="information-circle-outline" style={{ fontSize: '.5em' }}></ion-icon>
           </button></h1>
       </header>
