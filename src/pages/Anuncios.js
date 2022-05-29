@@ -189,7 +189,7 @@ export default function Anuncios() {
             .then(
               (newAnuncio) => {
                 // Execute any logic that should take place after the object is saved.
-                alert("New object created with objectId: " + newAnuncio.id);
+                alert("Se ha creado un nuevo anuncio");
                  window.location.reload();
 
               },
@@ -199,7 +199,7 @@ export default function Anuncios() {
                 setButtonDisabled(false); // <-- disable the button here
 
                 alert(
-                  "Failed to create new object, with error code: " + error.message
+                  "Ha ocurrido un error al crear el anuncio:  " + error.message
                 );
                 console.log(error.message);
               }
@@ -210,7 +210,7 @@ export default function Anuncios() {
         },
         function (error) {
           // The file either could not be read, or could not be saved to Parse.
-          alert("the parse file could not be created, with error: ", error);
+          alert("No se pudo crear el anuncio. El error es: ", error);
         }
       );
      
