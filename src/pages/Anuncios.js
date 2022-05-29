@@ -325,13 +325,13 @@ export default function Anuncios() {
               className="card-imgs top-50 start-50 translate-middle "
               onClick={handleShow}
             >
-              <Card.Title className="text-center card-title">
+              <Card.Title className="text-center card-title-anuncios">
 
                 <br /> Agregar un anuncio
 
               </Card.Title>
               <div className="d-flex">
-                <ion-icon name="add-circle-outline" class="icon-plus" ></ion-icon>
+                <ion-icon name="add-circle-outline" class="icon-plus-anuncios" ></ion-icon>
                 </div>
 
             

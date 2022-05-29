@@ -1,3 +1,4 @@
+import '../css/GestionSocios.css'
 import React from "react";
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import Sidebar from '../components/Sidebar';
@@ -124,20 +125,25 @@ export default function GestionSocios() {
       </div>
 
       <Sidebar permissions = {permissions}/>
-      <Header processName={"Gestión de socios"}/>
+      <header className="app-header">
+        <h1 className="spacing">Gestión de Socios
+        <button type="button" className= "btn-information">
+          <ion-icon name="information-circle-outline" style={{ fontSize: '.5em' }}></ion-icon>
+          </button></h1>
+      </header>
        <Container>
         <Row xs={1} s={2} md={3} className="g-5">
           <Col>
             <Card
               onClick={handleShow}
-                style={{ width: '18rem' }}
-              className="card-img top-50 start-50 translate-middle "
+              style={{ width: '82rem' }}
+              className="card-imgs cargar-datos top-50 start-50 translate-middle "
             >
               <Card.Title className="text-center card-title">
                 <br /> Cargar datos
               </Card.Title>
               <div className="d-flex">
-                <ion-icon name="add-circle-outline" class="icon-plus" ></ion-icon>
+                <ion-icon className="plus-icon-gestion" name="add-circle-outline" class="icon-plus" ></ion-icon>
                 </div>
                 <a href="#" class="stretched-link"></a>
             </Card>
