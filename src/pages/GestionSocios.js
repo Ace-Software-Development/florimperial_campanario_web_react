@@ -16,6 +16,7 @@ import {getPermissions} from '../utils/client'
 import { useHistory } from "react-router-dom";
 import Papa from "papaparse"
 
+
 export default function GestionSocios() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
@@ -87,6 +88,7 @@ export default function GestionSocios() {
       }
       else {
         //logica de submit a base de datos, revisar logica de anuncio para referencia
+        //.then( handleClose(); setValidated(true);)
       }
     };
     
@@ -130,7 +132,7 @@ export default function GestionSocios() {
             <Button className="btn-campanario" onClick={handleClose}>
               Cancelar
             </Button>
-            <Button type="submit" form="createAnnouncementForm" className="btn-publicar" disabled ={buttonDisabled}>
+            <Button type="submit" form="uploadCsv" className="btn-publicar" disabled ={buttonDisabled}>
               Registrar socios
             </Button>
           </Modal.Footer>
