@@ -2,31 +2,16 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Parse from "parse";
 import "../css/DetalleAnun.css";
-import { useParseQuery } from "@parse/react";
-import ParseObject from "parse/lib/browser/ParseObject";
-import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch
-} from "react-router-dom";
+import {  useParams} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import Spinner from "react-bootstrap/Spinner";
 import Form from "react-bootstrap/Form";
-import { useForm } from "react-hook-form";
 import InputGroup from "react-bootstrap/InputGroup";
-
-
-import Image from 'react-bootstrap/Image'
-
 
 export default function DetalleAnun() {
     // The <Route> that rendered this component has a
@@ -70,24 +55,6 @@ export default function DetalleAnun() {
         return result;
     }
 
-    const DeleteConfirmation = ({ showModal, hideModal, confirmModal, id, type, message }) => {
-        return (
-            <Modal show={showModal} onHide={hideModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Confirmar eliminación</Modal.Title>
-            </Modal.Header>
-            <Modal.Body><div className="alert alert-danger">{message}</div></Modal.Body>
-            <Modal.Footer>
-              <Button variant="default" onClick={hideModal}>
-                Cancelar
-              </Button>
-              <Button variant="danger" onClick={() => confirmModal(type, id) }>
-                Eliminar Anuncio
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        )
-    }
 
   useEffect(async () => {
     async function checkUser() {

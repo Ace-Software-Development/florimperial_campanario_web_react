@@ -11,7 +11,6 @@ export default function LogOut() {
         try {
           setLoading(true);
           Parse.User.logOut().then(() => {
-            const currentUser = Parse.User.current();
             history.push('/');
             window.location.reload();
           });        
