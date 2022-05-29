@@ -87,6 +87,11 @@ export default function GestionSocios() {
         setValidated(true);    
       }
       else {
+        console.log(csvData.length);
+        
+        for (let i = 0; i > csvData.length; i++){
+          
+        }
         //logica de submit a base de datos, revisar logica de anuncio para referencia
         //.then( handleClose(); setValidated(true);)
       }
@@ -95,7 +100,7 @@ export default function GestionSocios() {
     return (
       <Form noValidate validated={validated} onSubmit={handleSubmit}   id = "uploadCsv">
         <Row className="mb-3">   
-          <Form.Group as={Col} md="12" controlId="csvForm">
+          <Form.Group as={Col} md="12">
             <Form.Label >Sube aquí el archivo csv</Form.Label>
             <Form.Control 
             type="file" 
