@@ -17,16 +17,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
 
-  function handleParseError(err) {
-    switch (err.code) {
-      case Parse.Error.INVALID_SESSION_TOKEN:
-        Parse.User.logOut();
-        alert('Por favor, inicia sesión nuevamente.');
-        break;
-  
-    }
-  }
-
   useEffect(async() => {
     async function checkUser() {
       const currentUser = await Parse.User.currentAsync();

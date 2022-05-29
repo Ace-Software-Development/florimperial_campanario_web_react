@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
 import {getPermissions} from '../utils/client'
 import { useHistory } from "react-router-dom";
+import Papa from "papaparse"
 
 export default function GestionSocios() {
   const history = useHistory();
@@ -24,6 +25,7 @@ export default function GestionSocios() {
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [csvData, setCsvData] = useState(null);
 
   useEffect(async() => {
     async function checkUser() {
@@ -64,6 +66,17 @@ export default function GestionSocios() {
     }
   }, []);
 
+  const changeHandler = (event) => {
+    // Passing file data (event.target.files[0]) to parse using Papa.parse
+    Papa.parse(event.target.files[0], {
+      header: true,
+      skipEmptyLines: true,
+      complete: function (results) {
+        console.log(results.data);
+        setCsvData(results.data);
+      },
+    });
+  };
   function CsvForm() {
     const handleSubmit = (event) => {
       const form = event.currentTarget;
@@ -85,7 +98,8 @@ export default function GestionSocios() {
             <Form.Control 
             type="file" 
             id = "csvForm"
-            accept =".csv" 
+            accept =".csv"
+            onChange={changeHandler} 
             required />
             <Form.Control.Feedback type="invalid">
               Por favor sube aquí el archivo CSV con la información de los socios.
@@ -130,7 +144,7 @@ export default function GestionSocios() {
           <Col>
             <Card
               onClick={handleShow}
-                style={{ width: '18rem' }}
+                style={{ width: '18rem', height:'100%' }}
               className="card-img top-50 start-50 translate-middle "
             >
               <Card.Title className="text-center card-title">
