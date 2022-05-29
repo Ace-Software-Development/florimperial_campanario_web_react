@@ -9,7 +9,27 @@ import {
 
 import React from "react"
 
-function Sidebar(){
+function Sidebar(permissions){
+    let anuncios, golf, raqueta, salones_gym, gestion, alberca = "";
+    if(permissions.permissions.Anuncios === false){
+        anuncios = "none";
+    }
+    if(permissions.permissions.Raqueta === false){
+        raqueta = "none";
+    }
+    if(permissions.permissions.Salones_gym === false){
+        salones_gym = "none";
+    }
+    if(permissions.permissions.Golf === false){
+        golf = "none";
+    }
+    if(permissions.permissions.Gestion === false){
+        gestion = "none";
+    }
+    if(permissions.permissions.Alberca === false){
+        alberca = "none";
+    }
+
     return(
     <Router>
     <Route render={({ location, history }) => (
@@ -35,7 +55,7 @@ function Sidebar(){
             </NavText>
         </NavItem>
          
-         <NavItem eventKey="gestion-de-socios">
+         <NavItem eventKey="gestion-de-socios"  style={{display: `${gestion}`}} >
             <NavIcon>
                 <ion-icon name="people" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -44,16 +64,16 @@ function Sidebar(){
             </NavText>
         </NavItem>
         
-        <NavItem eventKey="anuncios">
+        <NavItem eventKey="anuncios" style={{display: `${anuncios}`}}>
             <NavIcon>
-                <ion-icon name="newspaper" style={{ fontSize: '1.25em' }}></ion-icon>
+                <ion-icon name="newspaper" style={{fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
                 Anuncios
             </NavText>
         </NavItem>
         
-        {/* <NavItem eventKey="sugerencias">
+         <NavItem eventKey="sugerencias">
             <NavIcon>
                 <ion-icon name="bulb" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -71,7 +91,7 @@ function Sidebar(){
             </NavText>
         </NavItem>
         
-        <NavItem eventKey="control-de-accesos">
+        <NavItem eventKey="control-de-accesos" style={{display: `${gestion}`}}>
             <NavIcon>
                 <ion-icon name="lock-closed" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -80,7 +100,7 @@ function Sidebar(){
             </NavText>
         </NavItem>
         
-        <NavItem eventKey="reglas">
+        <NavItem eventKey="reglas" style={{display: `${gestion}`}}>
             <NavIcon>
                 <ion-icon name="book" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -89,21 +109,21 @@ function Sidebar(){
             </NavText>
         </NavItem>
         
-        <NavItem eventKey="golf">
+        <NavItem eventKey="golf" style={{display: `${golf}`}}>
             <NavIcon>
                 <ion-icon name="golf" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
                 Golf
             </NavText>
-            <NavItem eventKey="golf/reservaciones">
+            <NavItem eventKey="golf/salidas">
                 <NavText>
                     Reservaciones
                 </NavText>
             </NavItem>
         </NavItem>
         
-        <NavItem eventKey="raqueta">
+        <NavItem eventKey="raqueta" style={{display: `${raqueta}`}}>
             <NavIcon>
                 <ion-icon name="tennisball" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -122,7 +142,7 @@ function Sidebar(){
             </NavItem>
         </NavItem>
         
-        <NavItem eventKey="gimnasio" style={{ fontSize: '1.25em' }}>
+        <NavItem eventKey="gimnasio" style={{display: `${salones_gym}`}}>
             <NavIcon>
                 <ion-icon name="barbell"></ion-icon>
             </NavIcon>
@@ -141,7 +161,7 @@ function Sidebar(){
             </NavItem>
         </NavItem>
         
-        <NavItem eventKey="Alberca">
+        <NavItem eventKey="Alberca" style={{display: `${alberca}`}}>
             <NavIcon>
                 <ion-icon name="water" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -153,7 +173,7 @@ function Sidebar(){
                     Reservaciones
                 </NavText>
             </NavItem>
-        </NavItem> */}
+        </NavItem> 
         <NavItem eventKey="cerrar-sesion">
             <NavIcon>
                 <ion-icon name="log-out" style={{ fontSize: '1.25em' }}></ion-icon>

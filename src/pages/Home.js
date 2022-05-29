@@ -9,17 +9,16 @@ import Button from 'react-bootstrap/Button';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import SidenavOverlay from '../components/SidenavOverlay';
+import {getPermissions} from '../utils/client'
+import CirculoCarga from "../components/CirculoCarga";
+
 
 export default function Home() {
   const history = useHistory();
   const [postText, setPostText] = useState('');
-
-
-
   const [anuncios, setAnuncios] = useState(null);
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
-
 
   async function getAnuncios() {
     const query = new Parse.Query('Anuncio');
@@ -38,25 +37,6 @@ export default function Home() {
     return result;
   }
 
-
-  async function getPermissions(idRol) {
-    const query = new Parse.Query('RolePermissions');
-    query.equalTo('objectId', idRol);
-    console.log("obteniendo permisos...");
-    const permisosQuery = await query.find();
-    console.log(permisosQuery);
-   
-    const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
-      "Raqueta": permisosQuery[0].get("Raqueta"),
-      "Salones_gym": permisosQuery[0].get("Salones_gym"),
-      "Anuncios": permisosQuery[0].get("Anuncios"),
-      "Gestion": permisosQuery[0].get("Gestion"),
-      "Alberca": permisosQuery[0].get("Alberca")}
-    
-    return permissionsJson;
-  }
-
-
   useEffect(async() => {
     async function checkUser() {
       const currentUser = await Parse.User.currentAsync();
@@ -72,8 +52,17 @@ export default function Home() {
         );
         history.push("/");
       }
-      const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-      return(permissionsJson);
+      try{
+        const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
+        return(permissionsJson);
+      }
+      catch(e){
+        const permissionsJson={unauthorized: true};
+        alert("Ha ocurrido un error al procesar tu petición. Por favor vuelve a intentarlo.");
+        history.push('/');
+        return(permissionsJson);
+      }
+    
     }
     
     const permissionsJson = await checkUser();
@@ -97,7 +86,7 @@ export default function Home() {
   // };
   // return a Spinner when loading is true
   if(loading) return (
-    <span>Cargando</span>
+    <span><CirculoCarga/></span>
   );
 /*
   // data will be null when fetch call fails
@@ -153,7 +142,7 @@ export default function Home() {
 
   return (
     <div className="App">
-      <Sidebar/>
+      <Sidebar permissions = {permissions} />
       <Header processName={"Inicio"}/>
       
       <div className="posts-container">
