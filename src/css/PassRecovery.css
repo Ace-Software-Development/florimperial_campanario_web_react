@@ -6,3 +6,6 @@
 .recovery-title{
     color: #2B4066;
 }
+.form-recovery:hover{
+    border: solid 3px #519D78;
+}
