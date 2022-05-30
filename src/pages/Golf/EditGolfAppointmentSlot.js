@@ -198,7 +198,11 @@ export default function EditGolfAppointmentSlot(props) {
                         </tbody>
                     </table>
 
-                    <GuestsSection maxGuests={maxGuests} guests={guests} setGuests={setGuests} />
+                    <GuestsSection 
+                        maxGuests={maxGuests} 
+                        guests={guests} 
+                        setGuests={setGuests} 
+                        reservationId={appointment.id} />
 
                     <DialogActions>
                         <Button onClick={handleClose}>Cancelar</Button>
