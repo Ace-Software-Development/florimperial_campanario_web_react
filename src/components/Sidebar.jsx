@@ -53,41 +53,41 @@ function Sidebar(){
             </NavText>
         </NavItem>
         
-        {/* <NavItem eventKey="sugerencias">
+        {/*<NavItem eventKey="sugerencias">
             <NavIcon>
                 <ion-icon name="bulb" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
                 Sugerencias
             </NavText>
-        </NavItem>
+        </NavItem>*/}
         
-        <NavItem eventKey="perfil">
+        {/*<NavItem eventKey="perfil">
             <NavIcon>
                 <ion-icon name="person" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
                 Perfil
             </NavText>
-        </NavItem>
+        </NavItem>*/}
         
-        <NavItem eventKey="control-de-accesos">
+        {/*<NavItem eventKey="control-de-accesos">
             <NavIcon>
                 <ion-icon name="lock-closed" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
                 Control de accesos
             </NavText>
-        </NavItem>
+        </NavItem>*/}
         
-        <NavItem eventKey="reglas">
+        {/*<NavItem eventKey="reglas">
             <NavIcon>
                 <ion-icon name="book" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
                 Reglas
             </NavText>
-        </NavItem>
+        </NavItem>*/}
         
         <NavItem eventKey="golf">
             <NavIcon>
@@ -96,14 +96,14 @@ function Sidebar(){
             <NavText>
                 Golf
             </NavText>
-            <NavItem eventKey="golf/reservaciones">
+            <NavItem eventKey="golf/salidas">
                 <NavText>
                     Reservaciones
                 </NavText>
             </NavItem>
         </NavItem>
         
-        <NavItem eventKey="raqueta">
+        {/*<NavItem eventKey="raqueta">
             <NavIcon>
                 <ion-icon name="tennisball" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -120,9 +120,9 @@ function Sidebar(){
                     Canchas
                 </NavText>
             </NavItem>
-        </NavItem>
+        </NavItem>*/}
         
-        <NavItem eventKey="gimnasio" style={{ fontSize: '1.25em' }}>
+        {/*<NavItem eventKey="gimnasio" style={{ fontSize: '1.25em' }}>
             <NavIcon>
                 <ion-icon name="barbell"></ion-icon>
             </NavIcon>
@@ -139,9 +139,9 @@ function Sidebar(){
                     Rutinas
                 </NavText>
             </NavItem>
-        </NavItem>
+        </NavItem>*/}
         
-        <NavItem eventKey="Alberca">
+        {/*<NavItem eventKey="Alberca">
             <NavIcon>
                 <ion-icon name="water" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
@@ -153,7 +153,8 @@ function Sidebar(){
                     Reservaciones
                 </NavText>
             </NavItem>
-        </NavItem> */}
+        </NavItem>*/}
+
         <NavItem eventKey="cerrar-sesion">
             <NavIcon>
                 <ion-icon name="log-out" style={{ fontSize: '1.25em' }}></ion-icon>
@@ -162,6 +163,7 @@ function Sidebar(){
                 Cerrar sesión
             </NavText>
         </NavItem>
+
     </SideNav.Nav>
     </SideNav>
         </React.Fragment>

@@ -30,11 +30,14 @@ export default function SalidasGolf() {
 				'estatus': appointment.get("estatus"),
 				'sitio': appointment.get("sitio").get('nombre'),
 				'maximoJugadores': appointment.get("maximoJugadores"),
-				'profesor': appointment.get("profesor") ? appointment.get("profesor").get("nombre") : null,
                 'hole': appointment.get("sitio").get("nombre"),
-				'user': appointment.get("user") ? {
-                    "id": appointment.get("user").id,
-                    "username": appointment.get("user").get("username")
+                'profesor': appointment.get('profesor') ? {
+                    'id': appointment.get('profesor').id,
+                    'nombre': appointment.get('profesor').get('nombre')
+                } : null,
+				'user': appointment.get('user') ? {
+                    'id': appointment.get('user').id,
+                    'username': appointment.get('user').get('username')
                 } : null
 			})
         });
@@ -44,11 +47,7 @@ export default function SalidasGolf() {
     }, [])
 
     const addAppointmentSlot = (dateClickInfo) => {
-        let selectedDate = (dateClickInfo.dateStr);
-        //if  (selectedDate.length === 10 ){
-        //    selectedDate+="T00:00:00-05:00";
-        //}
-        setNewSlotStart(selectedDate);
+        setNewSlotStart(dateClickInfo.date);
         setOpenCreate(true);
     }
 

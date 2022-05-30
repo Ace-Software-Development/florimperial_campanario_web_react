@@ -5,6 +5,7 @@ const RESERVACION_GOLF_MODEL = Parse.Object.extend('ReservacionGolf');
 const AREA_MODEL = Parse.Object.extend("Area");
 const SITIO_MODEL = Parse.Object.extend("Sitio");
 const USER_MODEL = Parse.Object.extend("_User");
+const COACH_MODEL = Parse.Object.extend("Profesor");
 
 export async function getAllGolfAppointmentSlots(){
 	try {
@@ -62,6 +63,13 @@ export async function getAllActiveUsers(){
 	userQuery.notEqualTo('objectId', userObj.id);
 	userQuery.descending('username');
 
+	let data = await userQuery.find();
+	return data;
+}
+
+export async function getAllCoaches(){
+	// Query all Coaches
+	const userQuery = new Parse.Query(COACH_MODEL);
 	let data = await userQuery.find();
 	return data;
 }
