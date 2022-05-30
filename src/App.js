@@ -12,6 +12,7 @@ import SalidasGolf from './pages/Golf/SalidasGolf'
 import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
+import PanelAdmins from './pages/PanelAdmins';
 
 export default function App() {
   return (
@@ -37,6 +38,9 @@ export default function App() {
           </Route>
           <Route path="/gestion-de-socios">
             <GestionSocios />
+          </Route>
+          <Route path="/panel-de-administradores">
+            <PanelAdmins />
           </Route>
           <Route path="/recovery">
             <PasswordRecovery  />

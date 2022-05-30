@@ -89,12 +89,12 @@ function Sidebar(permissions){
             </NavText>
         </NavItem>
         
-        <NavItem eventKey="control-de-accesos" style={{display: `${gestion}`}}>
+        <NavItem eventKey="panel-de-administradores" style={{display: `${gestion}`}}>
             <NavIcon>
                 <ion-icon name="lock-closed" style={{ fontSize: '1.25em' }}></ion-icon>
             </NavIcon>
             <NavText>
-                Control de accesos
+                Panel de administradores
             </NavText>
         </NavItem>
         
