@@ -11,6 +11,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal"
+import TablaCsvEjemplo from '../components/TablaCsvEjemplo';
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
 import {createMember, getPermissions, } from '../utils/client'
@@ -206,7 +207,16 @@ export default function GestionSocios() {
             <Modal.Title>Ayuda</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          Contenido de aiuda aqui
+          Para realizar la carga de usuarios, se debe ingresar al sistema un archivo .csv con el siguiente formato:
+          <TablaCsvEjemplo/>
+          Se generará una cuenta para cada socio y se registrarán los números de acción que aún no están en el sistema
+          La contraseña por defalut para el socio será su número de acción. 
+          <br/><br/>
+          Es importante solicitarle al socio que cambie
+          su contraseña a la brevedad posible.
+          <br/><br/>
+          Posteriormente al registro de los números de acción, podrá gestionar el número de pases disponibles desde el
+          panel de gestión de socios.
 
           </Modal.Body>
           <Modal.Footer>
