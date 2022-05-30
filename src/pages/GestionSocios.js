@@ -13,7 +13,7 @@ import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal"
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
-import {getPermissions} from '../utils/client'
+import {createMember, getPermissions, } from '../utils/client'
 import { useHistory } from "react-router-dom";
 import Papa from "papaparse"
 
@@ -21,6 +21,7 @@ import Papa from "papaparse"
 export default function GestionSocios() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState("none");
   const [permissions, setPermissions] = useState({});
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -71,6 +72,12 @@ export default function GestionSocios() {
     }
   }, []);
 
+/*  useEffect(() => {
+    if (uploading){
+
+    }
+  }, []);*/
+
   const changeHandler = (event) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
     Papa.parse(event.target.files[0], {
@@ -83,7 +90,8 @@ export default function GestionSocios() {
     });
   };
   function CsvForm() {
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
+      event.preventDefault();
       const form = event.currentTarget;
       if (form.checkValidity() === false) {
         event.preventDefault();
@@ -91,13 +99,26 @@ export default function GestionSocios() {
         setValidated(true);    
       }
       else {
-        console.log(csvData.length);
-        
-        for (let i = 0; i > csvData.length; i++){
-          
+        setUploading("");
+        try{
+          console.log("subiendo...");
+          setUploading("");
+          console.log(csvData.length);
+          for (let i = 0; i < csvData.length; i++){
+            console.log(i, " ", csvData[i]['E-MAIL']);
+            await createMember(csvData[i]['E-MAIL'], csvData[i]['SOCIO'], csvData[i]['SOCIO'] ) ;
+           }
+           //logica de submit a base de datos, revisar logica de anuncio para referencia
+           //.then( handleClose(); setValidated(true);)
         }
-        //logica de submit a base de datos, revisar logica de anuncio para referencia
-        //.then( handleClose(); setValidated(true);)
+        catch(e){
+          console.log("error en csvForm: ", e);
+          alert(e);
+          handleClose();
+          setValidated(true);
+        }
+        setUploading("none");
+
       }
     };
     
@@ -124,6 +145,10 @@ export default function GestionSocios() {
   }  
   const csvForm = CsvForm();
 
+  if(loading) return (
+    <span><CirculoCarga/></span>
+  );
+
   return (
     <div className="App">
     
@@ -133,7 +158,10 @@ export default function GestionSocios() {
             <Modal.Title>Registrar socios en el sistema</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-
+          <div  style={{display: `${uploading}`}}>
+          <CirculoCarga />
+          </div>
+            
           {csvForm}
 
                       </Modal.Body>
