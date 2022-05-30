@@ -9,7 +9,8 @@ export function Guests(props) {
 	
 	return (
         <div className="guest-container">
-			<p className="guest-name">{props.text}</p>
+			{props.isPartner ? 
+			<p className="guest-name">{props.text} (socio)</p> : <p className="guest-name">{props.text}</p>}
 			<span className="guest-delete-btn" onClick={() => deleteGuest(props.index)}>
 				&#x2715;
 			</span>

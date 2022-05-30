@@ -5,6 +5,7 @@ const RESERVACION_GOLF_MODEL = Parse.Object.extend('ReservacionGolf');
 const AREA_MODEL = Parse.Object.extend("Area");
 const SITIO_MODEL = Parse.Object.extend("Sitio");
 const USER_MODEL = Parse.Object.extend("_User");
+const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 
 export async function getAllGolfAppointmentSlots(){
 	try {
@@ -51,6 +52,11 @@ export async function getReservationGolf(appointmentId) {
 }
 
 // General API calls
+
+/**
+ * Retrieves all active users from DB
+ * @returns {array} data
+ */
 export async function getAllActiveUsers(){
 	// Get current user loged in
 	const userObj = await Parse.User.currentAsync();
@@ -63,5 +69,20 @@ export async function getAllActiveUsers(){
 	userQuery.descending('username');
 
 	let data = await userQuery.find();
+	return data;
+}
+
+/**
+ * Retrieves all guests from a specific reservation
+ */
+export async function getAllReservationGuests(id){
+	//Get reservation
+	const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+	reservationQuery.equalTo('objectId', id);
+
+	const guestReservation = new Parse.Query(RESERVACION_INVITADO_MODEL);
+	guestReservation.matchesQuery('reservacion', reservationQuery);
+
+	let data = await guestReservation.find();
 	return data;
 }
