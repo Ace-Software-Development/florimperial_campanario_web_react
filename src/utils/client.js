@@ -1,23 +1,6 @@
 import Parse from 'parse';
 
 
-export async function loadMembers(csvData){
-  try{
-    console.log("subiendo...");
-    for (let i = 0; i > csvData.length; i++){
-       createMember(csvData[i]['E-MAIL'], csvData[i]['SOCIO'], csvData[i]['SOCIO'] ) ;
-     }
-
-     //logica de submit a base de datos, revisar logica de anuncio para referencia
-     //.then( handleClose(); setValidated(true);)
-  }
-  catch(e){
-    console.log("error en csvForm: ", e);
-    alert(e);
-
-  }
-} 
-
 export async function createMember(email, pass, membershipNumber){
   
   const parseCuenta = Parse.Object.extend("Cuenta");
@@ -45,13 +28,13 @@ export async function createMember(email, pass, membershipNumber){
   newUser.set('password', pass);
   newUser.set('account', accountId);
   try{
-    newUser.save();
-    return(0);
+    await newUser.save();
   }
   catch(e){
     console.log("Error en createMember: ", e);
     return(e);
   }
+  return("ok");
 }
 
 export async function getPermissions(idRol) {

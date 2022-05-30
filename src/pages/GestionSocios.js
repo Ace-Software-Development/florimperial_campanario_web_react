@@ -32,6 +32,8 @@ export default function GestionSocios() {
   const [validated, setValidated] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [csvData, setCsvData] = useState(null);
+  const [statusReport, setStatusReport] = useState(new Array());
+  const [showReport, setShowReport] = useState("none");
 
   useEffect(async() => {
     async function checkUser() {
@@ -70,6 +72,7 @@ export default function GestionSocios() {
       setLoading(false);
       console.log(error);
     }
+
   }, []);
 
 /*  useEffect(() => {
@@ -90,6 +93,7 @@ export default function GestionSocios() {
     });
   };
   function CsvForm() {
+    let report = new Array();
     const handleSubmit = async (event) => {
       event.preventDefault();
       const form = event.currentTarget;
@@ -101,23 +105,34 @@ export default function GestionSocios() {
       else {
         setUploading("");
         try{
-          console.log("subiendo...");
-          setUploading("");
-          console.log(csvData.length);
-          for (let i = 0; i < csvData.length; i++){
-            console.log(i, " ", csvData[i]['E-MAIL']);
-            await createMember(csvData[i]['E-MAIL'], csvData[i]['SOCIO'], csvData[i]['SOCIO'] ) ;
-           }
-           //logica de submit a base de datos, revisar logica de anuncio para referencia
-           //.then( handleClose(); setValidated(true);)
+            console.log("subiendo...");
+            setUploading("");
+            console.log(csvData.length);
+            for (let i = 0; i < csvData.length; i++){
+              console.log(i, " ", csvData[i]['E-MAIL']);
+         
+              const newMemberStatus = await createMember(csvData[i]['E-MAIL'], csvData[i]['SOCIO'], csvData[i]['SOCIO'] ) ;
+                if (newMemberStatus == "ok"){
+                  report.push(`Se registró exitosamente el socio con email ${csvData[i]['E-MAIL']} y num. de acción ${csvData[i]['SOCIO']}  `);
+                }
+                else {
+                  report.push(`Hubo un error al registrar al socio con email ${csvData[i]['E-MAIL']} y num. de acción ${csvData[i]['SOCIO']}: ${newMemberStatus}  `);
+                }
         }
+        setValidated(true);
+        
+      }
         catch(e){
           console.log("error en csvForm: ", e);
-          alert(e);
-          handleClose();
+         //    alert(e);
           setValidated(true);
+          setUploading("none");
+          setShowReport("");
         }
+        setStatusReport(report);
+        setShowReport("");
         setUploading("none");
+        console.log(report);
 
       }
     };
@@ -148,6 +163,11 @@ export default function GestionSocios() {
   if(loading) return (
     <span><CirculoCarga/></span>
   );
+  const reportList = statusReport.map((member) => (
+    <Row>
+      <li> {member} </li>
+    </Row>
+  ));
 
   return (
     <div className="App">
@@ -163,8 +183,12 @@ export default function GestionSocios() {
           </div>
             
           {csvForm}
+          <div  style={{display: `${showReport}`}}>
+            Reporte de carga de usuarios:
+            {reportList}
+          </div>
 
-                      </Modal.Body>
+          </Modal.Body>
           <Modal.Footer>
             <Button className="btn-campanario" onClick={handleClose}>
               Cancelar
