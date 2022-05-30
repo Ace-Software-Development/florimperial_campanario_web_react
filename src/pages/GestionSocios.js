@@ -84,14 +84,17 @@ export default function GestionSocios() {
 
   const changeHandler = (event) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
-    Papa.parse(event.target.files[0], {
-      header: true,
-      skipEmptyLines: true,
-      complete: function (results) {
-        console.log(results.data);
-        setCsvData(results.data);
-      },
-    });
+    if (event.target.files[0]){
+      Papa.parse(event.target.files[0], {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          console.log(results.data);
+          setCsvData(results.data);
+          },
+        }
+      );
+    }
   };
   function CsvForm() {
     let report = new Array();
