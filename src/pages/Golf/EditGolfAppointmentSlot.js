@@ -7,6 +7,7 @@ import "react-datetime/css/react-datetime.css";
 import { getReservationGolf } from '../../utils/client';
 import { Button } from '@mui/material';
 import GuestsSection from '../../components/GuestsSection';
+import SocioSelector from '../../components/SocioSelector';
 
 export default function EditGolfAppointmentSlot(props) {
     const [isLoading, setLoading] = useState(true);
@@ -44,7 +45,8 @@ export default function EditGolfAppointmentSlot(props) {
     }
     
     function appointmentOnChange(table, key, data) {
-        
+        const updatedAppointment = {...appointment, key: data};
+        console.log(table, key, data, updatedAppointment);
     }
 
     return(
@@ -60,7 +62,8 @@ export default function EditGolfAppointmentSlot(props) {
                                     <p>Fecha y hora</p>
                                 </td>
                                 <td>
-                                    <Datetime 
+                                    <Datetime
+                                        inputProps={{className:'input'}}
                                         initialValue={appointment.start}
                                         id={`${appointment.id}-datetime`}
                                         onChange={date => appointmentOnChange('reservacion', 'fechaInicio', new Date(date.toISOString()))} 
@@ -69,7 +72,7 @@ export default function EditGolfAppointmentSlot(props) {
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Hoyo de salida</p>
+                                    <p>Sitio de salida</p>
                                 </td>
                                 <td>
                                     <div>
@@ -77,7 +80,7 @@ export default function EditGolfAppointmentSlot(props) {
                                             type="radio"
                                             id={`${appointment.id}-hoyo1`}
                                             value="Hoyo 1"
-                                            name="hoyo"
+                                            name="sitio"
                                             defaultChecked={appointment.hole == "Hoyo 1"}
                                             onChange={event => appointmentOnChange('reservacion', 'sitio', event.target.value)}
                                         />
@@ -88,11 +91,22 @@ export default function EditGolfAppointmentSlot(props) {
                                             type="radio"
                                             id={`${appointment.id}-hoyo10`}
                                             value="Hoyo 10"
-                                            name="hoyo"
+                                            name="sitio"
                                             defaultChecked={appointment.hole == "Hoyo 10"}
                                             onChange={event => appointmentOnChange('reservacion', 'sitio', event.target.value)} 
                                             />
                                         <label htmlFor={`${appointment.id}-hoyo10`}>Hoyo 10</label>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="radio"
+                                            id={`${appointment.id}-tee`}
+                                            value="Tee"
+                                            name="sitio"
+                                            defaultChecked={appointment.hole == "Tee de practica"}
+                                            onChange={event => appointmentOnChange('reservacion', 'sitio', event.target.value)} 
+                                            />
+                                        <label htmlFor={`${appointment.id}-tee`}>Tee de práctica</label>
                                     </div>
                                 </td>
                             </tr>
@@ -102,6 +116,7 @@ export default function EditGolfAppointmentSlot(props) {
                                 </td>
                                 <td>
                                     <input
+                                        className='input'
                                         type="number"
                                         min="1"
                                         max="5"
@@ -115,10 +130,9 @@ export default function EditGolfAppointmentSlot(props) {
                                     <p>Socio que reservó</p>
                                 </td>
                                 <td>
-                                    <input
-                                        type="text"
-                                        defaultValue={appointment.user ? appointment.user.name : ''}
-                                        onChange={event => appointmentOnChange('recervacion', 'user', event.target.value)}
+                                    <SocioSelector
+                                        defaultValue={appointment.user}
+                                        onChange={user => appointmentOnChange('recervacion', 'user', user)}
                                     />
                                 </td>
                             </tr>
@@ -128,6 +142,7 @@ export default function EditGolfAppointmentSlot(props) {
                                 </td>
                                 <td>
                                     <input
+                                        className='input'
                                         type="number"
                                         min="0"
                                         defaultValue={golfAppointment.carritosReservados}
@@ -140,7 +155,19 @@ export default function EditGolfAppointmentSlot(props) {
                                     <p>Estatus</p>
                                 </td>
                                 <td>
-                                    <select defaultValue={appointment.estatus} onChange={event => appointmentOnChange('reservacion', 'estatus', event.target.value)}>
+                                    <select className='input' defaultValue={appointment.estatus} onChange={event => appointmentOnChange('reservacion', 'estatus', event.target.value)}>
+                                        <option value={1}>Disponible</option>
+                                        <option value={2}>Reservado</option>
+                                        <option value={3}>Reservado permanente</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Profesor/coach</p>
+                                </td>
+                                <td>
+                                    <select className='input' defaultValue={appointment.estatus} onChange={event => appointmentOnChange('reservacion', 'estatus', event.target.value)}>
                                         <option value={1}>Disponible</option>
                                         <option value={2}>Reservado</option>
                                         <option value={3}>Reservado permanente</option>

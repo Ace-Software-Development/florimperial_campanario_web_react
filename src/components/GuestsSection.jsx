@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllActiveUsers } from '../utils/client';
 import { Guests } from './CampanarioComponents';
+import '../css/GuestsSection.css';
 
 export default function GuestsSection(props) {
     //Invitados
@@ -68,48 +69,46 @@ export default function GuestsSection(props) {
 
     return (
         /* Agrega los invitados */
-        <div>
-            <h3>Agrega más socios o invitados</h3>
+        <div className="guests-section">
+            <p className="subtitle-2 guest-section-title">Agrega más socios o invitados</p>
             
-            {/* Partners list */}
-            {guest ? (
-                <div>
-                    <div>
-                        {
-                            partnersList.filter(i => filterPartners(i)).map(index => {
-                                return (
-                                        <div
-                                            key={index.id}
-                                            onClick={() => handleAddPartners(index)}>
-                                                <p>{index.username}</p>
-                                        </div>
-                                )
-                            })
-                        }
+            <div className="guests-container">
+                {/* Partners list */}
+                {guest ? (
+                    <div className="suggested-guests-container">
+                            {
+                                partnersList.filter(i => filterPartners(i)).map(index => {
+                                    return (
+                                            <div className="suggested-guest"
+                                                key={index.id}
+                                                onClick={() => handleAddPartners(index)}>
+                                                    <p>{index.username}</p>
+                                            </div>
+                                    )
+                                })
+                            }
                     </div>
-                </div>
-                    ) : null}
-
-            <div>
-                <input 
-                    type="text"
-                    placeholder={'Escribe el nombre del invitado'}
-                    value={guest}
-                    onChange={(text) => setGuest(text.target.value)}
-                />
-                <div onClick={() => handleAddGuests()}>
-                    <div>
-                        <p>+</p>
+                        ) : null}
+                <div className="add-guest-container">
+                    <input 
+                        className="input guest-text-input"
+                        type="text"
+                        placeholder={'Nombre del socio o invitado'}
+                        value={guest}
+                        onChange={(text) => setGuest(text.target.value)}
+                    />
+                    <div onClick={() => handleAddGuests()}>
+                        <div className="guest-add-btn">&#x2B;</div>
                     </div>
                 </div>
             </div>
 
-            <div>
+            <div className="guests-list-container">
                 {/* Here goes the added guests */}
                 {   
                 props.guests.map((item, index) => {
                     return (
-                        <Guests 
+                        <Guests
                             key={index}
                             text={item.username}
                             index={index}

@@ -8,14 +8,11 @@ export function Guests(props) {
 	}
 	
 	return (
-        <div>
-            <div>
-                <p>{props.text}</p>
-            </div>
-			<div  
-				onClick={() => deleteGuest(props.index)}>
-					<p>-</p>
-			</div>
+        <div className="guest-container">
+			<p className="guest-name">{props.text}</p>
+			<span className="guest-delete-btn" onClick={() => deleteGuest(props.index)}>
+				&#x2715;
+			</span>
         </div>
     )
 }

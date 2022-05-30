@@ -34,7 +34,7 @@ export default function SalidasGolf() {
                 'hole': appointment.get("sitio").get("nombre"),
 				'user': appointment.get("user") ? {
                     "id": appointment.get("user").id,
-                    "name": appointment.get("user").get("username")
+                    "username": appointment.get("user").get("username")
                 } : null
 			})
         });
@@ -59,55 +59,7 @@ export default function SalidasGolf() {
     }
 
     if (loading)
-    return (   <CirculoCarga/>);
-    if (openCreate) {
-        return(
-            <div>
-                <FullCalendar
-                    locale={esLocale}
-                    dateClick={addAppointmentSlot}
-                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                    views={{
-                        customMonth : {
-                            buttonText : 'Mes'
-                        },
-                        customWeek : {
-                            buttonText : 'Semana'
-                        },
-                        customDay : {
-                            buttonText : 'Día'
-                        }
-                    }}
-                    headerToolbar={{
-                        left: 'today prev,next',
-                        center: 'title',
-                        right: 'dayGridMonth,dayGridWeek,timeGridDay'
-                    }}
-                    initialView='dayGridMonth'
-                    events={appointments}
-                    eventClick={editAppointment}
-                    />
-                <CreateGolfAppointmentSlot 
-                    open={openCreate} 
-                    onClose={setOpenCreate}
-                    startingDate={newSlotStart}
-                    />
-            </div>
-        );
-    }
-
-    if (openEdit) {
-        return(
-            <div>
-                <script src='fullcalendar/lang/es.js'></script>
-                <EditGolfAppointmentSlot 
-                    open={openEdit} 
-                    onClose={setOpenEdit}
-                    appointmentData={selectedAppointment}
-                    />
-            </div>
-        );
-    }
+        return <CirculoCarga/>;
 
     return (
         <Screen title='Reservaciones de Golf'>
@@ -134,7 +86,26 @@ export default function SalidasGolf() {
                 initialView='dayGridMonth'
                 events={appointments}
                 eventClick={editAppointment}
+            />
+
+            { openEdit &&
+                <div>
+                    <script src='fullcalendar/lang/es.js'></script>
+                    <EditGolfAppointmentSlot 
+                        open={openEdit} 
+                        onClose={setOpenEdit}
+                        appointmentData={selectedAppointment}
+                    />
+                </div>
+            }
+
+            { openCreate &&
+                <CreateGolfAppointmentSlot 
+                    open={openCreate} 
+                    onClose={setOpenCreate}
+                    startingDate={newSlotStart}
                 />
+            }
         </Screen>
     );
 }
