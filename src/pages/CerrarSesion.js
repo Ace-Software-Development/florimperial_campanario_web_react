@@ -1,6 +1,5 @@
 import {useEffect, useState } from 'react'
 import {useHistory} from 'react-router-dom';
-import Parse from 'parse';
 import CirculoCarga from '../components/CirculoCarga';
 import {parseLogout} from '../utils/client'
 

@@ -15,7 +15,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from "../components/CirculoCarga";
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import {getPermissions, getAnuncios, checkUser} from '../utils/client'
+import {getAnuncios, checkUser} from '../utils/client'
 
 export default function Anuncios() {
   const history = useHistory();

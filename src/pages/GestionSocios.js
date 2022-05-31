@@ -2,10 +2,8 @@ import '../css/GestionSocios.css'
 import React from "react";
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import Parse from "parse";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -14,7 +12,7 @@ import Modal from "react-bootstrap/Modal"
 import TablaCsvEjemplo from '../components/TablaCsvEjemplo';
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
-import {createMember, getPermissions, checkUser } from '../utils/client'
+import {createMember, checkUser } from '../utils/client'
 import { useHistory } from "react-router-dom";
 import Papa from "papaparse"
 
