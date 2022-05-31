@@ -13,7 +13,7 @@ import Modal from "react-bootstrap/Modal"
 import TablaAdmins from '../components/TablaAdmins';
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
-import {createMember, getPermissions, } from '../utils/client'
+import {createMember, getPermissions,getAdminUsers } from '../utils/client'
 import { useHistory } from "react-router-dom";
 import Header from '../components/Header';
 
@@ -34,6 +34,7 @@ export default function PanelAdmins() {
   const [csvData, setCsvData] = useState(null);
   const [statusReport, setStatusReport] = useState(new Array());
   const [showReport, setShowReport] = useState("none");
+  const [adminList, setAdminList] = useState([]);
 
   useEffect(async() => {
     async function checkUser() {
@@ -67,6 +68,11 @@ export default function PanelAdmins() {
       setLoading(true);
       const permissionsJson = await checkUser();
       setPermissions(permissionsJson);
+      
+      fetchUsers().then((admins)=>{
+        setAdminList(admins);
+      });
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -74,6 +80,11 @@ export default function PanelAdmins() {
     }
 
   }, []);
+
+  async function fetchUsers(){
+    const admins = await getAdminUsers();
+    return(admins); 
+  }
 
 
   if(loading) return (
@@ -87,7 +98,7 @@ export default function PanelAdmins() {
       <Header processName={"Panel de administradores"} />
       <div style={{"marginLeft":"145px" }}>
         <Card style={{width: "70%"}}>
-          <TablaAdmins/>
+          <TablaAdmins adminList = {adminList}/>
         </Card>  
       </div>      
       

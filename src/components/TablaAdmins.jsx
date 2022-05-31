@@ -1,15 +1,19 @@
 import Table from "react-bootstrap/Table";
 import Form from 'react-bootstrap/Form'
+import { getAdminUsers } from "../utils/client";
+import Parse from "parse/lib/browser/Parse";
 
+const TablaAdmins = (adminList) => {
 
+  for (let i = 0; i < adminList.adminList.length; i++){
 
+  }
 
-const TablaAdmins = () => {
     return (
       <Table striped bordered hover>
       <thead>
         <tr>
-          <th>Nombre</th>
+          <th></th>
           <th>Rol</th>
         </tr>
       </thead>

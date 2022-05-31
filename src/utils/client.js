@@ -5,6 +5,18 @@ export async function parseLogout(){
   return;
 }
 
+export async function getAdminRoleId(idUsuario){
+  const query = new Parse.Query('AdminRol');
+    let userPointer = {
+      __type: 'Pointer',
+      className: '_User',
+      objectId: idUsuario
+    }
+    query.equalTo('Admin', userPointer);
+    const rolQuery = await query.find();
+    return(rolQuery[0].attributes.rol.id);
+}
+
 export async function checkUser() {
   const currentUser = await Parse.User.currentAsync();
   if (!currentUser) {
@@ -14,15 +26,14 @@ export async function checkUser() {
     return("NOT_ADMIN");
   }
   try{
-    const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
+    let adminRoleId = await getAdminRoleId(currentUser.id);
+    const permissionsJson = await getPermissions(adminRoleId);
     return(permissionsJson);
   }
   catch(e){
     return("INVALID_SESSION");
   }
-
 }
-
 
 export async function getAnuncios() {
   const query = new Parse.Query("Anuncio");
@@ -31,7 +42,6 @@ export async function getAnuncios() {
 
   const result = new Array();
   for (var i = 0; i < anuncios.length; i++) {
-    console.log(anuncios[i].get("titulo"));
     const fecha = new Date(anuncios[i].get("updatedAt").toString());
     result.push(
       new Array(
@@ -93,9 +103,7 @@ export async function createMember(email, pass, membershipNumber){
 export async function getPermissions(idRol) {
     const query = new Parse.Query('RolePermissions');
     query.equalTo('objectId', idRol);
-    console.log("obteniendo permisos...");
     const permisosQuery = await query.find();
-    console.log(permisosQuery);
    
     const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
       "Raqueta": permisosQuery[0].get("Raqueta"),
