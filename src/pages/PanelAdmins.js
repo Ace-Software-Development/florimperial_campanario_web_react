@@ -10,7 +10,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal"
-import TablaCsvEjemplo from '../components/TablaCsvEjemplo';
+import TablaAdmins from '../components/TablaAdmins';
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
 import {createMember, getPermissions, } from '../utils/client'
@@ -83,15 +83,14 @@ export default function PanelAdmins() {
 
   return (
     <div className="App">
-    
-  
-
       <Sidebar permissions = {permissions}/>
       <Header processName={"Panel de administradores"} />
-       <Container>
+      <div style={{"marginLeft":"145px" }}>
+        <Card style={{width: "70%"}}>
+          <TablaAdmins/>
+        </Card>  
+      </div>      
       
-      </Container>
-      <div></div>
     </div>
   );
 }
