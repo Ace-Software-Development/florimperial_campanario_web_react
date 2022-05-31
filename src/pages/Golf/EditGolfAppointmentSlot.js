@@ -3,11 +3,12 @@ import Dialog from '@mui/material/Dialog';
 import Datetime from 'react-datetime';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent, DialogActions } from '@mui/material';
-import "react-datetime/css/react-datetime.css";
-import { getReservationGolf, updateGolfReservation } from '../../utils/client';
+import { getReservationGolf, getAllActiveUsers, getAllCoaches } from '../../utils/client';
 import { Button } from '@mui/material';
 import GuestsSection from '../../components/GuestsSection';
-import SocioSelector from '../../components/SocioSelector';
+import InputSelector from '../../components/InputSelector';
+import "react-datetime/css/react-datetime.css";
+
 
 export default function EditGolfAppointmentSlot(props) {
     const [isLoading, setLoading] = useState(true);
@@ -138,7 +139,6 @@ export default function EditGolfAppointmentSlot(props) {
                                         className='input'
                                         type="number"
                                         min="1"
-                                        max="5"
                                         defaultValue={maxGuests}
                                         onChange={event => appointmentOnChange('reservacion', 'maximoJugadores', event.target.value)} 
                                     />
@@ -149,9 +149,20 @@ export default function EditGolfAppointmentSlot(props) {
                                     <p>Socio que reservó</p>
                                 </td>
                                 <td>
-                                    <SocioSelector
+                                    <InputSelector
+                                        getDisplayText={i => i.username}
+                                        getElementId={i => i.id}
+                                        placeholder='Nombre del socio'
                                         defaultValue={appointment.user}
                                         onChange={user => appointmentOnChange('recervacion', 'user', user)}
+                                        getListData={async () => {
+                                            const response = await getAllActiveUsers();
+                                            const data = [];
+                                            response.forEach(i => {
+                                                data.push({id: i.id, username: i.get('username')});
+                                            });
+                                            return data;
+                                        }}
                                     />
                                 </td>
                             </tr>
@@ -183,14 +194,24 @@ export default function EditGolfAppointmentSlot(props) {
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Profesor/coach</p>
+                                    <p>Coach disponible</p>
                                 </td>
                                 <td>
-                                    <select className='input' defaultValue={appointment.estatus} onChange={event => appointmentOnChange('reservacion', 'estatus', event.target.value)}>
-                                        <option value={1}>Disponible</option>
-                                        <option value={2}>Reservado</option>
-                                        <option value={3}>Reservado permanente</option>
-                                    </select>
+                                    <InputSelector
+                                        getDisplayText={i => i.nombre}
+                                        getElementId={i => i.id}
+                                        placeholder='Nombre del coach'
+                                        defaultValue={appointment.profesor}
+                                        onChange={coach => appointmentOnChange('recervacion', 'profesor', coach)}
+                                        getListData={async () => {
+                                            const response = await getAllCoaches();
+                                            const data = [];
+                                            response.forEach(i => {
+                                                data.push({id: i.id, nombre: i.get('nombre')});
+                                            });
+                                            return data;
+                                        }}
+                                    />
                                 </td>
                             </tr>
                         </tbody>

@@ -5,6 +5,7 @@ const RESERVACION_GOLF_MODEL = Parse.Object.extend('ReservacionGolf');
 const AREA_MODEL = Parse.Object.extend("Area");
 const SITIO_MODEL = Parse.Object.extend("Sitio");
 const USER_MODEL = Parse.Object.extend("_User");
+const COACH_MODEL = Parse.Object.extend("Profesor");
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 
 export async function getAllGolfAppointmentSlots(){
@@ -117,6 +118,12 @@ export async function getAllActiveUsers(){
 	return data;
 }
 
+export async function getAllCoaches(){
+	// Query all Coaches
+	const userQuery = new Parse.Query(COACH_MODEL);
+	let data = await userQuery.find();
+	return data;
+}
 /**
  * Retrieves all guests from a specific reservation
  */
