@@ -5,6 +5,24 @@ export async function parseLogout(){
   return;
 }
 
+export async function checkUser() {
+  const currentUser = await Parse.User.currentAsync();
+  if (!currentUser) {
+    return("NO_USER");
+  }
+  else if (currentUser.attributes.isAdmin == false) {
+    return("NOT_ADMIN");
+  }
+  try{
+    const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
+    return(permissionsJson);
+  }
+  catch(e){
+    return("INVALID_SESSION");
+  }
+
+}
+
 
 export async function getAnuncios() {
   const query = new Parse.Query("Anuncio");

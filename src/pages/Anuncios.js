@@ -15,7 +15,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from "../components/CirculoCarga";
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import {getPermissions, getAnuncios} from '../utils/client'
+import {getPermissions, getAnuncios, checkUser} from '../utils/client'
 
 export default function Anuncios() {
   const history = useHistory();
@@ -30,37 +30,30 @@ export default function Anuncios() {
 
 
   useEffect(async () => {
-    async function checkUser() {
-      const currentUser = await Parse.User.currentAsync();
-      if (!currentUser) {
-        alert(
-          "Necesitas haber ingresado al sistema para consultar esta página."
-        );  
-        history.push("/");
-      }
-      else if (currentUser.attributes.isAdmin === false) {
-        alert(
-          "Necesitas ser administrador para acceder al sistema."
-        );
-        history.push("/");
-      }
-      try{
-        const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-        return(permissionsJson);
-      }
-      catch(e){
-        const permissionsJson={unauthorized: true};
-        alert("Ha ocurrido un error al procesar tu petición. Por favor vuelve a intentarlo.");
-        history.push('/');
-        return(permissionsJson);
-      }
-    }
-    
     const permissionsJson = await checkUser();
+    if(permissionsJson === 'NO_USER') {
+      alert(
+        "Necesitas haber ingresado al sistema para consultar esta página."
+      );  
+      history.push("/");
+    }
+    else if (permissionsJson === 'NOT_ADMIN'){
+      alert(
+        "Necesitas ser administrador para acceder al sistema."
+      );
+      history.push("/");
+    }
+    else if (permissionsJson === 'INVALID_SESSION'){
+      alert(
+        "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
+      );
+      history.push("/");
+    }
+    if (permissionsJson.Anuncios === false)  {
+      alert("No tienes acceso a esta página. Para más ayuda contacta con tu administrador.");
+      history.push('/home');
+    };
     setPermissions(permissionsJson);
-
-    checkUser();
-
     try {
       setLoading(true);
       const anuncios = await getAnuncios();
@@ -72,12 +65,7 @@ export default function Anuncios() {
     }
   }, []);
 
-    console.log(permissions);
 
-    if (permissions.Anuncios === false)  {
-      alert("No tienes acceso a esta página. Para más ayuda contacta con tu administrador.");
-      history.push('/home');
-    };
   // return a Spinner when loading is true
   if (loading)
     return (

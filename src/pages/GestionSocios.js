@@ -14,7 +14,7 @@ import Modal from "react-bootstrap/Modal"
 import TablaCsvEjemplo from '../components/TablaCsvEjemplo';
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
-import {createMember, getPermissions, } from '../utils/client'
+import {createMember, getPermissions, checkUser } from '../utils/client'
 import { useHistory } from "react-router-dom";
 import Papa from "papaparse"
 
@@ -37,33 +37,30 @@ export default function GestionSocios() {
   const [showReport, setShowReport] = useState("none");
 
   useEffect(async() => {
-    async function checkUser() {
-      const currentUser = await Parse.User.currentAsync();
-      if (!currentUser) {
-        alert(
-          "Necesitas haber ingresado al sistema para consultar esta página."
-        );  
-        history.push("/");
-      }
-      else if (currentUser.attributes.isAdmin == false) {
-        alert(
-          "Necesitas ser administrador para acceder al sistema."
-        );
-        history.push("/");
-      }
-      try{
-        const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-        return(permissionsJson);
-      }
-      catch(e){
-        const permissionsJson={unauthorized: true};
-        alert("Ha ocurrido un error al procesar tu petición. Por favor vuelve a intentarlo.");
-        history.push('/');
-        return(permissionsJson);
-      }
-    
+    const permissionsJson = await checkUser();
+    if(permissionsJson === 'NO_USER') {
+      alert(
+        "Necesitas haber ingresado al sistema para consultar esta página."
+      );  
+      history.push("/");
     }
-
+    else if (permissionsJson === 'NOT_ADMIN'){
+      alert(
+        "Necesitas ser administrador para acceder al sistema."
+      );
+      history.push("/");
+    }
+    else if (permissionsJson === 'INVALID_SESSION'){
+      alert(
+        "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
+      );
+      history.push("/");
+    }
+    if (permissionsJson.Gestion === false)  {
+      alert("No tienes acceso a esta página. Para más ayuda contacta con tu administrador.");
+      history.push('/home');
+    };
+    setPermissions(permissionsJson);
     try {
       setLoading(true);
       const permissionsJson = await checkUser();
@@ -89,7 +86,7 @@ export default function GestionSocios() {
     }
   };
   function CsvForm() {
-    let report = new Array();
+   const report = [];
     const handleSubmit = async (event) => {
       event.preventDefault();
       const form = event.currentTarget;
