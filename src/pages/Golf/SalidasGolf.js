@@ -31,7 +31,6 @@ export default function SalidasGolf() {
 				'sitio': appointment.get("sitio").get('nombre'),
 				'maximoJugadores': appointment.get("maximoJugadores"),
 				'profesor': appointment.get("profesor") ? appointment.get("profesor").get("nombre") : null,
-                'hole': appointment.get("sitio").get("nombre"),
 				'user': appointment.get("user") ? {
                     "id": appointment.get("user").id,
                     "username": appointment.get("user").get("username")

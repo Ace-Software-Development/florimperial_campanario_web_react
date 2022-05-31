@@ -51,6 +51,51 @@ export async function getReservationGolf(appointmentId) {
 	}
 }
 
+export async function updateGolfReservation(dataReservation, dataReservationGolf, guests) {
+	try {
+		// Get reservation user
+		let userObj = new Parse.Query(USER_MODEL);
+		userObj.equalTo("objectId", dataReservation.userId);
+
+		// Update Reservation entry
+		let reservationObj = new Parse.Object('Reservacion');
+		reservationObj.set('objectId', dataReservation.objectId);
+		reservationObj.set('estatus', dataReservation.estatus);
+		reservationObj.set('user', userObj);
+		await reservationObj.save();
+
+		// Create GolfReservation entry
+		let reservationGolfObj = new Parse.Object('ReservacionGolf');
+		reservationGolfObj.set('carritosReservados', dataReservationGolf.carritosReservados);
+		reservationGolfObj.set('cantidadHoyos', dataReservationGolf.cantidadHoyos);
+		reservationGolfObj.set('reservacion', reservationObj);
+		await reservationGolfObj.save();
+
+		// Create guests entry
+		for(let i = 0; i < guests.length; i++){
+			let guestObj = new Parse.Object('Invitado');
+			let reservationGuest = new Parse.Object('ReservacionInvitado');
+			guestObj.set('nombre', guests[i].username);
+			//guestObj.set('user', userObj);
+
+			if (guests[i].id != "") {
+				const user = new Parse.Object('_User');
+				user.id = guests[i].id;
+				reservationGuest.set('user', user);
+			}
+
+			reservationGuest.set('reservacion', reservationObj);
+			reservationGuest.set('invitado', guestObj);
+
+			guestObj.save();
+			reservationGuest.save();
+		}
+
+	}catch(error) {
+		console.log(error);
+	}
+}
+
 // General API calls
 
 /**
@@ -82,6 +127,7 @@ export async function getAllReservationGuests(id){
 
 	const guestReservation = new Parse.Query(RESERVACION_INVITADO_MODEL);
 	guestReservation.matchesQuery('reservacion', reservationQuery);
+	guestReservation.include('invitado');
 
 	let data = await guestReservation.find();
 	return data;

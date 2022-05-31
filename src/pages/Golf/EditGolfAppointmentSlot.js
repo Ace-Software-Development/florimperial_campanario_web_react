@@ -4,7 +4,7 @@ import Datetime from 'react-datetime';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent, DialogActions } from '@mui/material';
 import "react-datetime/css/react-datetime.css";
-import { getReservationGolf } from '../../utils/client';
+import { getReservationGolf, updateGolfReservation } from '../../utils/client';
 import { Button } from '@mui/material';
 import GuestsSection from '../../components/GuestsSection';
 import SocioSelector from '../../components/SocioSelector';
@@ -46,7 +46,26 @@ export default function EditGolfAppointmentSlot(props) {
     
     function appointmentOnChange(table, key, data) {
         const updatedAppointment = {...appointment, key: data};
-        console.log(table, key, data, updatedAppointment);
+        // console.log(table, key, data, updatedAppointment);
+        console.log(updatedAppointment);
+    }
+
+    const onSubmit = async () => {
+        if (guests.length > maxGuests) {
+			window.alert('Se ha rebasado el máximo de invitados en el horario seleccionado');
+			return false;
+		}
+        const reservationData = {
+            userId: appointment.user.id,
+            objectId: appointment.reservationId,
+            estatus: 2
+        };
+        const reservationGolfData = {
+            carritosReservados: appointment.carritosReservados,
+            cantidadHoyos: appointment.cantidadHoyos
+        };
+
+		updateGolfReservation(appointment, reservationGolfData, guests);
     }
 
     return(
@@ -185,7 +204,7 @@ export default function EditGolfAppointmentSlot(props) {
 
                     <DialogActions>
                         <Button onClick={handleClose}>Cancelar</Button>
-                        <Button type="submit">Actualizar</Button>
+                        <Button onClick={onSubmit} type="submit">Actualizar</Button>
                     </DialogActions> 
                 </form>
             </DialogContent>

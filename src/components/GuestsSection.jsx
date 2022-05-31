@@ -27,6 +27,7 @@ export default function GuestsSection(props) {
                 addedGuests.push({id: i.get("user") != undefined ? i.get("user").id : null, username: i.get("invitado").get("nombre")});
             });
             props.setGuests(addedGuests);
+            // console.log("invitados : ", props.guests)
         })
     }, [])
 
