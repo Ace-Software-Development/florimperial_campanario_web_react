@@ -57,17 +57,15 @@ export default function EditGolfAppointmentSlot(props) {
 		}
         const reservationData = {
             userId: appointment.user.id,
-            objectId: appointment.reservationId,
+            objectId: appointment.id,
             estatus: 2
         };
         const reservationGolfData = {
-            carritosReservados: appointment.carritosReservados,
-            cantidadHoyos: appointment.cantidadHoyos
+            carritosReservados: golfAppointment.carritosReservados,
+            cantidadHoyos: golfAppointment.cantidadHoyos
         };
-
-		updateGolfReservation(reservationData, reservationGolfData, guests);
-        console.log("pito")
-        console.log("invitados despues: ", guests.length)
+        console.log("id : ", reservationData.objectId)
+		//updateGolfReservation(reservationData, reservationGolfData, guests);
     }
 
     return(
