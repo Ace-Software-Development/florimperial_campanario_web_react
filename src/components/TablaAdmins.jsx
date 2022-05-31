@@ -2,6 +2,8 @@ import Table from "react-bootstrap/Table";
 import Form from 'react-bootstrap/Form'
 
 
+
+
 const TablaAdmins = () => {
     return (
       <Table striped bordered hover>

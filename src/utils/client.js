@@ -1,8 +1,15 @@
 import Parse from 'parse';
 
 
+export async function getAdminUsers(){
+  const query = new Parse.Query("_User");
+  query.equalTo("isAdmin", true);
+  const result = await query.find(); 
+
+  return(result);
+}
+
 export async function createMember(email, pass, membershipNumber){
-  
   const parseCuenta = Parse.Object.extend("Cuenta");
   const query = new Parse.Query("Cuenta");
   query.equalTo("noAccion", membershipNumber);
