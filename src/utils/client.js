@@ -7,6 +7,7 @@ const SITIO_MODEL = Parse.Object.extend("Sitio");
 const USER_MODEL = Parse.Object.extend("_User");
 const COACH_MODEL = Parse.Object.extend("Profesor");
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
+const INVITADO_MODEL = Parse.Object.extend("Invitado");
 
 export async function getAllGolfAppointmentSlots(){
 	try {
@@ -52,25 +53,35 @@ export async function getReservationGolf(appointmentId) {
 	}
 }
 
-async function updateGuestsEntry(guests, reservationId) {
+async function updateGuestsEntry(reservationId) {
+	const guestsIds = [];
+
 	// borrar todos los registros de reservacionInvitado e Invitado de una Reservacion
 	const reservationQuery = new Parse.Query(RESERVACION_MODEL);
 	reservationQuery.equalTo('objectId', reservationId);
 	
 	const guestReservation = new Parse.Query(RESERVACION_INVITADO_MODEL);
 	guestReservation.matchesQuery('reservacion', reservationQuery);
-	// guestReservation.include('invitado');
-	guestReservation.find().then(function(results) {
+	guestReservation.include('invitado');
+
+	guestReservation.find().then(results => {
+		results.forEach(guest => {
+			guestsIds.push(guest.get("invitado").id);
+		})
 		return Parse.Object.destroyAll(results);
-	}).then(function() {
-		// Items deleted succesfully
-		console.log("exito");
-	}, function(error) {
-		// Error
-	});
+	})
+
+	console.log("ids = ", guestsIds);
+	for(let id of guestsIds) {
+		let guestQuery = new Parse.Query(INVITADO_MODEL);
+		guestQuery.equalTo('objectId', id);
+		guestQuery.find().then(results => {
+			return Parse.Object.destroyAll(results);
+		})
+	}
 }
 
-export async function updateGolfReservation(dataReservation, dataReservationGolf, guests) {
+export async function updateGolfReservation(dataReservation, guests) {
 	//try {
 		// Get reservation user
 		//const userObj = new Parse.Query(USER_MODEL);
@@ -103,25 +114,28 @@ export async function updateGolfReservation(dataReservation, dataReservationGolf
 		//reservationGolfObj.set('reservacion', reservationObj);
 		//await reservationGolfObj.save();
 
-		//// Create guests entry
-		//for(let i = 0; i < guests.length; i++){
-		//	let guestObj = new Parse.Object('Invitado');
-		//	let reservationGuest = new Parse.Object('ReservacionInvitado');
-		//	guestObj.set('nombre', guests[i].username);
-		//	//guestObj.set('user', userObj);
+		// Delete guests
+		updateGuestsEntry(dataReservation.objectId);
 
-		//	if (guests[i].id != "") {
-		//		const user = new Parse.Object('_User');
-		//		user.id = guests[i].id;
-		//		reservationGuest.set('user', user);
-		//	}
+		// Create guests entry
+		for(let i = 0; i < guests.length; i++){
+			let guestObj = new Parse.Object('Invitado');
+			let reservationGuest = new Parse.Object('ReservacionInvitado');
+			guestObj.set('nombre', guests[i].username);
+			guestObj.set('user', userObj);
 
-		//	reservationGuest.set('reservacion', reservationObj);
-		//	reservationGuest.set('invitado', guestObj);
+			if (guests[i].id != "") {
+				const user = new Parse.Object('_User');
+				user.id = guests[i].id;
+				reservationGuest.set('user', dataReservation.user);
+			}
 
-		//	guestObj.save();
-		//	reservationGuest.save();
-		//}
+			reservationGuest.set('reservacion', reservationObj);
+			reservationGuest.set('invitado', guestObj);
+
+			guestObj.save();
+			reservationGuest.save();
+		}
 
 	//}catch(error) {
 	//	console.log(error);
@@ -157,6 +171,8 @@ export async function getAllCoaches(){
 }
 /**
  * Retrieves all guests from a specific reservation
+ * @param {string} id
+ * @returns {array} data
  */
 export async function getAllReservationGuests(id){
 	//Get reservation
