@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import Datetime from 'react-datetime';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent, DialogActions } from '@mui/material';
-import { getReservationGolf, getAllActiveUsers, getAllCoaches } from '../../utils/client';
+import { getReservationGolf, getAllActiveUsers, getAllCoaches, updateGolfReservation } from '../../utils/client';
 import { Button } from '@mui/material';
 import GuestsSection from '../../components/GuestsSection';
 import InputSelector from '../../components/InputSelector';
@@ -46,12 +46,11 @@ export default function EditGolfAppointmentSlot(props) {
     }
     
     function appointmentOnChange(table, key, data) {
-        const updatedAppointment = {...appointment, key: data};
-        // console.log(table, key, data, updatedAppointment);
-        console.log(updatedAppointment);
+        const updatedAppointment = {...appointment, [key]: data};
+        setAppointment(updatedAppointment);
     }
 
-    const onSubmit = async () => {
+    const onSubmit = () => {
         if (guests.length > maxGuests) {
 			window.alert('Se ha rebasado el máximo de invitados en el horario seleccionado');
 			return false;
@@ -66,7 +65,9 @@ export default function EditGolfAppointmentSlot(props) {
             cantidadHoyos: appointment.cantidadHoyos
         };
 
-		updateGolfReservation(appointment, reservationGolfData, guests);
+		updateGolfReservation(reservationData, reservationGolfData, guests);
+        console.log("pito")
+        console.log("invitados despues: ", guests.length)
     }
 
     return(
@@ -99,10 +100,10 @@ export default function EditGolfAppointmentSlot(props) {
                                         <input
                                             type="radio"
                                             id={`${appointment.id}-hoyo1`}
-                                            value="Hoyo 1"
+                                            value="JH5D3uksh0"
                                             name="sitio"
-                                            defaultChecked={appointment.hole == "Hoyo 1"}
-                                            onChange={event => appointmentOnChange('reservacion', 'sitio', event.target.value)}
+                                            defaultChecked={appointment.sitio == "Hoyo 1"}
+                                            onChange={event => appointmentOnChange('reservacion', 'sitio',{nombre: "Hoyo 1", id: event.target.value})}
                                         />
                                         <label htmlFor={`${appointment.id}-hoyo1`}>Hoyo 1</label>
                                     </div>
@@ -110,10 +111,10 @@ export default function EditGolfAppointmentSlot(props) {
                                         <input
                                             type="radio"
                                             id={`${appointment.id}-hoyo10`}
-                                            value="Hoyo 10"
+                                            value="f9UD2GDs2e"
                                             name="sitio"
-                                            defaultChecked={appointment.hole == "Hoyo 10"}
-                                            onChange={event => appointmentOnChange('reservacion', 'sitio', event.target.value)} 
+                                            defaultChecked={appointment.sitio == "Hoyo 10"}
+                                            onChange={event => appointmentOnChange('reservacion', 'sitio', {nombre: "Hoyo 10", id: event.target.value})} 
                                             />
                                         <label htmlFor={`${appointment.id}-hoyo10`}>Hoyo 10</label>
                                     </div>
@@ -121,10 +122,10 @@ export default function EditGolfAppointmentSlot(props) {
                                         <input
                                             type="radio"
                                             id={`${appointment.id}-tee`}
-                                            value="Tee"
+                                            value="qGSxwr1OlI"
                                             name="sitio"
-                                            defaultChecked={appointment.hole == "Tee de practica"}
-                                            onChange={event => appointmentOnChange('reservacion', 'sitio', event.target.value)} 
+                                            defaultChecked={appointment.sitio == "Tee practica"}
+                                            onChange={event => appointmentOnChange('reservacion', 'sitio', {nombre: "Tee de práctica", id: event.target.value})} 
                                             />
                                         <label htmlFor={`${appointment.id}-tee`}>Tee de práctica</label>
                                     </div>
