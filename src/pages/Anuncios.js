@@ -15,7 +15,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from "../components/CirculoCarga";
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import {getPermissions} from '../utils/client'
+import {getAnuncios, checkUser} from '../utils/client'
 
 export default function Anuncios() {
   const history = useHistory();
@@ -29,55 +29,31 @@ export default function Anuncios() {
   const [permissions, setPermissions] = useState({});
 
 
-
-  async function getAnuncios() {
-    const query = new Parse.Query("Anuncio");
-    // query donde no esten eliminados
-    const anuncios = await query.find();
-
-    const result = new Array();
-    for (var i = 0; i < anuncios.length; i++) {
-      console.log(anuncios[i].get("titulo"));
-      const fecha = new Date(anuncios[i].get("updatedAt").toString());
-      result.push(
-        new Array(
-          anuncios[i].get("titulo"),
-          anuncios[i].get("contenido"),
-          anuncios[i].get("imagen").url(),
-          fecha.getDate() + "/" + (fecha.getMonth() +1) + "/" + fecha.getFullYear(),
-          anuncios[i].id
-        )
-      );
-    }
-
-    return result;
-  }
-
-
   useEffect(async () => {
-    async function checkUser() {
-      const currentUser = await Parse.User.currentAsync();
-      if (!currentUser) {
-        alert(
-          "Necesitas haber ingresado al sistema para consultar esta página."
-        );  
-        history.push("/");
-      }
-      else if (currentUser.attributes.isAdmin === false) {
-        alert(
-          "Necesitas ser administrador para acceder al sistema."
-        );
-        history.push("/");
-      }
-      const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-      return(permissionsJson);
-    }
-    
     const permissionsJson = await checkUser();
+    if(permissionsJson === 'NO_USER') {
+      alert(
+        "Necesitas haber ingresado al sistema para consultar esta página."
+      );  
+      history.push("/");
+    }
+    else if (permissionsJson === 'NOT_ADMIN'){
+      alert(
+        "Necesitas ser administrador para acceder al sistema."
+      );
+      history.push("/");
+    }
+    else if (permissionsJson === 'INVALID_SESSION'){
+      alert(
+        "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
+      );
+      history.push("/");
+    }
+    if (permissionsJson.Anuncios === false)  {
+      alert("No tienes acceso a esta página. Para más ayuda contacta con tu administrador.");
+      history.push('/home');
+    };
     setPermissions(permissionsJson);
-
-    checkUser();
-
     try {
       setLoading(true);
       const anuncios = await getAnuncios();
@@ -89,12 +65,7 @@ export default function Anuncios() {
     }
   }, []);
 
-    console.log(permissions);
 
-    if (permissions.Anuncios === false)  {
-      alert("No tienes acceso a esta página. Para más ayuda contacta con tu administrador.");
-      history.push('/home');
-    };
   // return a Spinner when loading is true
   if (loading)
     return (

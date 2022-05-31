@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import SidenavOverlay from '../components/SidenavOverlay';
-import {getPermissions} from '../utils/client'
+import {getPermissions, checkUser} from '../utils/client'
 import CirculoCarga from "../components/CirculoCarga";
 import HomeIcons from '../components/HomeIcons'
 
@@ -18,33 +18,26 @@ export default function Home() {
   const [permissions, setPermissions] = useState({});
 
   useEffect(async() => {
-    async function checkUser() {
-      const currentUser = await Parse.User.currentAsync();
-      if (!currentUser) {
-        alert(
-          "Necesitas haber ingresado al sistema para consultar esta página."
-        );  
-        history.push("/");
-      }
-      else if (currentUser.attributes.isAdmin == false) {
-        alert(
-          "Necesitas ser administrador para acceder al sistema."
-        );
-        history.push("/");
-      }
-      try{
-        const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-        return(permissionsJson);
-      }
-      catch(e){
-        const permissionsJson={unauthorized: true};
-        alert("Ha ocurrido un error al procesar tu petición. Por favor vuelve a intentarlo.");
-        history.push('/');
-        return(permissionsJson);
-      }
-    
+    const permissionsJson = await checkUser();
+    if(permissionsJson === 'NO_USER') {
+      alert(
+        "Necesitas haber ingresado al sistema para consultar esta página."
+      );  
+      history.push("/");
     }
-
+    else if (permissionsJson === 'NOT_ADMIN'){
+      alert(
+        "Necesitas ser administrador para acceder al sistema."
+      );
+      history.push("/");
+    }
+    else if (permissionsJson === 'INVALID_SESSION'){
+      alert(
+        "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
+      );
+      history.push("/");
+    }
+    setPermissions(permissionsJson);
     try {
       setLoading(true);
       const permissionsJson = await checkUser();

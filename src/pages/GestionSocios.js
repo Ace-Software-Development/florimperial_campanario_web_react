@@ -2,10 +2,8 @@ import '../css/GestionSocios.css'
 import React from "react";
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import Parse from "parse";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -14,7 +12,7 @@ import Modal from "react-bootstrap/Modal"
 import TablaCsvEjemplo from '../components/TablaCsvEjemplo';
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
-import {createMember, getPermissions, } from '../utils/client'
+import {createMember, checkUser } from '../utils/client'
 import { useHistory } from "react-router-dom";
 import Papa from "papaparse"
 
@@ -37,33 +35,30 @@ export default function GestionSocios() {
   const [showReport, setShowReport] = useState("none");
 
   useEffect(async() => {
-    async function checkUser() {
-      const currentUser = await Parse.User.currentAsync();
-      if (!currentUser) {
-        alert(
-          "Necesitas haber ingresado al sistema para consultar esta página."
-        );  
-        history.push("/");
-      }
-      else if (currentUser.attributes.isAdmin == false) {
-        alert(
-          "Necesitas ser administrador para acceder al sistema."
-        );
-        history.push("/");
-      }
-      try{
-        const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-        return(permissionsJson);
-      }
-      catch(e){
-        const permissionsJson={unauthorized: true};
-        alert("Ha ocurrido un error al procesar tu petición. Por favor vuelve a intentarlo.");
-        history.push('/');
-        return(permissionsJson);
-      }
-    
+    const permissionsJson = await checkUser();
+    if(permissionsJson === 'NO_USER') {
+      alert(
+        "Necesitas haber ingresado al sistema para consultar esta página."
+      );  
+      history.push("/");
     }
-
+    else if (permissionsJson === 'NOT_ADMIN'){
+      alert(
+        "Necesitas ser administrador para acceder al sistema."
+      );
+      history.push("/");
+    }
+    else if (permissionsJson === 'INVALID_SESSION'){
+      alert(
+        "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
+      );
+      history.push("/");
+    }
+    if (permissionsJson.Gestion === false)  {
+      alert("No tienes acceso a esta página. Para más ayuda contacta con tu administrador.");
+      history.push('/home');
+    };
+    setPermissions(permissionsJson);
     try {
       setLoading(true);
       const permissionsJson = await checkUser();
@@ -71,16 +66,9 @@ export default function GestionSocios() {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
     }
 
   }, []);
-
-/*  useEffect(() => {
-    if (uploading){
-
-    }
-  }, []);*/
 
   const changeHandler = (event) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
@@ -89,7 +77,6 @@ export default function GestionSocios() {
         header: true,
         skipEmptyLines: true,
         complete: function (results) {
-          console.log(results.data);
           setCsvData(results.data);
           },
         }
@@ -97,7 +84,7 @@ export default function GestionSocios() {
     }
   };
   function CsvForm() {
-    let report = new Array();
+   const report = [];
     const handleSubmit = async (event) => {
       event.preventDefault();
       const form = event.currentTarget;
@@ -109,12 +96,8 @@ export default function GestionSocios() {
       else {
         setUploading("");
         try{
-            console.log("subiendo...");
             setUploading("");
-            console.log(csvData.length);
-            for (let i = 0; i < csvData.length; i++){
-              console.log(i, " ", csvData[i]['E-MAIL']);
-         
+            for (let i = 0; i < csvData.length; i++){         
               const newMemberStatus = await createMember(csvData[i]['E-MAIL'], csvData[i]['SOCIO'], csvData[i]['SOCIO'] ) ;
                 if (newMemberStatus == "ok"){
                   report.push(`Se registró exitosamente el socio con email ${csvData[i]['E-MAIL']} y num. de acción ${csvData[i]['SOCIO']}  `);
@@ -127,8 +110,6 @@ export default function GestionSocios() {
         
       }
         catch(e){
-          console.log("error en csvForm: ", e);
-         //    alert(e);
           setValidated(true);
           setUploading("none");
           setShowReport("");
@@ -136,8 +117,6 @@ export default function GestionSocios() {
         setStatusReport(report);
         setShowReport("");
         setUploading("none");
-        console.log(report);
-
       }
     };
     
