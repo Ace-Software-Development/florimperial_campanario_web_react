@@ -16,7 +16,7 @@ export default function EditGolfAppointmentSlot(props) {
     const [maxGuests, setMaxGuests] = useState(appointment.maximoJugadores);
     const [guests, setGuests] = useState([]);
     const [golfAppointment, setGolfAppointment] = useState({
-                    id: null,
+                    objectId: null,
                     reservationId: null,
                     carritosReservados: 0,
                     cantidadHoyos: 9
@@ -27,7 +27,7 @@ export default function EditGolfAppointmentSlot(props) {
             const appointment = await getReservationGolf(props.appointmentData.id);
             if (appointment){
                 const appointmentParsed = {
-                    id: appointment.id,
+                    objectId: appointment.id,
                     reservationId: appointment.get('reservacion').id,
                     carritosReservados: appointment.get('carritosReservados'),
                     cantidadHoyos: appointment.get('cantidadHoyos')
@@ -41,7 +41,6 @@ export default function EditGolfAppointmentSlot(props) {
     }, []);
 
     const handleClose = () => {
-       // window.location.reload();
         props.onClose(false);
     }
     
@@ -52,29 +51,25 @@ export default function EditGolfAppointmentSlot(props) {
 
     const onSubmit = () => {
         if (guests.length > maxGuests) {
-			window.alert('Se ha rebasado el máximo de invitados en el horario seleccionado');
-			return false;
-		}
-        const reservationData = {
-            userId: appointment.user.id,
-            objectId: appointment.reservationId,
-            estatus: 2
-        };
-        const reservationGolfData = {
-            carritosReservados: appointment.carritosReservados,
-            cantidadHoyos: appointment.cantidadHoyos
-        };
+            window.alert('Se ha rebasado el máximo de invitados.');
+            return false;
+        }
 
-		updateGolfReservation(reservationData, reservationGolfData, guests);
-        console.log("pito")
-        console.log("invitados despues: ", guests.length)
+        // Parse data so it matches DB fields
+        delete appointment.start;
+        delete appointment.title;
+        delete appointment.id;
+        
+        appointment.ReservacionGolf = golfAppointment;
+
+        console.log(appointment);
+        updateGolfReservation(appointment, guests);
     }
 
     return(
         <Dialog open={props.open} onClose={handleClose}>
             <DialogTitle>Editar Espacio de Reservación</DialogTitle>
             <DialogContent>
-                <form>
                     <table>
                         <tbody>
 
@@ -86,7 +81,7 @@ export default function EditGolfAppointmentSlot(props) {
                                     <Datetime
                                         inputProps={{className:'input'}}
                                         initialValue={appointment.start}
-                                        id={`${appointment.id}-datetime`}
+                                        id={`${appointment.objectId}-datetime`}
                                         onChange={date => appointmentOnChange('reservacion', 'fechaInicio', new Date(date.toISOString()))} 
                                     />
                                 </td>
@@ -99,35 +94,35 @@ export default function EditGolfAppointmentSlot(props) {
                                     <div>
                                         <input
                                             type="radio"
-                                            id={`${appointment.id}-hoyo1`}
+                                            id={`${appointment.objectId}-hoyo1`}
                                             value="JH5D3uksh0"
                                             name="sitio"
-                                            defaultChecked={appointment.sitio == "Hoyo 1"}
-                                            onChange={event => appointmentOnChange('reservacion', 'sitio',{nombre: "Hoyo 1", id: event.target.value})}
+                                            defaultChecked={appointment.sitio.nombre == "Hoyo 1"}
+                                            onChange={event => appointmentOnChange('reservacion', 'sitio',{nombre: "Hoyo 1", objectId: event.target.value, tableName: 'Sitio'})}
                                         />
-                                        <label htmlFor={`${appointment.id}-hoyo1`}>Hoyo 1</label>
+                                        <label htmlFor={`${appointment.objectId}-hoyo1`}>Hoyo 1</label>
                                     </div>
                                     <div>
                                         <input
                                             type="radio"
-                                            id={`${appointment.id}-hoyo10`}
+                                            id={`${appointment.objectId}-hoyo10`}
                                             value="f9UD2GDs2e"
                                             name="sitio"
-                                            defaultChecked={appointment.sitio == "Hoyo 10"}
-                                            onChange={event => appointmentOnChange('reservacion', 'sitio', {nombre: "Hoyo 10", id: event.target.value})} 
+                                            defaultChecked={appointment.sitio.nombre == "Hoyo 10"}
+                                            onChange={event => appointmentOnChange('reservacion', 'sitio', {nombre: "Hoyo 10", objectId: event.target.value, tableName: 'Sitio'})} 
                                             />
-                                        <label htmlFor={`${appointment.id}-hoyo10`}>Hoyo 10</label>
+                                        <label htmlFor={`${appointment.objectId}-hoyo10`}>Hoyo 10</label>
                                     </div>
                                     <div>
                                         <input
                                             type="radio"
-                                            id={`${appointment.id}-tee`}
+                                            id={`${appointment.objectId}-tee`}
                                             value="qGSxwr1OlI"
                                             name="sitio"
-                                            defaultChecked={appointment.sitio == "Tee practica"}
-                                            onChange={event => appointmentOnChange('reservacion', 'sitio', {nombre: "Tee de práctica", id: event.target.value})} 
+                                            defaultChecked={appointment.sitio.nombre == "Tee practica"}
+                                            onChange={event => appointmentOnChange('reservacion', 'sitio', {nombre: "Tee de práctica", objectId: event.target.value, tableName: 'Sitio'})} 
                                             />
-                                        <label htmlFor={`${appointment.id}-tee`}>Tee de práctica</label>
+                                        <label htmlFor={`${appointment.objectId}-tee`}>Tee de práctica</label>
                                     </div>
                                 </td>
                             </tr>
@@ -141,7 +136,7 @@ export default function EditGolfAppointmentSlot(props) {
                                         type="number"
                                         min="1"
                                         defaultValue={maxGuests}
-                                        onChange={event => appointmentOnChange('reservacion', 'maximoJugadores', event.target.value)} 
+                                        onChange={event => appointmentOnChange('reservacion', 'maximoJugadores', parseInt(event.target.value))} 
                                     />
                                 </td>
                             </tr>
@@ -152,15 +147,15 @@ export default function EditGolfAppointmentSlot(props) {
                                 <td>
                                     <InputSelector
                                         getDisplayText={i => i.username}
-                                        getElementId={i => i.id}
+                                        getElementId={i => i.objectId}
                                         placeholder='Nombre del socio'
                                         defaultValue={appointment.user}
-                                        onChange={user => appointmentOnChange('recervacion', 'user', user)}
+                                        onChange={user => appointmentOnChange('reservacion', 'user', user)}
                                         getListData={async () => {
                                             const response = await getAllActiveUsers();
                                             const data = [];
                                             response.forEach(i => {
-                                                data.push({id: i.id, username: i.get('username')});
+                                                data.push({objectId: i.id, username: i.get('username'), tableName: 'User'});
                                             });
                                             return data;
                                         }}
@@ -186,7 +181,7 @@ export default function EditGolfAppointmentSlot(props) {
                                     <p>Estatus</p>
                                 </td>
                                 <td>
-                                    <select className='input' defaultValue={appointment.estatus} onChange={event => appointmentOnChange('reservacion', 'estatus', event.target.value)}>
+                                    <select className='input' defaultValue={appointment.estatus} onChange={event => appointmentOnChange('reservacion', 'estatus', parseInt(event.target.value))}>
                                         <option value={1}>Disponible</option>
                                         <option value={2}>Reservado</option>
                                         <option value={3}>Reservado permanente</option>
@@ -200,15 +195,15 @@ export default function EditGolfAppointmentSlot(props) {
                                 <td>
                                     <InputSelector
                                         getDisplayText={i => i.nombre}
-                                        getElementId={i => i.id}
+                                        getElementId={i => i.objectId}
                                         placeholder='Nombre del coach'
                                         defaultValue={appointment.profesor}
-                                        onChange={coach => appointmentOnChange('recervacion', 'profesor', coach)}
+                                        onChange={coach => {appointmentOnChange('recervacion', 'profesor', coach)}}
                                         getListData={async () => {
                                             const response = await getAllCoaches();
                                             const data = [];
                                             response.forEach(i => {
-                                                data.push({id: i.id, nombre: i.get('nombre')});
+                                                data.push({objectId: i.id, nombre: i.get('nombre'), tableName: 'Profesor'});
                                             });
                                             return data;
                                         }}
@@ -222,14 +217,40 @@ export default function EditGolfAppointmentSlot(props) {
                         maxGuests={maxGuests} 
                         guests={guests} 
                         setGuests={setGuests} 
-                        reservationId={appointment.id} />
+                        reservationId={appointment.objectId} />
 
                     <DialogActions>
                         <Button onClick={handleClose}>Cancelar</Button>
                         <Button onClick={onSubmit} type="submit">Actualizar</Button>
                     </DialogActions> 
-                </form>
             </DialogContent>
         </Dialog>
     );
 }
+
+
+//{
+//    "id": "hmPYAH8sUQ",
+//    "title": "daniel",
+//    "start": "2022-04-26T21:00:00.000Z",
+//    "estatus": "1",
+//    "maximoJugadores": 2,
+//    "sitio": {
+//        "nombre": "Hoyo 10",
+//        "id": "f9UD2GDs2e"
+//    },
+//    "profesor": {
+//        "id": "ArKGKFPYSB",
+//        "nombre": "Denisse"
+//    },
+//    "user": {
+//        "id": "A8A19fXzwB",
+//        "username": "daniel"
+//    },
+//    "golfAppointment": {
+//        "id": "dURkcL2w54",
+//        "reservationId": "hmPYAH8sUQ",
+//        "carritosReservados": 2,
+//        "cantidadHoyos": 18
+//    }
+//}

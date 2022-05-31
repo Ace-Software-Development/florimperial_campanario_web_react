@@ -24,22 +24,26 @@ export default function SalidasGolf() {
         const resultados = [];
 		appointments.forEach( appointment => {
 			resultados.push({
+				'objectId': appointment.id,
 				'id': appointment.id,
-				'title': appointment.get("estatus") == 1 ? 'Disponible' : appointment.get("user").get("username"),
+				'title': appointment.get("estatus") === 1 ? 'Disponible' : appointment.get("user").get("username"),
 				'start': appointment.get("fechaInicio"),
 				'estatus': appointment.get("estatus"),
 				'maximoJugadores': appointment.get("maximoJugadores"),
                 'sitio': {
-                    'id': appointment.get("sitio").id,
-                    'nombre': appointment.get("sitio").get("nombre")
+                    'objectId': appointment.get("sitio").id,
+                    'nombre': appointment.get("sitio").get("nombre"),
+                    'tableName': 'Sitio'
                 },
                 'profesor': appointment.get('profesor') ? {
-                    'id': appointment.get('profesor').id,
-                    'nombre': appointment.get('profesor').get('nombre')
+                    'objectId': appointment.get('profesor').id,
+                    'nombre': appointment.get('profesor').get('nombre'),
+                    'tableName': 'Profesor'
                 } : null,
 				'user': appointment.get('user') ? {
-                    'id': appointment.get('user').id,
-                    'username': appointment.get('user').get('username')
+                    'objectId': appointment.get('user').id,
+                    'username': appointment.get('user').get('username'),
+                    'tableName': 'User'
                 } : null
 			})
         });
@@ -55,7 +59,7 @@ export default function SalidasGolf() {
 
     const editAppointment = (eventClick) => {
         const id = eventClick.event._def.publicId;
-        setSelectedAppointment(appointments.filter(row => row.id == id)[0]);
+        setSelectedAppointment(appointments.find(row => row.objectId == id));
         setOpenEdit(true);
     }
 

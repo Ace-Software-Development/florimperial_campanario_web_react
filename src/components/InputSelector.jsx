@@ -14,7 +14,7 @@ export default function InputSelector(props) {
 
 	const filterPartners = u => {
 		let partnersSet = new Set();
-		if(!partnersSet.has(u.id))
+		if(!partnersSet.has(props.getElementId(u)))
 			return props.getDisplayText(u).toLowerCase().includes(displayText.toLowerCase());
 		else
 			return false;
@@ -29,7 +29,7 @@ export default function InputSelector(props) {
 	};
 
 	const handleSetPartner = id => {
-		const newSelectedUser = dbList.find(i => i.id == id);
+		const newSelectedUser = dbList.find(i => props.getElementId(i) == id);
 		setSelectedElement(newSelectedUser);
 		setDisplayText(props.getDisplayText(newSelectedUser));
 		setFocused(false);
@@ -47,9 +47,9 @@ export default function InputSelector(props) {
 						{
 							dbList.filter(element => filterPartners(element)).map(element => {
 								return (
-										<div className="suggested-element" key={props.getElementId(element)}
+										<div className="suggested-element" key={`${props.getElementId(element)}-div`}
 											onMouseDown={event => handleSetPartner(event.target.dataset.id)}>
-											<p data-id={props.getElementId(element)}>{props.getDisplayText(element)}</p>
+											<p key={`${props.getElementId(element)}-p`} data-id={props.getElementId(element)}>{props.getDisplayText(element)}</p>
 										</div>
 								)
 							})
