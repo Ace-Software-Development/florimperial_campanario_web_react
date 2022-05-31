@@ -15,7 +15,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from "../components/CirculoCarga";
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import {getPermissions} from '../utils/client'
+import {getPermissions, getAnuncios} from '../utils/client'
 
 export default function Anuncios() {
   const history = useHistory();
@@ -27,31 +27,6 @@ export default function Anuncios() {
   const [validated, setValidated] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [permissions, setPermissions] = useState({});
-
-
-
-  async function getAnuncios() {
-    const query = new Parse.Query("Anuncio");
-    // query donde no esten eliminados
-    const anuncios = await query.find();
-
-    const result = new Array();
-    for (var i = 0; i < anuncios.length; i++) {
-      console.log(anuncios[i].get("titulo"));
-      const fecha = new Date(anuncios[i].get("updatedAt").toString());
-      result.push(
-        new Array(
-          anuncios[i].get("titulo"),
-          anuncios[i].get("contenido"),
-          anuncios[i].get("imagen").url(),
-          fecha.getDate() + "/" + (fecha.getMonth() +1) + "/" + fecha.getFullYear(),
-          anuncios[i].id
-        )
-      );
-    }
-
-    return result;
-  }
 
 
   useEffect(async () => {
@@ -69,8 +44,16 @@ export default function Anuncios() {
         );
         history.push("/");
       }
-      const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-      return(permissionsJson);
+      try{
+        const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
+        return(permissionsJson);
+      }
+      catch(e){
+        const permissionsJson={unauthorized: true};
+        alert("Ha ocurrido un error al procesar tu petición. Por favor vuelve a intentarlo.");
+        history.push('/');
+        return(permissionsJson);
+      }
     }
     
     const permissionsJson = await checkUser();

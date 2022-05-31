@@ -1,7 +1,5 @@
 import Table from "react-bootstrap/Table";
 
-
-
 const TablaCsvEjemplo = () => {
     return (
       <Table striped bordered hover>

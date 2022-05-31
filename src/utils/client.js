@@ -1,5 +1,33 @@
 import Parse from 'parse';
 
+export async function parseLogout(){
+  Parse.User.logOut();
+  return;
+}
+
+
+export async function getAnuncios() {
+  const query = new Parse.Query("Anuncio");
+  // query donde no esten eliminados
+  const anuncios = await query.find();
+
+  const result = new Array();
+  for (var i = 0; i < anuncios.length; i++) {
+    console.log(anuncios[i].get("titulo"));
+    const fecha = new Date(anuncios[i].get("updatedAt").toString());
+    result.push(
+      new Array(
+        anuncios[i].get("titulo"),
+        anuncios[i].get("contenido"),
+        anuncios[i].get("imagen").url(),
+        fecha.getDate() + "/" + (fecha.getMonth() +1) + "/" + fecha.getFullYear(),
+        anuncios[i].id
+      )
+    );
+  }
+
+  return result;
+}
 
 export async function createMember(email, pass, membershipNumber){
   

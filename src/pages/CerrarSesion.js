@@ -2,6 +2,8 @@ import {useEffect, useState } from 'react'
 import {useHistory} from 'react-router-dom';
 import Parse from 'parse';
 import CirculoCarga from '../components/CirculoCarga';
+import {parseLogout} from '../utils/client'
+
 
 export default function LogOut() {
   const [loading, setLoading] = useState(true);
@@ -10,14 +12,13 @@ export default function LogOut() {
       useEffect(async() => {
         try {
           setLoading(true);
-          Parse.User.logOut().then(() => {
-            history.push('/');
-            window.location.reload();
-          });        
+          await parseLogout()
+          history.push('/');
+          window.location.reload();       
           setLoading(false);
         } catch (error) {
           setLoading(false);
-          console.log(error);
+          alert(error);
         }
       }, []);
     

@@ -71,16 +71,9 @@ export default function GestionSocios() {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
     }
 
   }, []);
-
-/*  useEffect(() => {
-    if (uploading){
-
-    }
-  }, []);*/
 
   const changeHandler = (event) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
@@ -89,7 +82,6 @@ export default function GestionSocios() {
         header: true,
         skipEmptyLines: true,
         complete: function (results) {
-          console.log(results.data);
           setCsvData(results.data);
           },
         }
@@ -109,12 +101,8 @@ export default function GestionSocios() {
       else {
         setUploading("");
         try{
-            console.log("subiendo...");
             setUploading("");
-            console.log(csvData.length);
-            for (let i = 0; i < csvData.length; i++){
-              console.log(i, " ", csvData[i]['E-MAIL']);
-         
+            for (let i = 0; i < csvData.length; i++){         
               const newMemberStatus = await createMember(csvData[i]['E-MAIL'], csvData[i]['SOCIO'], csvData[i]['SOCIO'] ) ;
                 if (newMemberStatus == "ok"){
                   report.push(`Se registró exitosamente el socio con email ${csvData[i]['E-MAIL']} y num. de acción ${csvData[i]['SOCIO']}  `);
@@ -127,8 +115,6 @@ export default function GestionSocios() {
         
       }
         catch(e){
-          console.log("error en csvForm: ", e);
-         //    alert(e);
           setValidated(true);
           setUploading("none");
           setShowReport("");
@@ -136,8 +122,6 @@ export default function GestionSocios() {
         setStatusReport(report);
         setShowReport("");
         setUploading("none");
-        console.log(report);
-
       }
     };
     
