@@ -30,7 +30,10 @@ export default function SalidasGolf() {
 				'estatus': appointment.get("estatus"),
 				'sitio': appointment.get("sitio").get('nombre'),
 				'maximoJugadores': appointment.get("maximoJugadores"),
-                'hole': appointment.get("sitio").get("nombre"),
+                'hole': {
+                    'id': appointment.get("sitio").id,
+                    'nombre': appointment.get("sitio").get("nombre")
+                },
                 'profesor': appointment.get('profesor') ? {
                     'id': appointment.get('profesor').id,
                     'nombre': appointment.get('profesor').get('nombre')
