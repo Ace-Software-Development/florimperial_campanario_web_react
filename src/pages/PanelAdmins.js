@@ -5,15 +5,10 @@ import Sidebar from '../components/Sidebar';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Parse from "parse";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Modal from "react-bootstrap/Modal"
 import TablaAdmins from '../components/TablaAdmins';
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
-import {createMember, getPermissions,getAdminUsers } from '../utils/client'
+import { getPermissions,getAdminUsers, getRolesNames } from '../utils/client'
 import { useHistory } from "react-router-dom";
 import Header from '../components/Header';
 
@@ -35,6 +30,7 @@ export default function PanelAdmins() {
   const [statusReport, setStatusReport] = useState(new Array());
   const [showReport, setShowReport] = useState("none");
   const [adminList, setAdminList] = useState([]);
+  const [roleNames, setRoleNames] = useState([]);
 
   useEffect(async() => {
     async function checkUser() {
@@ -72,7 +68,10 @@ export default function PanelAdmins() {
       fetchUsers().then((admins)=>{
         setAdminList(admins);
       });
-
+    
+      const roleNames = await fetchRoleNames();
+      setRoleNames(roleNames);
+      console.log("set role names", roleNames); 
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -84,6 +83,10 @@ export default function PanelAdmins() {
   async function fetchUsers(){
     const admins = await getAdminUsers();
     return(admins); 
+  }
+  async function fetchRoleNames(){
+    const roleNames = await getRolesNames();
+    return(roleNames);
   }
 
 
@@ -98,7 +101,7 @@ export default function PanelAdmins() {
       <Header processName={"Panel de administradores"} />
       <div style={{"marginLeft":"145px" }}>
         <Card style={{width: "70%"}}>
-          <TablaAdmins adminList = {adminList}/>
+          <TablaAdmins adminList={adminList}  roleNames={roleNames}/>
         </Card>  
       </div>      
       

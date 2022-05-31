@@ -58,8 +58,7 @@ export async function getAnuncios() {
 }
 
 export async function getAdminUsers(){
-  const query = new Parse.Query("_User");
-  query.equalTo("isAdmin", true);
+  const query = new Parse.Query("AdminRol");
   const result = await query.find(); 
 
   return(result);
@@ -116,3 +115,8 @@ export async function getPermissions(idRol) {
   }
 
 
+  export async function getRolesNames() {
+    const query = new Parse.Query('RolePermissions');
+    const permisosQuery = await query.find(); 
+    return permisosQuery;
+  }
