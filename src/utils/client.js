@@ -68,78 +68,75 @@ async function updateGuestsEntry(reservationId) {
 		results.forEach(guest => {
 			guestsIds.push(guest.get("invitado").id);
 		})
-		return Parse.Object.destroyAll(results);
+		Parse.Object.destroyAll(results);
 	})
 
-	console.log("ids = ", guestsIds);
 	for(let id of guestsIds) {
 		let guestQuery = new Parse.Query(INVITADO_MODEL);
 		guestQuery.equalTo('objectId', id);
 		guestQuery.find().then(results => {
-			return Parse.Object.destroyAll(results);
+			Parse.Object.destroyAll(results);
 		})
 	}
 }
 
 export async function updateGolfReservation(dataReservation, guests) {
-	//try {
-		// Get reservation user
-		//const userObj = new Parse.Query(USER_MODEL);
-		//userObj.equalTo("objectId", dataReservation.userId);
-
-		// In case it's a golf reservation
-		delete dataReservation.ReservacionGolf;
-
-		// Update Reservation entry
-		let reservationObj = new Parse.Object('Reservacion');
-		console.log(JSON.parse(JSON.stringify(dataReservation)));
-		for (const key in dataReservation) {
-			if (!dataReservation[key])
-				continue
-
-			if (dataReservation[key] instanceof Object && dataReservation[key].objectId) {
-				console.log(key, dataReservation[key].tableName,  dataReservation[key].objectId);
-				const query = new Parse.Query(dataReservation[key].tableName);
-				const result = await query.get(dataReservation[key].objectId);
-				dataReservation[key] = result;
-			}
-			reservationObj.set(key, dataReservation[key]);
-		}
-		const reservation = await reservationObj.save();
-		console.log('new Reservation', reservation);
-		//// Create GolfReservation entry
-		//let reservationGolfObj = new Parse.Object('ReservacionGolf');
-		//reservationGolfObj.set('carritosReservados', dataReservationGolf.carritosReservados);
+	// Create GolfReservation entry
+	if (dataReservation.reservacionGolf){
+		const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+		const reservation = await reservationQuery.get(dataReservation.objectId);
+	
+		console.log(reservation);
+		const golfData = dataReservation.reservacionGolf;
+		const reservationGolfObj = new Parse.Object('ReservacionGolf');
+		reservationGolfObj.set('carritosReservados', golfData.carritosReservados);
 		//reservationGolfObj.set('cantidadHoyos', dataReservationGolf.cantidadHoyos);
-		//reservationGolfObj.set('reservacion', reservationObj);
-		//await reservationGolfObj.save();
+		reservationGolfObj.set('reservacion', reservation);
+		await reservationGolfObj.save();
 
-		// Delete guests
-		updateGuestsEntry(dataReservation.objectId);
+		// We remove the key so we don't sync it after
+		delete dataReservation.reservacionGolf;
+	}
 
-		// Create guests entry
-		for(let i = 0; i < guests.length; i++){
-			let guestObj = new Parse.Object('Invitado');
-			let reservationGuest = new Parse.Object('ReservacionInvitado');
-			guestObj.set('nombre', guests[i].username);
-			guestObj.set('user', userObj);
+	// Update Reservation entry
+	let reservationObj = new Parse.Object('Reservacion');
+	console.log(JSON.parse(JSON.stringify(dataReservation)));
+	for (const key in dataReservation) {
+		if (!dataReservation[key])
+			continue
 
-			if (guests[i].id != "") {
-				const user = new Parse.Object('_User');
-				user.id = guests[i].id;
-				reservationGuest.set('user', dataReservation.user);
-			}
+		if (dataReservation[key] instanceof Object && dataReservation[key].objectId) {
+			const query = new Parse.Query(dataReservation[key].tableName);
+			const result = await query.get(dataReservation[key].objectId);
+			dataReservation[key] = result;
+		}
+		reservationObj.set(key, dataReservation[key]);
+	}
+	const reservation = await reservationObj.save();
+	console.log('new Reservation', reservation);
 
-			reservationGuest.set('reservacion', reservationObj);
-			reservationGuest.set('invitado', guestObj);
+	// Delete guests
+	updateGuestsEntry(dataReservation.objectId);
 
-			guestObj.save();
-			reservationGuest.save();
+	// Create guests entry
+	for(let i = 0; i < guests.length; i++){
+		let guestObj = new Parse.Object('Invitado');
+		let reservationGuest = new Parse.Object('ReservacionInvitado');
+		guestObj.set('nombre', guests[i].username);
+		guestObj.set('user', dataReservation.user);
+
+		if (guests[i].id != "") {
+			const user = new Parse.Object('_User');
+			user.id = guests[i].id;
+			reservationGuest.set('user', dataReservation.user);
 		}
 
-	//}catch(error) {
-	//	console.log(error);
-	//}
+		reservationGuest.set('reservacion', reservationObj);
+		reservationGuest.set('invitado', guestObj);
+
+		guestObj.save();
+		reservationGuest.save();
+	}
 }
 
 // General API calls
