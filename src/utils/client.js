@@ -64,17 +64,17 @@ async function updateGuestsEntry(reservationId) {
 	guestReservation.matchesQuery('reservacion', reservationQuery);
 	guestReservation.include('invitado');
 
-	guestReservation.find().then(results => {
-		results.forEach(guest => {
-			guestsIds.push(guest.get("invitado").id);
-		})
-		Parse.Object.destroyAll(results);
+	const results = await guestReservation.find()
+	results.forEach(guest => {
+		guestsIds.push(guest.get("invitado").id);
 	})
-
+	Parse.Object.destroyAll(results);
+	
 	for(let id of guestsIds) {
 		let guestQuery = new Parse.Query(INVITADO_MODEL);
 		guestQuery.equalTo('objectId', id);
 		guestQuery.find().then(results => {
+			console.log("resultados -> ", results)
 			Parse.Object.destroyAll(results);
 		})
 	}
