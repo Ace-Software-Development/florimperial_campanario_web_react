@@ -61,8 +61,6 @@ export default function EditGolfAppointmentSlot(props) {
         delete appointment.id;
         
         appointment.reservacionGolf = golfAppointment;
-
-        console.log(appointment);
         updateGolfReservation(appointment, guests);
     }
 
