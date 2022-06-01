@@ -71,7 +71,6 @@ async function updateGuestsEntry(reservationId) {
 		return Parse.Object.destroyAll(results);
 	})
 
-	console.log("ids = ", guestsIds);
 	for(let id of guestsIds) {
 		let guestQuery = new Parse.Query(INVITADO_MODEL);
 		guestQuery.equalTo('objectId', id);
@@ -122,12 +121,12 @@ export async function updateGolfReservation(dataReservation, guests) {
 			let guestObj = new Parse.Object('Invitado');
 			let reservationGuest = new Parse.Object('ReservacionInvitado');
 			guestObj.set('nombre', guests[i].username);
-			guestObj.set('user', userObj);
+			guestObj.set('user', dataReservation.user);
 
 			if (guests[i].id != "") {
 				const user = new Parse.Object('_User');
 				user.id = guests[i].id;
-				reservationGuest.set('user', dataReservation.user);
+				reservationGuest.set('user', user);
 			}
 
 			reservationGuest.set('reservacion', reservationObj);
