@@ -1,4 +1,5 @@
 import Parse from 'parse';
+import { toISOString } from './dateHelpers';
 
 const RESERVACION_MODEL = Parse.Object.extend('Reservacion');
 const RESERVACION_GOLF_MODEL = Parse.Object.extend('ReservacionGolf');
@@ -149,22 +150,25 @@ export async function createGolfReservation(dataReservation) {
 	 * else @returns false
 	 */
 	// Hacer query de Sitio
+	console.log(dataReservation);
+	console.log(dataReservation.fechaInicio);
 	const sitioQuery = new Parse.Query(SITIO_MODEL);
-	const sitioObject = await sitioQuery.get(dataReservation);
+	const sitioObject = await sitioQuery.get(dataReservation.sitio.objectId);
 	
-	// Hacer query de Profesor
-	const profesorQuery = new Parse.Query(COACH_MODEL);
-	const profesorObj = await profesorQuery.get(dataReservation);
-
 	// Update Reservation entry
 	let reservationObj = new Parse.Object(RESERVACION_MODEL);
-	reservationObj.set('fechaInicio', dataReservation.fechaInicio);
+	reservationObj.set('fechaInicio', toISOString(dataReservation.fechaInicio));
 	reservationObj.set('sitio', sitioObject);
 	reservationObj.set('maximoJugadores', dataReservation.maximoJugadores);
 	reservationObj.set('estatus', dataReservation.estatus);
-	reservationObj.set('profesor', profesorObj);
-	await reservationObj.save();
-
+	// Hacer query de Profesor
+	if (dataReservation.profesor.objectId) {
+		const profesorQuery = new Parse.Query(COACH_MODEL);
+		const profesorObj = await profesorQuery.get(dataReservation.profesor.objectId);
+		reservationObj.set('profesor', profesorObj);
+	}
+	const result = await reservationObj.save();
+	console.log(result);
 	return true;
 }
 

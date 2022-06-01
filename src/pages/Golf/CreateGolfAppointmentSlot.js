@@ -12,13 +12,12 @@ import "react-datetime/css/react-datetime.css";
 
 export default function CreateGolfAppointmentSlot(props) {
     const [appointment, setAppointment] = useState({
-        'objectId': null,
-        'fechaInicio': '',
+        'fechaInicio': props.startingDate,
         'maximoJugadores': 5,
         'estatus': 1,
         'sitio': {
-            'objectId': null,
-            'nombre': ''
+            'objectId': 'JH5D3uksh0',
+            'nombre': 'Hoyo 1'
         },
         'profesor': {
             'objectId': null,
@@ -74,7 +73,7 @@ export default function CreateGolfAppointmentSlot(props) {
                                             id={`${appointment.objectId}-hoyo1`}
                                             value="JH5D3uksh0"
                                             name="sitio"
-                                            defaultChecked={true}
+                                            defaultChecked={appointment.sitio.nombre == "Hoyo 1"}
                                             onChange={event => appointmentOnChange('reservacion', 'sitio',{nombre: "Hoyo 1", objectId: event.target.value, tableName: 'Sitio'})}
                                         />
                                         <label htmlFor={`${appointment.objectId}-hoyo1`}>Hoyo 1</label>
@@ -85,6 +84,7 @@ export default function CreateGolfAppointmentSlot(props) {
                                             id={`${appointment.objectId}-hoyo10`}
                                             value="f9UD2GDs2e"
                                             name="sitio"
+                                            defaultChecked={appointment.sitio.nombre == "Hoyo 1"}
                                             onChange={event => appointmentOnChange('reservacion', 'sitio', {nombre: "Hoyo 10", objectId: event.target.value, tableName: 'Sitio'})} 
                                             />
                                         <label htmlFor={`${appointment.objectId}-hoyo10`}>Hoyo 10</label>
@@ -95,6 +95,7 @@ export default function CreateGolfAppointmentSlot(props) {
                                             id={`${appointment.objectId}-tee`}
                                             value="qGSxwr1OlI"
                                             name="sitio"
+                                            defaultChecked={appointment.sitio.nombre == "Hoyo 1"}
                                             onChange={event => appointmentOnChange('reservacion', 'sitio', {nombre: "Tee de práctica", objectId: event.target.value, tableName: 'Sitio'})} 
                                             />
                                         <label htmlFor={`${appointment.objectId}-tee`}>Tee de práctica</label>
