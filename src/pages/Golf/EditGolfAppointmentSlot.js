@@ -21,6 +21,7 @@ export default function EditGolfAppointmentSlot(props) {
                     carritosReservados: 0,
                     cantidadHoyos: 9
                 });
+    const [disabledButton, setDisabledButton] = useState(false);
 
     useEffect(async () => {
         try {
@@ -61,7 +62,7 @@ export default function EditGolfAppointmentSlot(props) {
         delete appointment.id;
         
         appointment.reservacionGolf = golfAppointment;
-        updateGolfReservation(appointment, guests);
+        updateGolfReservation(appointment, guests).then(() => window.location.reload());
     }
 
     return(
@@ -79,6 +80,7 @@ export default function EditGolfAppointmentSlot(props) {
                                     <Datetime
                                         inputProps={{className:'input'}}
                                         initialValue={appointment.start}
+                                        input={false}
                                         id={`${appointment.objectId}-datetime`}
                                         onChange={date => appointmentOnChange('reservacion', 'fechaInicio', new Date(date.toISOString()))} 
                                     />
@@ -219,7 +221,12 @@ export default function EditGolfAppointmentSlot(props) {
 
                     <DialogActions>
                         <Button onClick={handleClose}>Cancelar</Button>
-                        <Button onClick={onSubmit} type="submit">Actualizar</Button>
+                        <Button onClick={() => {
+                            if(disabledButton)
+                                return;
+                            setDisabledButton(true);
+                            onSubmit();
+                        }} type="submit">Actualizar</Button>
                     </DialogActions> 
             </DialogContent>
         </Dialog>
