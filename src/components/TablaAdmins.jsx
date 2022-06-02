@@ -6,6 +6,7 @@ import  Container  from "react-bootstrap/Container";
 import  Col  from "react-bootstrap/Col";
 import Parse from "parse/lib/browser/Parse";
 import { FormSelect } from "react-bootstrap";
+import { setAdminRole } from "../utils/client";
 
 const TablaAdmins = (adminList) => {
   const myAdmins =adminList.adminList[0];
@@ -26,7 +27,19 @@ const TablaAdmins = (adminList) => {
       <option value={role.id}> {role.attributes.NombreRol}</option>
   ));
 
-
+  const handleChangeRole = async (event) => {
+    const form = event.currentTarget;
+    event.preventDefault();
+    event.stopPropagation();
+    const idAdmin =form.id;
+    const idRol = form.roleSelection.value;
+    setAdminRole(idAdmin, idRol).then(()=>{
+      alert("Se cambió exitosamente el rol del administrador");
+      window.location.reload();
+    } );
+ 
+    
+  };
 
 console.log(adminRowsArray);
   const tableElements = adminRowsArray.map((row) => (
@@ -36,13 +49,15 @@ console.log(adminRowsArray);
             <Container>
               <Row>
               <Col s={10} m={10}>
-                <FormSelect aria-label = {row.username} >
-                  <option value={row.username}>Rol actual: {row.rol.attributes.NombreRol}    </option>
+                <Form id= {row.admin.id} onSubmit={handleChangeRole}>
+                <FormSelect id ="roleSelection">
+                  <option value={row.rol.id}>Rol actual: {row.rol.attributes.NombreRol}    </option>
                   {roleOptions}
-                </FormSelect>          
+                </FormSelect>         
+                </Form> 
               </Col>
               <Col className="col-2">
-                <Button>Guardar</Button>
+                <Button type="submit" form={row.admin.id} >Guardar</Button>
               </Col>
               </Row>
             </Container>

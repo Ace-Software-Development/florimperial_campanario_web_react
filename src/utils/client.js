@@ -118,8 +118,30 @@ export async function getPermissions(idRol) {
   }
 
 
-  export async function getRolesNames() {
-    const query = new Parse.Query('RolePermissions');
-    const permisosQuery = await query.find(); 
-    return permisosQuery;
+export async function getRolesNames() {
+  const query = new Parse.Query('RolePermissions');
+  const permisosQuery = await query.find(); 
+  return permisosQuery;
+}
+
+export async function setAdminRole(idAdmin, idRol){
+  const query = new Parse.Query('AdminRol');
+  let userPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: idAdmin
   }
+  query.equalTo("Admin", userPointer);
+  const result = await query.find();
+  console.log(result);
+  const adminRolObj = result[0];
+  let rolePointer = {
+    __type: 'Pointer',
+    className: 'RolePermissions',
+    objectId: idRol
+  }
+  await adminRolObj.set("rol", rolePointer);
+  console.log(adminRolObj);
+  adminRolObj.save();
+  console.log("done");
+}
