@@ -1,6 +1,6 @@
-import "../css/Dashboard.css";
+import '../css/Dashboard.css';
 
-function Header({ processName }) {
+function Header({processName}) {
   return (
     <header className="app-header">
       <h1 className="spacing">{processName}</h1>

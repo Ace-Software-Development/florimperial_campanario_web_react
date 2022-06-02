@@ -1,8 +1,8 @@
-import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
-import "@trendmicro/react-sidenav/dist/react-sidenav.css";
-import "../css/Dashboard.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import React from "react";
+import SideNav, {NavItem, NavIcon, NavText} from '@trendmicro/react-sidenav';
+import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+import '../css/Dashboard.css';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import React from 'react';
 
 function Sidebar(permissions) {
   let anuncios,
@@ -10,34 +10,34 @@ function Sidebar(permissions) {
     raqueta,
     salones_gym,
     gestion,
-    alberca = "";
+    alberca = '';
   if (permissions.permissions.Anuncios === false) {
-    anuncios = "none";
+    anuncios = 'none';
   }
   if (permissions.permissions.Raqueta === false) {
-    raqueta = "none";
+    raqueta = 'none';
   }
   if (permissions.permissions.Salones_gym === false) {
-    salones_gym = "none";
+    salones_gym = 'none';
   }
   if (permissions.permissions.Golf === false) {
-    golf = "none";
+    golf = 'none';
   }
   if (permissions.permissions.Gestion === false) {
-    gestion = "none";
+    gestion = 'none';
   }
   if (permissions.permissions.Alberca === false) {
-    alberca = "none";
+    alberca = 'none';
   }
 
   return (
     <Router>
       <Route
-        render={({ location, history }) => (
+        render={({location, history}) => (
           <React.Fragment>
             <SideNav
-              onSelect={(selected) => {
-                const to = "/" + selected;
+              onSelect={selected => {
+                const to = '/' + selected;
                 if (location.pathname !== to) {
                   history.push(to);
                 }
@@ -48,86 +48,56 @@ function Sidebar(permissions) {
               <SideNav.Nav defaultSelected="home">
                 <NavItem eventKey="home">
                   <NavIcon>
-                    <ion-icon
-                      name="home"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="home" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Inicio</NavText>
                 </NavItem>
 
-                <NavItem
-                  eventKey="gestion-de-socios"
-                  style={{ display: `${gestion}` }}
-                >
+                <NavItem eventKey="gestion-de-socios" style={{display: `${gestion}`}}>
                   <NavIcon>
-                    <ion-icon
-                      name="people"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="people" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Gestión de socios</NavText>
                 </NavItem>
 
-                <NavItem eventKey="anuncios" style={{ display: `${anuncios}` }}>
+                <NavItem eventKey="anuncios" style={{display: `${anuncios}`}}>
                   <NavIcon>
-                    <ion-icon
-                      name="newspaper"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="newspaper" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Anuncios</NavText>
                 </NavItem>
 
                 <NavItem eventKey="sugerencias">
                   <NavIcon>
-                    <ion-icon
-                      name="bulb"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="bulb" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Sugerencias</NavText>
                 </NavItem>
 
                 <NavItem eventKey="perfil">
                   <NavIcon>
-                    <ion-icon
-                      name="person"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="person" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Perfil</NavText>
                 </NavItem>
 
-                <NavItem
-                  eventKey="panel-de-administradores"
-                  style={{ display: `${gestion}` }}
-                >
+                <NavItem eventKey="panel-de-administradores" style={{display: `${gestion}`}}>
                   <NavIcon>
-                    <ion-icon
-                      name="lock-closed"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="lock-closed" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Panel de administradores</NavText>
                 </NavItem>
 
-                <NavItem eventKey="reglas" style={{ display: `${gestion}` }}>
+                <NavItem eventKey="reglas" style={{display: `${gestion}`}}>
                   <NavIcon>
-                    <ion-icon
-                      name="book"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="book" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Reglas</NavText>
                 </NavItem>
 
-                <NavItem eventKey="golf" style={{ display: `${golf}` }}>
+                <NavItem eventKey="golf" style={{display: `${golf}`}}>
                   <NavIcon>
-                    <ion-icon
-                      name="golf"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="golf" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Golf</NavText>
                   <NavItem eventKey="golf/salidas">
@@ -135,12 +105,9 @@ function Sidebar(permissions) {
                   </NavItem>
                 </NavItem>
 
-                <NavItem eventKey="raqueta" style={{ display: `${raqueta}` }}>
+                <NavItem eventKey="raqueta" style={{display: `${raqueta}`}}>
                   <NavIcon>
-                    <ion-icon
-                      name="tennisball"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="tennisball" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Raqueta</NavText>
                   <NavItem eventKey="raqueta/reservaciones">
@@ -151,10 +118,7 @@ function Sidebar(permissions) {
                   </NavItem>
                 </NavItem>
 
-                <NavItem
-                  eventKey="gimnasio"
-                  style={{ display: `${salones_gym}` }}
-                >
+                <NavItem eventKey="gimnasio" style={{display: `${salones_gym}`}}>
                   <NavIcon>
                     <ion-icon name="barbell"></ion-icon>
                   </NavIcon>
@@ -167,12 +131,9 @@ function Sidebar(permissions) {
                   </NavItem>
                 </NavItem>
 
-                <NavItem eventKey="Alberca" style={{ display: `${alberca}` }}>
+                <NavItem eventKey="Alberca" style={{display: `${alberca}`}}>
                   <NavIcon>
-                    <ion-icon
-                      name="water"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="water" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Alberca</NavText>
                   <NavItem eventKey="alberca/reservaciones">
@@ -181,10 +142,7 @@ function Sidebar(permissions) {
                 </NavItem>
                 <NavItem eventKey="cerrar-sesion">
                   <NavIcon>
-                    <ion-icon
-                      name="log-out"
-                      style={{ fontSize: "1.25em" }}
-                    ></ion-icon>
+                    <ion-icon name="log-out" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Cerrar sesión</NavText>
                 </NavItem>

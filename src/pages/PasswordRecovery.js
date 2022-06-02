@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import Parse from "parse";
-import Card from "react-bootstrap/Card";
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import "../css/PassRecovery.css";
+import {useEffect, useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import Parse from 'parse';
+import Card from 'react-bootstrap/Card';
+import React from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import '../css/PassRecovery.css';
 
 export default function PasswordRecovery() {
   const history = useHistory();
@@ -19,15 +19,15 @@ export default function PasswordRecovery() {
     Parse.User.requestPasswordReset(email)
       .then(() => {
         alert(
-          "Se enviará un correo de recuperación de contraseña si el usuario se encuentra registrado en El Campanario."
+          'Se enviará un correo de recuperación de contraseña si el usuario se encuentra registrado en El Campanario.'
         );
-        history.push("/");
+        history.push('/');
         // Password reset request was sent successfully
       })
-      .catch((error) => {
+      .catch(error => {
         // Show the error message somewhere
 
-        alert("Error: " + error.code + " " + error.message);
+        alert('Error: ' + error.code + ' ' + error.message);
       });
   }
 
@@ -44,7 +44,7 @@ export default function PasswordRecovery() {
           <Col className="d-flex justify-content-center">
             <Card
               className="text-center position-relative"
-              style={{ width: "55%", background: "#ebebeb" }}
+              style={{width: '55%', background: '#ebebeb'}}
             >
               <Card.Body>
                 <br />
@@ -52,8 +52,8 @@ export default function PasswordRecovery() {
                 <br />
                 <br />
                 <Card.Text>
-                  Por favor, ingrese su correo electrónico. Recibirá una liga
-                  para recuperar su contraseña
+                  Por favor, ingrese su correo electrónico. Recibirá una liga para recuperar su
+                  contraseña
                 </Card.Text>
                 <br />
                 <Form id="recoverPassword" onSubmit={handleSubmit}>
@@ -65,9 +65,7 @@ export default function PasswordRecovery() {
                         id="email"
                         required
                         placeholder="Correo electrónico"
-                        onChange={(event) =>
-                          setEmail(event.currentTarget.value)
-                        }
+                        onChange={event => setEmail(event.currentTarget.value)}
                       />
                     </Form.Group>
                   </Row>
@@ -79,13 +77,13 @@ export default function PasswordRecovery() {
                   form="recoverPassword"
                   className="btn-publicar btn-recovery"
                 >
-                  {" "}
-                  Recuperar contraseña{" "}
+                  {' '}
+                  Recuperar contraseña{' '}
                 </Button>
                 <br />
                 <br />
                 <a className="recuperar-contrasena" href="/">
-                  {" "}
+                  {' '}
                   Regresar a Login
                 </a>
               </Card.Body>

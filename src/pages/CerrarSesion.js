@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import CirculoCarga from "../components/CirculoCarga";
-import { parseLogout } from "../utils/client";
+import {useEffect, useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import CirculoCarga from '../components/CirculoCarga';
+import {parseLogout} from '../utils/client';
 
 export default function LogOut() {
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ export default function LogOut() {
     try {
       setLoading(true);
       await parseLogout();
-      history.push("/");
+      history.push('/');
       window.location.reload();
       setLoading(false);
     } catch (error) {

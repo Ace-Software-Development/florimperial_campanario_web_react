@@ -1,25 +1,25 @@
-import "../css/GestionSocios.css";
-import React from "react";
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
-import Sidebar from "../components/Sidebar";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Modal from "react-bootstrap/Modal";
-import TablaCsvEjemplo from "../components/TablaCsvEjemplo";
-import { useEffect, useState } from "react";
-import CirculoCarga from "../components/CirculoCarga";
-import { createMember, checkUser } from "../utils/client";
-import { useHistory } from "react-router-dom";
-import Papa from "papaparse";
+import '../css/GestionSocios.css';
+import React from 'react';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import Sidebar from '../components/Sidebar';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
+import TablaCsvEjemplo from '../components/TablaCsvEjemplo';
+import {useEffect, useState} from 'react';
+import CirculoCarga from '../components/CirculoCarga';
+import {createMember, checkUser} from '../utils/client';
+import {useHistory} from 'react-router-dom';
+import Papa from 'papaparse';
 
 export default function GestionSocios() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState("none");
+  const [uploading, setUploading] = useState('none');
   const [permissions, setPermissions] = useState({});
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -31,25 +31,23 @@ export default function GestionSocios() {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [csvData, setCsvData] = useState(null);
   const [statusReport, setStatusReport] = useState(new Array());
-  const [showReport, setShowReport] = useState("none");
+  const [showReport, setShowReport] = useState('none');
 
   useEffect(async () => {
     const permissionsJson = await checkUser();
-    if (permissionsJson === "NO_USER") {
-      alert("Necesitas haber ingresado al sistema para consultar esta página.");
-      history.push("/");
-    } else if (permissionsJson === "NOT_ADMIN") {
-      alert("Necesitas ser administrador para acceder al sistema.");
-      history.push("/");
-    } else if (permissionsJson === "INVALID_SESSION") {
-      alert("Tu sesión ha finalizado. Por favor, inicia sesión nuevamente.");
-      history.push("/");
+    if (permissionsJson === 'NO_USER') {
+      alert('Necesitas haber ingresado al sistema para consultar esta página.');
+      history.push('/');
+    } else if (permissionsJson === 'NOT_ADMIN') {
+      alert('Necesitas ser administrador para acceder al sistema.');
+      history.push('/');
+    } else if (permissionsJson === 'INVALID_SESSION') {
+      alert('Tu sesión ha finalizado. Por favor, inicia sesión nuevamente.');
+      history.push('/');
     }
     if (permissionsJson.Gestion === false) {
-      alert(
-        "No tienes acceso a esta página. Para más ayuda contacta con tu administrador."
-      );
-      history.push("/home");
+      alert('No tienes acceso a esta página. Para más ayuda contacta con tu administrador.');
+      history.push('/home');
     }
     setPermissions(permissionsJson);
     try {
@@ -67,13 +65,13 @@ export default function GestionSocios() {
    * @description it updates the hook with the parsed csv data
    * @param {event} event: the form event containing the uploaded csv file
    */
-  const changeHandler = (event) => {
+  const changeHandler = event => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
     if (event.target.files[0]) {
       Papa.parse(event.target.files[0], {
         header: true,
         skipEmptyLines: true,
-        complete: function (results) {
+        complete: function(results) {
           setCsvData(results.data);
         },
       });
@@ -86,7 +84,7 @@ export default function GestionSocios() {
      * @description handles the creation of new members, manages and reports errors while creating them
      * @param {event} event: the event containing the csv file to be uploaded
      */
-    const handleSubmit = async (event) => {
+    const handleSubmit = async event => {
       event.preventDefault();
       const form = event.currentTarget;
       if (form.checkValidity() === false) {
@@ -94,44 +92,39 @@ export default function GestionSocios() {
         event.stopPropagation();
         setValidated(true);
       } else {
-        setUploading("");
+        setUploading('');
         try {
-          setUploading("");
+          setUploading('');
           for (let i = 0; i < csvData.length; i++) {
             const newMemberStatus = await createMember(
-              csvData[i]["E-MAIL"],
-              csvData[i]["SOCIO"],
-              csvData[i]["SOCIO"]
+              csvData[i]['E-MAIL'],
+              csvData[i]['SOCIO'],
+              csvData[i]['SOCIO']
             );
-            if (newMemberStatus == "ok") {
+            if (newMemberStatus == 'ok') {
               report.push(
-                `Se registró exitosamente el socio con email ${csvData[i]["E-MAIL"]} y num. de acción ${csvData[i]["SOCIO"]}  `
+                `Se registró exitosamente el socio con email ${csvData[i]['E-MAIL']} y num. de acción ${csvData[i]['SOCIO']}  `
               );
             } else {
               report.push(
-                `Hubo un error al registrar al socio con email ${csvData[i]["E-MAIL"]} y num. de acción ${csvData[i]["SOCIO"]}: ${newMemberStatus}  `
+                `Hubo un error al registrar al socio con email ${csvData[i]['E-MAIL']} y num. de acción ${csvData[i]['SOCIO']}: ${newMemberStatus}  `
               );
             }
           }
           setValidated(true);
         } catch (e) {
           setValidated(true);
-          setUploading("none");
-          setShowReport("");
+          setUploading('none');
+          setShowReport('');
         }
         setStatusReport(report);
-        setShowReport("");
-        setUploading("none");
+        setShowReport('');
+        setUploading('none');
       }
     };
 
     return (
-      <Form
-        noValidate
-        validated={validated}
-        onSubmit={handleSubmit}
-        id="uploadCsv"
-      >
+      <Form noValidate validated={validated} onSubmit={handleSubmit} id="uploadCsv">
         <Row className="mb-3">
           <Form.Group as={Col} md="12">
             <Form.Label>Sube aquí el archivo csv</Form.Label>
@@ -143,8 +136,7 @@ export default function GestionSocios() {
               required
             />
             <Form.Control.Feedback type="invalid">
-              Por favor sube aquí el archivo CSV con la información de los
-              socios.
+              Por favor sube aquí el archivo CSV con la información de los socios.
             </Form.Control.Feedback>
           </Form.Group>
         </Row>
@@ -159,7 +151,7 @@ export default function GestionSocios() {
         <CirculoCarga />
       </span>
     );
-  const reportList = statusReport.map((member) => (
+  const reportList = statusReport.map(member => (
     <Row>
       <li> {member} </li>
     </Row>
@@ -167,18 +159,18 @@ export default function GestionSocios() {
 
   return (
     <div className="App">
-      <div onClick={(e) => e.stopPropagation()}>
+      <div onClick={e => e.stopPropagation()}>
         <Modal size="lg" show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Registrar socios en el sistema</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div style={{ display: `${uploading}` }}>
+            <div style={{display: `${uploading}`}}>
               <CirculoCarga />
             </div>
 
             {csvForm}
-            <div style={{ display: `${showReport}` }}>
+            <div style={{display: `${showReport}`}}>
               Reporte de carga de usuarios:
               {reportList}
             </div>
@@ -199,26 +191,24 @@ export default function GestionSocios() {
         </Modal>
       </div>
 
-      <div onClick={(e) => e.stopPropagation()}>
+      <div onClick={e => e.stopPropagation()}>
         <Modal size="lg" show={showHelp} onHide={handleCloseHelp}>
           <Modal.Header closeButton>
             <Modal.Title>Ayuda</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Para realizar la carga de usuarios, se debe ingresar al sistema un
-            archivo .csv con el siguiente formato:
+            Para realizar la carga de usuarios, se debe ingresar al sistema un archivo .csv con el
+            siguiente formato:
             <TablaCsvEjemplo />
-            Se generará una cuenta para cada socio y se registrarán los números
-            de acción que aún no están en el sistema La contraseña por defalut
-            para el socio será su número de acción.
+            Se generará una cuenta para cada socio y se registrarán los números de acción que aún no
+            están en el sistema La contraseña por defalut para el socio será su número de acción.
             <br />
             <br />
-            Es importante solicitarle al socio que cambie su contraseña a la
-            brevedad posible.
+            Es importante solicitarle al socio que cambie su contraseña a la brevedad posible.
             <br />
             <br />
-            Posteriormente al registro de los números de acción, podrá gestionar
-            el número de pases disponibles desde el panel de gestión de socios.
+            Posteriormente al registro de los números de acción, podrá gestionar el número de pases
+            disponibles desde el panel de gestión de socios.
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn-publicar" onClick={handleCloseHelp}>
@@ -232,15 +222,8 @@ export default function GestionSocios() {
       <header className="app-header">
         <h1 className="spacing">
           Gestión de Socios
-          <button
-            type="button"
-            className="btn-information"
-            onClick={handleShowHelp}
-          >
-            <ion-icon
-              name="information-circle-outline"
-              style={{ fontSize: ".5em" }}
-            ></ion-icon>
+          <button type="button" className="btn-information" onClick={handleShowHelp}>
+            <ion-icon name="information-circle-outline" style={{fontSize: '.5em'}}></ion-icon>
           </button>
         </h1>
       </header>
@@ -249,7 +232,7 @@ export default function GestionSocios() {
           <Col>
             <Card
               onClick={handleShow}
-              style={{ width: "82rem" }}
+              style={{width: '82rem'}}
               className="card-imgs cargar-datos top-50 start-50 translate-middle "
             >
               <Card.Title className="text-center card-title">

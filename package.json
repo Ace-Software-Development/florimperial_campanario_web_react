@@ -1,6 +1,7 @@
 {
   "name": "react-parse-hooks",
   "version": "0.1.0",
+  "prettier": "prettier-airbnb-config",
   "private": true,
   "dependencies": {
     "@fullcalendar/daygrid": "^5.11.0",
@@ -49,5 +50,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^1.19.1",
+    "prettier-airbnb-config": "^1.0.0"
   }
 }

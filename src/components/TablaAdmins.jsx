@@ -1,14 +1,14 @@
-import Table from "react-bootstrap/Table";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Parse from "parse/lib/browser/Parse";
-import { FormSelect } from "react-bootstrap";
-import { setAdminRole } from "../utils/client";
+import Table from 'react-bootstrap/Table';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Parse from 'parse/lib/browser/Parse';
+import {FormSelect} from 'react-bootstrap';
+import {setAdminRole} from '../utils/client';
 
-const TablaAdmins = (adminList) => {
+const TablaAdmins = adminList => {
   const myAdmins = adminList.adminList[0];
   const myRoles = adminList.adminList[1];
   const adminRowsArray = [];
@@ -25,7 +25,7 @@ const TablaAdmins = (adminList) => {
       }
     }
   }
-  const roleOptions = myRoles.map((role) => (
+  const roleOptions = myRoles.map(role => (
     <option value={role.id}> {role.attributes.NombreRol}</option>
   ));
 
@@ -34,19 +34,19 @@ const TablaAdmins = (adminList) => {
    * @description It takes the role selected and assigns it to the chosen user
    * @param event: contains the form with the information of the user and role
    */
-  const handleChangeRole = (event) => {
+  const handleChangeRole = event => {
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
     const idAdmin = form.id;
     const idRol = form.roleSelection.value;
     setAdminRole(idAdmin, idRol).then(() => {
-      alert("Se cambió exitosamente el rol del administrador");
+      alert('Se cambió exitosamente el rol del administrador');
       window.location.reload();
     });
   };
 
-  const tableElements = adminRowsArray.map((row) => (
+  const tableElements = adminRowsArray.map(row => (
     <tr>
       <td>{row.username}</td>
       <td>
@@ -55,9 +55,7 @@ const TablaAdmins = (adminList) => {
             <Col s={10} m={10}>
               <Form id={row.admin.id} onSubmit={handleChangeRole}>
                 <FormSelect id="roleSelection">
-                  <option value={row.rol.id}>
-                    Rol actual: {row.rol.attributes.NombreRol}{" "}
-                  </option>
+                  <option value={row.rol.id}>Rol actual: {row.rol.attributes.NombreRol} </option>
                   {roleOptions}
                 </FormSelect>
               </Form>

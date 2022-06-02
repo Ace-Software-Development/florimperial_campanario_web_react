@@ -1,5 +1,5 @@
-import Row from "react-bootstrap/Row";
-import Spinner from "react-bootstrap/Spinner";
+import Row from 'react-bootstrap/Row';
+import Spinner from 'react-bootstrap/Spinner';
 
 const CirculoCarga = () => {
   return (

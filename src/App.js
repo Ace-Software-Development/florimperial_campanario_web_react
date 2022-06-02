@@ -1,14 +1,14 @@
-import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Auth from "./pages/Auth";
-import Anuncios from "./pages/Anuncios";
-import DetalleAnun from "./pages/DetalleAnun";
-import SalidasGolf from "./pages/Golf/SalidasGolf";
-import PasswordRecovery from "./pages/PasswordRecovery";
-import GestionSocios from "./pages/GestionSocios";
-import LogOut from "./pages/CerrarSesion";
-import PanelAdmins from "./pages/PanelAdmins";
+import './App.css';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import Home from './pages/Home';
+import Auth from './pages/Auth';
+import Anuncios from './pages/Anuncios';
+import DetalleAnun from './pages/DetalleAnun';
+import SalidasGolf from './pages/Golf/SalidasGolf';
+import PasswordRecovery from './pages/PasswordRecovery';
+import GestionSocios from './pages/GestionSocios';
+import LogOut from './pages/CerrarSesion';
+import PanelAdmins from './pages/PanelAdmins';
 
 export default function App() {
   return (
