@@ -70,6 +70,11 @@ export default function GestionSocios() {
 
   }, []);
 
+    /**
+     * changeHandler
+     * @description it updates the hook with the parsed csv data 
+     * @param {event} event: the form event containing the uploaded csv file
+     */
   const changeHandler = (event) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
     if (event.target.files[0]){
@@ -85,6 +90,11 @@ export default function GestionSocios() {
   };
   function CsvForm() {
    const report = [];
+    /**
+    * HandleSumbit
+    * @description handles the creation of new members, manages and reports errors while creating them
+    * @param {event} event: the event containing the csv file to be uploaded
+    */
     const handleSubmit = async (event) => {
       event.preventDefault();
       const form = event.currentTarget;

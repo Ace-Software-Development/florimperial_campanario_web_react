@@ -1,10 +1,20 @@
 import Parse from 'parse';
 
+  /**
+   * parseLogout
+   * @description It logs out the current parse user 
+   */
 export async function parseLogout(){
   Parse.User.logOut();
   return;
 }
 
+  /**
+   * getAdminRoleId
+   * @description it obtains from db the role of the received admin user
+   * @param {number} idUsuario: the _User objectId
+   * @returns {number} the objectId of admin's role
+   */
 export async function getAdminRoleId(idUsuario){
   const query = new Parse.Query('AdminRol');
     let userPointer = {
@@ -17,6 +27,11 @@ export async function getAdminRoleId(idUsuario){
     return(rolQuery[0].attributes.rol.id);
 }
 
+  /**
+   * checkUser
+   * @description it checks the current user and its permissions.
+   * @returns {json|string} the permissions of the user in a json format | the error message.
+   */
 export async function checkUser() {
   const currentUser = await Parse.User.currentAsync();
   if (!currentUser) {
@@ -35,6 +50,11 @@ export async function checkUser() {
   }
 }
 
+  /**
+   * getAnuncios
+   * @description it gathers all the announcements and puts them in an matrix
+   * @returns {Array(Array)} a matrix containing each announcement and its properties pre-processed.
+   */
 export async function getAnuncios() {
   const query = new Parse.Query("Anuncio");
   // query donde no esten eliminados
@@ -53,7 +73,6 @@ export async function getAnuncios() {
       )
     );
   }
-
   return result;
 }
 
@@ -67,6 +86,14 @@ export async function getAdminUsers(){
   return(result);
 }
 
+  /**
+   * createMember
+   * @description it creates a member (socio) in the database
+   * @param {string} email: the email to be registered
+   * @param {string} pass: the temporary password for the new user
+   * @param {string} membershipNumber. the membership number to be registered/updated in database 
+   * @returns {string} the status of the transaction. 
+   */
 export async function createMember(email, pass, membershipNumber){
   const parseCuenta = Parse.Object.extend("Cuenta");
   const query = new Parse.Query("Cuenta");
@@ -102,6 +129,12 @@ export async function createMember(email, pass, membershipNumber){
   return("ok");
 }
 
+  /**
+   * getPermissions
+   * @description it gets the permissions of the current admin
+   * @param {number} idRol: the _User Role id 
+   * @returns {json} the permissions of the admin in a json format
+   */
 export async function getPermissions(idRol) {
     const query = new Parse.Query('RolePermissions');
     query.equalTo('objectId', idRol);
@@ -113,17 +146,27 @@ export async function getPermissions(idRol) {
       "Anuncios": permisosQuery[0].get("Anuncios"),
       "Gestion": permisosQuery[0].get("Gestion"),
       "Alberca": permisosQuery[0].get("Alberca")}
-    
     return permissionsJson;
   }
 
-
+  /**
+   * getRoleNames
+   * @description it obtains from db the role of the received admin user
+   * @param {number} idUsuario: the _User objectId
+   * @returns {ParseObject:AdminRol} the object with the roleId, the username and the UserId
+   */
 export async function getRolesNames() {
   const query = new Parse.Query('RolePermissions');
   const permisosQuery = await query.find(); 
   return permisosQuery;
 }
 
+  /**
+   * setAdminRole
+   * @description it updates the role of the selected admin
+   * @param {number} idAdmin: the _User objectId
+   * @param {number} idRol: the role objectId
+   */
 export async function setAdminRole(idAdmin, idRol){
   const query = new Parse.Query('AdminRol');
   let userPointer = {
@@ -133,7 +176,6 @@ export async function setAdminRole(idAdmin, idRol){
   }
   query.equalTo("Admin", userPointer);
   const result = await query.find();
-  console.log(result);
   const adminRolObj = result[0];
   let rolePointer = {
     __type: 'Pointer',
@@ -141,7 +183,5 @@ export async function setAdminRole(idAdmin, idRol){
     objectId: idRol
   }
   await adminRolObj.set("rol", rolePointer);
-  console.log(adminRolObj);
   await adminRolObj.save();
-  console.log("done");
 }

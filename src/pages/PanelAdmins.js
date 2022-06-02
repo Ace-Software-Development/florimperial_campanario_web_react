@@ -14,22 +14,11 @@ import Header from '../components/Header';
 export default function PanelAdmins() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState("none");
   const [permissions, setPermissions] = useState({});
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [showHelp, setShowHelp] = useState(false);
-  const handleCloseHelp = () => setShowHelp(false);
-  const handleShowHelp = () => setShowHelp(true);
-  const [show, setShow] = useState(false);
-  const [validated, setValidated] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [csvData, setCsvData] = useState(null);
-  const [statusReport, setStatusReport] = useState(new Array());
-  const [showReport, setShowReport] = useState("none");
   const [adminList, setAdminList] = useState([]);
   const [roleNames, setRoleNames] = useState([]);
   const [props, setProps] = useState([]);
+
   useEffect(async() => {
     const permissionsJson = await checkUser();
     if(permissionsJson === 'NO_USER') {
@@ -55,20 +44,7 @@ export default function PanelAdmins() {
     try {
       setLoading(true);
       const permissionsJson = await checkUser();
-      setPermissions(permissionsJson);
-      /*
-      fetchUsers().then((admins)=>{
-        setAdminList(admins)
-          fetchRoleNames().then((roleNames)=>{
-            setRoleNames(roleNames);
-            const propArray=[];
-            propArray.push(adminList);
-            propArray.push(roleNames);    
-            setProps(propArray);
-          })
-      });*/
-
-          
+      setPermissions(permissionsJson);         
       const admins = await getAdminUsers();
       const a = await setAdminList(admins);
       const roleNames = await getRolesNames();
@@ -86,8 +62,6 @@ export default function PanelAdmins() {
 
   }, []);
   useEffect(async() => {
-    
-  
       const propArray=[];
       propArray.push(adminList);
       propArray.push(roleNames);

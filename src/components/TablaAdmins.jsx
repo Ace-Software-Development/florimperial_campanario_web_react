@@ -11,12 +11,10 @@ import { setAdminRole } from "../utils/client";
 const TablaAdmins = (adminList) => {
   const myAdmins =adminList.adminList[0];
   const myRoles = adminList.adminList[1];
-  console.log(adminList);
   const adminRowsArray = [];
 
   for (let i = 0; i < myAdmins.length; i++){
     for (let j = 0; j < myRoles.length; j++) {
-      console.log(myAdmins[i].attributes.rol.id, myRoles[j].id);
       if(myAdmins[i].attributes.rol.id === myRoles[j].id){
         adminRowsArray.push({admin: myAdmins[i].attributes.Admin, rol: myRoles[j], username:myAdmins[i].attributes.username  });
         break;
@@ -27,6 +25,11 @@ const TablaAdmins = (adminList) => {
       <option value={role.id}> {role.attributes.NombreRol}</option>
   ));
 
+  /**
+   * handleChangeRole
+   * @description It takes the role selected and assigns it to the chosen user 
+   * @param event: contains the form with the information of the user and role
+   */
   const handleChangeRole =  (event) => {
     const form = event.currentTarget;
     event.preventDefault();
@@ -40,31 +43,29 @@ const TablaAdmins = (adminList) => {
     
   };
 
-console.log(adminRowsArray);
+
   const tableElements = adminRowsArray.map((row) => (
     <tr>
           <td>{row.username}</td>
           <td>
             <Container>
               <Row>
-              <Col s={10} m={10}>
-                <Form id= {row.admin.id} onSubmit={handleChangeRole}>
-                <FormSelect id ="roleSelection">
-                  <option value={row.rol.id}>Rol actual: {row.rol.attributes.NombreRol}    </option>
-                  {roleOptions}
-                </FormSelect>         
-                </Form> 
-              </Col>
-              <Col className="col-2">
-                <Button type="submit" form={row.admin.id} >Guardar</Button>
-              </Col>
+                <Col s={10} m={10}>
+                  <Form id= {row.admin.id} onSubmit={handleChangeRole}>
+                    <FormSelect id ="roleSelection">
+                      <option value={row.rol.id}>Rol actual: {row.rol.attributes.NombreRol}    </option>
+                      {roleOptions}
+                    </FormSelect>         
+                  </Form> 
+                </Col>
+                <Col className="col-2">
+                  <Button type="submit" form={row.admin.id} >Guardar</Button>
+                </Col>
               </Row>
-            </Container>
-                        
+            </Container>          
           </td>
         </tr>
   ));
-
     return (
       <Table striped bordered hover>
       <thead>
@@ -75,12 +76,8 @@ console.log(adminRowsArray);
       </thead>
       <tbody>
         {tableElements}
-      
-
       </tbody>
     </Table>
-
     )
 }
-  
-  export default TablaAdmins
+export default TablaAdmins
