@@ -4,7 +4,7 @@ import Parse from "parse";
 import { useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css' 
 import Logo from '../img/logo-campanario-azul.png';
-
+import { Button } from "react-bootstrap";
 const Auth = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -77,8 +77,8 @@ const Auth = () => {
                       className="form-control form-control-lg" 
                       placeholder="Contraseña"
                       />
-                  <div> </div>
-                  <button className="btn btn-primary btn-lg btn-block" type="submit" name="action" id="enviar">Iniciar sesión</button>
+                  <br/> <br/>
+                  <Button className="btn btn-primary btn-lg " type="submit" name="action" id="enviar">Iniciar sesión</Button>
                 </form>
               </div>
               <a className="recuperar-contrasena" href="/recovery"> ¿Olvidaste tu contraseña?</a>
