@@ -8,9 +8,10 @@ import Parse from "parse";
 import TablaAdmins from '../components/TablaAdmins';
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
-import { getPermissions,getAdminUsers, getRolesNames } from '../utils/client'
+import { checkUser,getAdminUsers, getRolesNames } from '../utils/client'
 import { useHistory } from "react-router-dom";
 import Header from '../components/Header';
+import { resolvingPromise } from 'parse/lib/browser/promiseUtils';
 
 
 export default function PanelAdmins() {
@@ -31,47 +32,55 @@ export default function PanelAdmins() {
   const [showReport, setShowReport] = useState("none");
   const [adminList, setAdminList] = useState([]);
   const [roleNames, setRoleNames] = useState([]);
-
+  const [props, setProps] = useState([]);
   useEffect(async() => {
-    async function checkUser() {
-      const currentUser = await Parse.User.currentAsync();
-      if (!currentUser) {
-        alert(
-          "Necesitas haber ingresado al sistema para consultar esta página."
-        );  
-        history.push("/");
-      }
-      else if (currentUser.attributes.isAdmin == false) {
-        alert(
-          "Necesitas ser administrador para acceder al sistema."
-        );
-        history.push("/");
-      }
-      try{
-        const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-        return(permissionsJson);
-      }
-      catch(e){
-        const permissionsJson={unauthorized: true};
-        alert("Ha ocurrido un error al procesar tu petición. Por favor vuelve a intentarlo.");
-        history.push('/');
-        return(permissionsJson);
-      }
-    
+    const permissionsJson = await checkUser();
+    if(permissionsJson === 'NO_USER') {
+      alert(
+        "Necesitas haber ingresado al sistema para consultar esta página."
+      );  
+      history.push("/");
     }
+    else if (permissionsJson === 'NOT_ADMIN'){
+      alert(
+        "Necesitas ser administrador para acceder al sistema."
+      );
+      history.push("/");
+    }
+    else if (permissionsJson === 'INVALID_SESSION'){
+      alert(
+        "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
+      );
+      history.push("/");
+    }
+    setPermissions(permissionsJson);
 
     try {
       setLoading(true);
       const permissionsJson = await checkUser();
       setPermissions(permissionsJson);
-      
+      /*
       fetchUsers().then((admins)=>{
-        setAdminList(admins);
-      });
-    
-      const roleNames = await fetchRoleNames();
-      setRoleNames(roleNames);
-      console.log("set role names", roleNames); 
+        setAdminList(admins)
+          fetchRoleNames().then((roleNames)=>{
+            setRoleNames(roleNames);
+            const propArray=[];
+            propArray.push(adminList);
+            propArray.push(roleNames);    
+            setProps(propArray);
+          })
+      });*/
+
+          
+      const admins = await getAdminUsers();
+      const a = await setAdminList(admins);
+      const roleNames = await getRolesNames();
+      const b = await setRoleNames(roleNames);
+      const propArray=[];
+      propArray.push(adminList);
+      propArray.push(roleNames);
+      await setProps(propArray);
+      await setLoading(false);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -79,29 +88,27 @@ export default function PanelAdmins() {
     }
 
   }, []);
+  useEffect(async() => {
+    
+  
+      const propArray=[];
+      propArray.push(adminList);
+      propArray.push(roleNames);
+      await setProps(propArray);
 
-  async function fetchUsers(){
-    const admins = await getAdminUsers();
-    return(admins); 
-  }
-  async function fetchRoleNames(){
-    const roleNames = await getRolesNames();
-    return(roleNames);
-  }
-
+  }, [adminList, roleNames]);
 
   if(loading) return (
     <span><CirculoCarga/></span>
   );
-
-
+  
   return (
     <div className="App">
       <Sidebar permissions = {permissions}/>
       <Header processName={"Panel de administradores"} />
       <div style={{"marginLeft":"145px" }}>
         <Card style={{width: "70%"}}>
-          <TablaAdmins adminList={adminList}  roleNames={roleNames}/>
+          <TablaAdmins adminList={props} />
         </Card>  
       </div>      
       

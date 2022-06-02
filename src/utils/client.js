@@ -58,9 +58,12 @@ export async function getAnuncios() {
 }
 
 export async function getAdminUsers(){
-  const query = new Parse.Query("AdminRol");
-  const result = await query.find(); 
 
+  const query = new Parse.Query("AdminRol");
+  //query.include("rol");
+  const result = await query.find(); 
+  //console.log(result.length);
+  //console.log(result[0].get("rol").id);
   return(result);
 }
 
