@@ -146,3 +146,7 @@ button:focus {
   -ms-transform: translateX(50%);
   transform: translateX(50%);
 }
+
+.home-cards {
+  margin-left: 75px;
+}

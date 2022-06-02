@@ -18,25 +18,24 @@ const Auth = () => {
     user.set('password', password);
 
     user.logIn().then((user) => {
-      if (user.attributes.isAdmin == false) {
+      if (user.attributes.isAdmin === false) {
         alert(
           "Necesitas ser administrador para acceder al sistema."
         );
         Parse.User.logOut().then(() => {
-          const user = Parse.User.current();  // this will now be null
         });
         }
         else {
       history.push('/home');
       }
     }).catch(err => {
-      if (err.message=="username/email is required."){
+      if (err.message==="username/email is required."){
         alert("Se debe introducir el nombre de usuario / correo electrónico.");
       }
-      else if (err.message=="password is required."){
+      else if (err.message==="password is required."){
         alert("Por favor, introduzca su contraseña.");
       }
-      else if (err.message=="Invalid username/password."){
+      else if (err.message==="Invalid username/password."){
         alert("El nombre de usuario o la contraseña son incorrectos.");
       }
       else {
