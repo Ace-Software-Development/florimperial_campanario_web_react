@@ -7,24 +7,24 @@ import {
 } from "react-router-dom";
 import React from "react"
 
-export default function Sidebar(permissions){
+export default function Sidebar(props){
     let anuncios, golf, raqueta, salones_gym, gestion, alberca = "";
-    if(permissions.permissions.Anuncios === false){
+    if(props.permissions.Anuncios === false){
         anuncios = "none";
     }
-    if(permissions.permissions.Raqueta === false){
+    if(props.permissions.Raqueta === false){
         raqueta = "none";
     }
-    if(permissions.permissions.Salones_gym === false){
+    if(props.permissions.Salones_gym === false){
         salones_gym = "none";
     }
-    if(permissions.permissions.Golf === false){
+    if(props.permissions.Golf === false){
         golf = "none";
     }
-    if(permissions.permissions.Gestion === false){
+    if(props.permissions.Gestion === false){
         gestion = "none";
     }
-    if(permissions.permissions.Alberca === false){
+    if(props.permissions.Alberca === false){
         alberca = "none";
     }
 
@@ -42,7 +42,7 @@ export default function Sidebar(permissions){
                 }}
             >
                 <SideNav.Toggle />
-                <SideNav.Nav defaultSelected="home">
+                <SideNav.Nav defaultSelected={props.screenPath}>
         
                     <NavItem eventKey="home">
                         <NavIcon>

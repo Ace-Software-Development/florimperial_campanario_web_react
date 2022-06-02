@@ -3,12 +3,11 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import CreateGolfAppointmentSlot from './CreateGolfAppointmentSlot';
-import EditGolfAppointmentSlot from './EditGolfAppointmentSlot';
+import CreateReservationSlot from './CreateAppointmentSlot';
 import esLocale from '@fullcalendar/core/locales/es';
 import CirculoCarga from "../../components/CirculoCarga";
 import Screen from "../../components/Screen";
-import {getAllGolfAppointmentSlots} from '../../utils/client';
+import EditReservation from './EditReservation';
 
 export default function SalidasGolf() {
     const [appointments, setAppointments] = useState([]);
@@ -20,34 +19,9 @@ export default function SalidasGolf() {
 
     useEffect(async() => {
         setLoading(true);
-        const appointments = await getAllGolfAppointmentSlots();
-        const resultados = [];
-		appointments.forEach( appointment => {
-			resultados.push({
-				'objectId': appointment.id,
-				'id': appointment.id,
-				'title': appointment.get("user")===undefined || appointment.get("estatus") === 1 ? 'Disponible' : appointment.get("user").get("username"),
-				'start': appointment.get("fechaInicio"),
-				'estatus': appointment.get("estatus"),
-				'maximoJugadores': appointment.get("maximoJugadores"),
-                'sitio': {
-                    'objectId': appointment.get("sitio").id,
-                    'nombre': appointment.get("sitio").get("nombre"),
-                    'tableName': 'Sitio'
-                },
-                'profesor': appointment.get('profesor') ? {
-                    'objectId': appointment.get('profesor').id,
-                    'nombre': appointment.get('profesor').get('nombre'),
-                    'tableName': 'Profesor'
-                } : null,
-				'user': appointment.get('user') ? {
-                    'objectId': appointment.get('user').id,
-                    'username': appointment.get('user').get('username'),
-                    'tableName': 'User'
-                } : null
-			})
-        });
-        setAppointments(resultados);
+        // Reservations
+        const results = await props.getReservationsData();
+        setAppointments(results);
         setLoading(false);
         return;
     }, [])
@@ -67,7 +41,7 @@ export default function SalidasGolf() {
         return <CirculoCarga/>;
 
     return (
-        <Screen title='Reservaciones de Golf' screenPath='golf/salidas'>
+        <Screen title={props.screenTitle} screenPath={props.screenPath}  permissions={permissions}>
             <FullCalendar
                 locale={esLocale}
                 dateClick={addAppointmentSlot}
@@ -94,14 +68,13 @@ export default function SalidasGolf() {
             />
 
             { openEdit &&
-                <div>
-                    <script src='fullcalendar/lang/es.js'></script>
-                    <EditGolfAppointmentSlot 
-                        open={openEdit} 
-                        onClose={setOpenEdit}
-                        appointmentData={selectedAppointment}
-                    />
-                </div>
+				<EditReservation 
+					open={openEdit}
+					onClose={setOpenEdit}
+					appointmentData={selectedAppointment}
+					coachInput={props.coachInput}
+					sitios={props.sitios}
+				/>
             }
 
             { openCreate &&
@@ -109,6 +82,8 @@ export default function SalidasGolf() {
                     open={openCreate} 
                     onClose={setOpenCreate}
                     startingDate={newSlotStart}
+					coachInput={props.coachInput}
+					sitios={props.sitios}
                 />
             }
         </Screen>

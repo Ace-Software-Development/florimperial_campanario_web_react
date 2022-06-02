@@ -12,32 +12,105 @@ import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
 
+import {getAllGolfAppointmentSlots} from '../../utils/client';
+
+
 export default function App() {
   return (
     <Router>
-      <Switch>
-          <Route path="/home">
-            <Home />
-          </Route>
-          <Route path="/golf/salidas">
-              <SalidasGolf />
-          </Route>
-          <Route path="/anuncios">
-            <Anuncios />
-          </Route>
-          <Route path="/gestion-de-socios">
-            <GestionSocios />
-          </Route>
-          <Route path="/recovery">
-            <PasswordRecovery  />
-          </Route>
-          <Route path="/cerrar-sesion">
-            <LogOut  />
-          </Route>
-          <Route path="/">
-            <Auth />
-          </Route>
+        <Switch>
+            <Route path="/home">
+                <Home />
+            </Route>
+
+            <Route path="/golf/salidas">
+                <SalidasGolf // cambiar este componente por <Reservations />
+                    // Reservation Calendar
+                    screenTitle='Reservaciones de Golf'
+                    screenPath='golf/salidas'
+                    getReservationsData={ funcionQueTenemosQueHacer() } // Here we need to get the data from db and format it
+
+                    // Edit and create Reservation
+                    sitios={[]}
+                    coachInput={true}
+                    guestsInput={true}
+                />
+            </Route>
+
+            <Route path="/anuncios">
+                <Anuncios />
+            </Route>
+
+            <Route path="/gestion-de-socios">
+                <GestionSocios />
+            </Route>
+
+            <Route path="/recovery">
+                <PasswordRecovery  />
+            </Route>
+
+            <Route path="/cerrar-sesion">
+                <LogOut  />
+            </Route>
+
+            <Route path="/">
+                <Auth />
+            </Route>
         </Switch>
     </Router>
   );
 }
+
+// TODO: hacer una query que junte las queries de getReservationGolf() y getAllGolfAppointmentSlots()
+// ojo que getAllGolfAppointmentSlots regresa una lista de reservaciones generales 
+// y getReservationGolf
+
+// Este es el formato en el que se tiene que regresar la información de las queries, si algo no coincide puede que no funcione 
+[
+    {
+        'objectId': appointment.id,
+        'id': appointment.id,
+        'title': appointment.get("user")===undefined || appointment.get("estatus") === 1 ? 'Disponible' : appointment.get("user").get("username"),
+        'start': appointment.get("fechaInicio"),
+        'estatus': appointment.get("estatus"),
+        'maximoJugadores': appointment.get("maximoJugadores"),
+        'sitio': {
+            'objectId': appointment.get("sitio").id,
+            'nombre': appointment.get("sitio").get("nombre"),
+            'tableName': 'Sitio'
+        },
+        'profesor': appointment.get('profesor') ? {
+            'objectId': appointment.get('profesor').id,
+            'nombre': appointment.get('profesor').get('nombre'),
+            'tableName': 'Profesor'
+        } : null,
+        'user': appointment.get('user') ? { // only present if it's a single user reservation
+            'objectId': appointment.get('user').id,
+            'username': appointment.get('user').get('username'),
+            'tableName': 'User'
+        } : null,
+        'golfAppointment': { // only present if it's a golf reservation
+            'objectId': '',
+            'carritosReservados': 0,
+            'cantidadHoyos': 9,
+            'reservation': {
+                'objectId': ''
+            },
+        }
+    },
+]
+
+const sitios = [
+    {
+        'objectId': '...',
+        'nombre': 'Hoyo 1',
+    },
+    {
+        'objectId': '...',
+        'nombre': 'Hoyo 10',
+    },
+    {
+        'objectId': '...',
+        'nombre': 'Tee de practica',
+    },
+]

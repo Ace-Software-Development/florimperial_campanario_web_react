@@ -243,7 +243,6 @@ export async function checkUser() {
 
 }
 
-
 export async function getAnuncios() {
   const query = new Parse.Query("Anuncio");
   // query donde no esten eliminados
