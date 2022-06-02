@@ -27,7 +27,7 @@ const TablaAdmins = (adminList) => {
       <option value={role.id}> {role.attributes.NombreRol}</option>
   ));
 
-  const handleChangeRole = async (event) => {
+  const handleChangeRole =  (event) => {
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
@@ -36,8 +36,7 @@ const TablaAdmins = (adminList) => {
     setAdminRole(idAdmin, idRol).then(()=>{
       alert("Se cambió exitosamente el rol del administrador");
       window.location.reload();
-    } );
- 
+    }); 
     
   };
 

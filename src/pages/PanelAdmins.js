@@ -3,15 +3,12 @@ import React from "react";
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import Sidebar from '../components/Sidebar';
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Parse from "parse";
 import TablaAdmins from '../components/TablaAdmins';
 import { useEffect, useState } from "react";
 import CirculoCarga from "../components/CirculoCarga";
 import { checkUser,getAdminUsers, getRolesNames } from '../utils/client'
 import { useHistory } from "react-router-dom";
 import Header from '../components/Header';
-import { resolvingPromise } from 'parse/lib/browser/promiseUtils';
 
 
 export default function PanelAdmins() {

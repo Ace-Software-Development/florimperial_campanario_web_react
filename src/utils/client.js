@@ -22,7 +22,7 @@ export async function checkUser() {
   if (!currentUser) {
     return("NO_USER");
   }
-  else if (currentUser.attributes.isAdmin == false) {
+  else if (currentUser.attributes.isAdmin === false) {
     return("NOT_ADMIN");
   }
   try{
@@ -142,6 +142,6 @@ export async function setAdminRole(idAdmin, idRol){
   }
   await adminRolObj.set("rol", rolePointer);
   console.log(adminRolObj);
-  adminRolObj.save();
+  await adminRolObj.save();
   console.log("done");
 }
