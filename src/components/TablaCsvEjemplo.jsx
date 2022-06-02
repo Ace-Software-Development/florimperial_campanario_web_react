@@ -1,8 +1,8 @@
 import Table from "react-bootstrap/Table";
 
 const TablaCsvEjemplo = () => {
-    return (
-      <Table striped bordered hover>
+  return (
+    <Table striped bordered hover>
       <thead>
         <tr>
           <th>SOCIO</th>
@@ -21,11 +21,9 @@ const TablaCsvEjemplo = () => {
           <td>PEREZ GOMEZ JUAN</td>
           <td>b@b.com</td>
         </tr>
-
       </tbody>
     </Table>
+  );
+};
 
-    )
-}
-  
-  export default TablaCsvEjemplo
+export default TablaCsvEjemplo;

@@ -8,14 +8,13 @@ header.app-header {
   display: flex;
   flex-direction: column;
   padding: 20px 100px;
-  text-align:left;
+  text-align: left;
   color: white;
   position: relative;
 }
 header.app-header h1 {
   color: #2b4066;
-  text-decoration: underline #519D78 5px;
-
+  text-decoration: underline #519d78 5px;
 }
 
 .spacing {
