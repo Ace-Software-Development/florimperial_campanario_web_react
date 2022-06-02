@@ -15,9 +15,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from "../components/CirculoCarga";
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-
-
-
+import {getAnuncios, checkUser} from '../utils/client'
 
 export default function Anuncios() {
   const history = useHistory();
@@ -25,119 +23,56 @@ export default function Anuncios() {
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  
+  const handleShow = () => setShow(true);  
   const [validated, setValidated] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [permissions, setPermissions] = useState({});
 
 
-
-  async function getAnuncios() {
-    const query = new Parse.Query("Anuncio");
-    // query donde no esten eliminados
-    const anuncios = await query.find();
-
-    const result = [];
-    for (var i = 0; i < anuncios.length; i++) {
-      console.log(anuncios[i].get("titulo"));
-      const fecha = new Date(anuncios[i].get("updatedAt").toString());
-      result.push([
-          anuncios[i].get("titulo"),
-          anuncios[i].get("contenido"),
-          anuncios[i].get("imagen").url(),
-          fecha.getDate() + "/" + (fecha.getMonth() +1) + "/" + fecha.getFullYear(),
-          anuncios[i].id
-        ]);
-    }
-
-    return result;
-  }
-
-    async function getPermissions(idRol) {
-      const query = new Parse.Query('RolePermissions');
-      query.equalTo('objectId', idRol);
-      console.log("obteniendo permisos...");
-      const permisosQuery = await query.find();
-      console.log(permisosQuery);
-    
-      const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
-        "Raqueta": permisosQuery[0].get("Raqueta"),
-        "Salones_gym": permisosQuery[0].get("Salones_gym"),
-        "Anuncios": permisosQuery[0].get("Anuncios"),
-        "Gestion": permisosQuery[0].get("Gestion"),
-        "Alberca": permisosQuery[0].get("Alberca")}
-      
-      return permissionsJson;
-  }
-
   useEffect(async () => {
-    async function checkUser() {
-      const currentUser = await Parse.User.currentAsync();
-      if (!currentUser) {
-        alert(
-          "Necesitas haber ingresado al sistema para consultar esta página."
-        );  
-        history.push("/");
-      }
-      else if (!currentUser.attributes.isAdmin) {
-        alert(
-          "Necesitas ser administrador para acceder al sistema."
-        );
-        history.push("/");
-      }
-      else if (currentUser.attributes.adminRole !== "Superadmin" || currentUser.attributes.adminRole !== "marketing"  ) {
-        alert(
-          "No tienes acceso a esta página. Para más ayuda contacta con tu administrador."
-        );
-        history.push("/");
-      }
- 
-      const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-      return(permissionsJson);
-    }
-    
     const permissionsJson = await checkUser();
-    setPermissions(permissionsJson);
-
-    checkUser();
-    setLoading(true);
-    getAnuncios().then(anuncios => {
-      setAnuncios(anuncios);
-      setLoading(false);
-    })
-    .catch(error => {
-      setLoading(false);
-      console.log(error);
-    })
-  }, []);
-
-    if (permissions.Anuncios === false)  {
+    if(permissionsJson === 'NO_USER') {
+      alert(
+        "Necesitas haber ingresado al sistema para consultar esta página."
+      );  
+      history.push("/");
+    }
+    else if (permissionsJson === 'NOT_ADMIN'){
+      alert(
+        "Necesitas ser administrador para acceder al sistema."
+      );
+      history.push("/");
+    }
+    else if (permissionsJson === 'INVALID_SESSION'){
+      alert(
+        "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
+      );
+      history.push("/");
+    }
+    if (permissionsJson.Anuncios === false)  {
       alert("No tienes acceso a esta página. Para más ayuda contacta con tu administrador.");
       history.push('/home');
     };
+    setPermissions(permissionsJson);
+    try {
+      setLoading(true);
+      const anuncios = await getAnuncios();
+      setAnuncios(anuncios);
+      setLoading(false);
+    }
+    catch(error) {
+      setLoading(false);
+      console.log(error);
+    }
+  }, []);
+
   // return a Spinner when loading is true
   if (loading)
     return (
     <CirculoCarga/>
     );
 
-  function getBase64(file) {
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      console.log(reader.result);
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-    };
-  }
-
   const confirmDelete = (ObjId) => {
-    
-
-   
-
     confirmAlert({
       title: 'Eliminar anuncio',
       message: '¿Estas seguro que deseas eliminar este anuncio?',
@@ -182,7 +117,7 @@ export default function Anuncios() {
       > 
       <div class ="d-flex justify-content-center">    
       
-      <Card.Img className= "card-img card-anouncements" variant="top" src={`${anuncio[2]}`} />
+      <Card.Img className= "card-imgs card-anouncements" variant="top" src={`${anuncio[2]}`} />
       </div>
       <Card.ImgOverlay>
          <Card.Text className="d-flex justify-content-between mt-auto">  
@@ -205,18 +140,13 @@ export default function Anuncios() {
         event.preventDefault();
         event.stopPropagation();
         setValidated(true);
-      
       }
       
       else {
       const Anuncio = Parse.Object.extend("Anuncio");
-      const fileUploadControl = document.getElementById("formImg").files[0];
-  
-      console.log("imprimiendo register:", fileUploadControl);
-      const img64 = getBase64(fileUploadControl); // prints the base64 string<
+      const fileUploadControl = document.getElementById("formImg").files[0];  
       const img2 = new Parse.File(`img-anuncio`, fileUploadControl);
       setButtonDisabled(true); // <-- disable the button here
-
       img2.save().then(
         function () {
           // The file has been saved to Parse.
@@ -230,7 +160,7 @@ export default function Anuncios() {
             .then(
               (newAnuncio) => {
                 // Execute any logic that should take place after the object is saved.
-                alert("New object created with objectId: " + newAnuncio.id);
+                alert("Se ha creado un nuevo anuncio");
                  window.location.reload();
 
               },
@@ -240,7 +170,7 @@ export default function Anuncios() {
                 setButtonDisabled(false); // <-- disable the button here
 
                 alert(
-                  "Failed to create new object, with error code: " + error.message
+                  "Ha ocurrido un error al crear el anuncio:  " + error.message
                 );
                 console.log(error.message);
               }
@@ -251,7 +181,7 @@ export default function Anuncios() {
         },
         function (error) {
           // The file either could not be read, or could not be saved to Parse.
-          alert("the parse file could not be created, with error: ", error);
+          alert("No se pudo crear el anuncio. El error es: ", error);
         }
       );
      
@@ -265,9 +195,6 @@ export default function Anuncios() {
     return (
       <Form noValidate validated={validated} onSubmit={handleSubmit}   id = "createAnnouncementForm">
         <Row className="mb-3">
-       
-
-         
           <Form.Group as={Col} md="12" controlId="formImg">
             <Form.Label >Agregar una imagen para el anuncio</Form.Label>
             <Form.Control 
@@ -292,7 +219,7 @@ export default function Anuncios() {
 
   return (
     <div className="App">
-      <Sidebar/>
+      <Sidebar permissions = {permissions}/>
       <Header processName={"Anuncios"}/>
   
       <div className="posts-container"></div>
@@ -322,16 +249,16 @@ export default function Anuncios() {
         <Row xs={1} s={2} md={3} className="g-4">
           <Col>
             <Card
-              className="card-img top-50 start-50 translate-middle "
+              className="card-imgs top-50 start-50 translate-middle "
               onClick={handleShow}
             >
-              <Card.Title className="text-center card-title">
+              <Card.Title className="text-center card-title-anuncios">
 
                 <br /> Agregar un anuncio
 
               </Card.Title>
               <div className="d-flex">
-                <ion-icon name="add-circle-outline" class="icon-plus" ></ion-icon>
+                <ion-icon name="add-circle-outline" class="icon-plus-anuncios" ></ion-icon>
                 </div>
 
             

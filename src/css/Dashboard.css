@@ -36,14 +36,16 @@ header.app-header {
 header.app-header h1 {
   color: #2b4066;
   text-decoration: underline #519D78 5px;
-
+  margin-left: 50px;
 }
-
-
-
 
 .spacing {
   margin: 10px;
 }
-
+.home-icons-container.card-img {
+  object-fit: cover;
+  border-radius: 5px;
+  height: 190px;
+  width: 300px;
+}
 

@@ -10,6 +10,11 @@ import CirculoCarga from "../../components/CirculoCarga";
 import Screen from "../../components/Screen";
 import {getAllGolfAppointmentSlots} from '../../utils/client';
 
+// Permissions
+import {useHistory} from 'react-router-dom';
+import {checkUser} from '../../utils/client';
+
+
 export default function SalidasGolf() {
     const [appointments, setAppointments] = useState([]);
     const [newSlotStart, setNewSlotStart] = useState("");
@@ -18,8 +23,45 @@ export default function SalidasGolf() {
     const [openEdit, setOpenEdit] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    // Permissions
+    const history = useHistory();
+    const [permissions, setPermissions] = useState({});
+
     useEffect(async() => {
         setLoading(true);
+
+        // PErmissions
+        const permissionsJson = await checkUser();
+        if(permissionsJson === 'NO_USER') {
+        alert(
+            "Necesitas haber ingresado al sistema para consultar esta página."
+        );  
+        history.push("/");
+        }
+        else if (permissionsJson === 'NOT_ADMIN'){
+        alert(
+            "Necesitas ser administrador para acceder al sistema."
+        );
+        history.push("/");
+        }
+        else if (permissionsJson === 'INVALID_SESSION'){
+        alert(
+            "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
+        );
+        history.push("/");
+        }
+        setPermissions(permissionsJson);
+        try {
+        setLoading(true);
+        const permissionsJson = await checkUser();
+        setPermissions(permissionsJson);
+        setLoading(false);
+        } catch (error) {
+        setLoading(false);
+        console.log(error);
+        }
+
+        // Reservations
         const appointments = await getAllGolfAppointmentSlots();
         const resultados = [];
 		appointments.forEach( appointment => {
@@ -67,7 +109,7 @@ export default function SalidasGolf() {
         return <CirculoCarga/>;
 
     return (
-        <Screen title='Reservaciones de Golf'>
+        <Screen title='Reservaciones de Golf' permissions={permissions}>
             <FullCalendar
                 locale={esLocale}
                 dateClick={addAppointmentSlot}

@@ -22,12 +22,10 @@ const Auth = () => {
         alert(
           "Necesitas ser administrador para acceder al sistema."
         );
-        Parse.User.logOut().then(() => {
-          Parse.User.current();  // this will now be null
-        });
-        }
-        else {
-      history.push('/home');
+        Parse.User.logOut();
+      }
+      else {
+        history.push('/home');
       }
     }).catch(err => {
       if (err.message==="username/email is required."){
