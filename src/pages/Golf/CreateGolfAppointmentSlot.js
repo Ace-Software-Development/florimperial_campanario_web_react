@@ -58,6 +58,7 @@ export default function CreateGolfAppointmentSlot(props) {
                                     <Datetime
                                         inputProps={{className:'input'}}
                                         initialValue={props.startingDate}
+                                        input={false}
                                         onChange={date => appointmentOnChange('reservacion', 'fechaInicio', new Date(date.toISOString()))} 
                                     />
                                 </td>
@@ -111,8 +112,11 @@ export default function CreateGolfAppointmentSlot(props) {
                                         className='input'
                                         type="number"
                                         min="1"
-                                        defaultValue={5}
-                                        onChange={event => appointmentOnChange('reservacion', 'maximoJugadores', parseInt(event.target.value))} 
+                                        value={appointment.maximoJugadores}
+                                        onChange={event => {
+                                            if (event.target.value)
+                                                return appointmentOnChange('reservacion', 'maximoJugadores', parseInt(event.target.value));
+                                        }} 
                                     />
                                 </td>
                             </tr>

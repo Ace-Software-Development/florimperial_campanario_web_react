@@ -147,24 +147,22 @@ export async function updateGolfReservation(dataReservation, guests) {
 	}
 }
 
+/**
+ * Saves reservation data in DB
+ * @param {array} dataReservation 
+ * @param {array} dataReservationGolf 
+ * @param {array} guests 
+ * @returns true if reservation data saved succesfully
+ * else @returns false
+ */
 export async function createGolfReservation(dataReservation) {
-	/**
-	 * Saves reservation data in DB
-	 * @param {array} dataReservation 
-	 * @param {array} dataReservationGolf 
-	 * @param {array} guests 
-	 * @returns true if reservation data saved succesfully
-	 * else @returns false
-	 */
 	// Hacer query de Sitio
-	console.log(dataReservation);
-	console.log(dataReservation.fechaInicio);
 	const sitioQuery = new Parse.Query(SITIO_MODEL);
 	const sitioObject = await sitioQuery.get(dataReservation.sitio.objectId);
 	
 	// Update Reservation entry
-	let reservationObj = new Parse.Object(RESERVACION_MODEL);
-	reservationObj.set('fechaInicio', toISOString(dataReservation.fechaInicio));
+	const reservationObj = new RESERVACION_MODEL();
+	reservationObj.set('fechaInicio', dataReservation.fechaInicio);
 	reservationObj.set('sitio', sitioObject);
 	reservationObj.set('maximoJugadores', dataReservation.maximoJugadores);
 	reservationObj.set('estatus', dataReservation.estatus);
@@ -175,8 +173,7 @@ export async function createGolfReservation(dataReservation) {
 		reservationObj.set('profesor', profesorObj);
 	}
 	const result = await reservationObj.save();
-	console.log(result);
-	return true;
+	return result;
 }
 
 // General API calls
