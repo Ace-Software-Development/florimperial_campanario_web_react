@@ -9,7 +9,6 @@ import GuestsSection from '../../components/GuestsSection';
 import InputSelector from '../../components/InputSelector';
 import "react-datetime/css/react-datetime.css";
 
-
 export default function EditGolfAppointmentSlot(props) {
     const [isLoading, setLoading] = useState(true);
     const [appointment, setAppointment] = useState(props.appointmentData);
