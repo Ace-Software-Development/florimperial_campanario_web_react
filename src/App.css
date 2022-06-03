@@ -10,7 +10,7 @@ header.app-header {
   padding: 20px 100px;
   justify-content: center;
   color: white;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 .spacing {
@@ -27,14 +27,12 @@ main {
   align-items: center;
   flex-direction: column;
   margin-top: 20px;
-  font-family: 'Lato', sans-serif;
-
+  font-family: "Lato", sans-serif;
 }
 
 main h1 {
   margin-bottom: 20px;
-  font-family: 'Lato', sans-serif;
-
+  font-family: "Lato", sans-serif;
 }
 
 .posts-container {

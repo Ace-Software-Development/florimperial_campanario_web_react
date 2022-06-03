@@ -1,71 +1,62 @@
-.logo-campanario{
-    width: auto;
-    height: 150px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+.logo-campanario {
+  width: auto;
+  height: 150px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
-.recuperar-contrasena{
-    color: #519D78;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+.recuperar-contrasena {
+  color: #519d78;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.auth-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 10vh;
-    flex-direction: column;
-}
-
-.auth-form{
-    display: flex;
-    flex-direction: column;
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10vh;
+  flex-direction: column;
 }
 
-.auth-form input{
-    display: block;
-    padding: 5px 15px;
-    border-radius: 5px;
-    border: solid 1px #dadada;
-    
+.auth-form {
+  display: flex;
+  flex-direction: column;
 }
 
-.auth-form input:hover{
-    border: solid 3px #519D78;
-}
-.auth-form span{
-    text-align: center;
-    font-size: 0.8rem;
-    cursor: pointer;
-    margin: 10px 0;
-   
-}
-.auth-form span:hover{
-    text-decoration: underline;
+.auth-form input {
+  display: block;
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: solid 1px #dadada;
 }
 
-.auth-form span:hover{
-    text-decoration: underline;
+.auth-form input:hover {
+  border: solid 3px #519d78;
+}
+.auth-form span {
+  text-align: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin: 10px 0;
+}
+.auth-form span:hover {
+  text-decoration: underline;
 }
 
-.auth-form button{
-    background-color: #2B4066;
-    color: white;
-    padding: 5px 0px;
-    border: none;
-    border-radius: 5px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 300px;
-    margin-top: 40px;
-    margin-left: 62.5px;
+.auth-form span:hover {
+  text-decoration: underline;
 }
 
-.auth-form button:hover{
-    background-color: #3e98ec;;
+.auth-form button {
+  background-color: #2b4066;
+  color: white;
+  display: block;
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: solid 1px #dadada;
 }
 
-
+.auth-form button:hover {
+  background-color: #3e98ec;
+}
