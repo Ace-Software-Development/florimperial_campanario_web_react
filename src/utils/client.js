@@ -230,7 +230,7 @@ export async function parseLogout() {
 
 /**
  * getAdminRoleId
- * @description it obtains from db the role of the received admin user
+ * @description it obtains from db the role ID of the received admin user
  * @param {number} idUsuario: the _User objectId
  * @returns {number} the objectId of admin's role
  */
@@ -244,6 +244,24 @@ export async function getAdminRoleId(idUsuario) {
   query.equalTo('Admin', userPointer);
   const rolQuery = await query.find();
   return rolQuery[0].attributes.rol.id;
+}
+
+/**
+ * getAdminRole
+ * @description it obtains from db the role of the received admin user
+ * @param {number} idUsuario: the _User objectId
+ * @returns {ParseObject} the complete object of admin's role
+ */
+export async function getAdminRole(idUsuario) {
+  const query = new Parse.Query('AdminRol');
+  let userPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: idUsuario,
+  };
+  query.equalTo('Admin', userPointer);
+  const rolQuery = await query.find();
+  return rolQuery[0];
 }
 
 /**
@@ -295,10 +313,7 @@ export async function getAnuncios() {
 
 export async function getAdminUsers() {
   const query = new Parse.Query('AdminRol');
-  //query.include("rol");
   const result = await query.find();
-  //console.log(result.length);
-  //console.log(result[0].get("rol").id);
   return result;
 }
 

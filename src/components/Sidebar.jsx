@@ -74,7 +74,7 @@ export default function Sidebar(permissions) {
                   <NavText>Sugerencias</NavText>
                 </NavItem>
 
-                <NavItem eventKey="perfil">
+                <NavItem eventKey="mi-perfil">
                   <NavIcon>
                     <ion-icon name="person" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
