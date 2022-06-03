@@ -1,14 +1,13 @@
 import '../css/GestionSocios.css';
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import Sidebar from '../components/Sidebar';
 import Card from 'react-bootstrap/Card';
 import TablaAdmins from '../components/TablaAdmins';
 import {useEffect, useState} from 'react';
 import CirculoCarga from '../components/CirculoCarga';
 import {checkUser, getAdminUsers, getRolesNames} from '../utils/client';
 import {useHistory} from 'react-router-dom';
-import Header from '../components/Header';
+import Screen from '../components/Screen';
 
 export default function PanelAdmins() {
   const history = useHistory();
@@ -66,14 +65,14 @@ export default function PanelAdmins() {
     );
 
   return (
-    <div className="App">
-      <Sidebar permissions={permissions} />
-      <Header processName={'Panel de administradores'} />
-      <div style={{marginLeft: '145px'}}>
-        <Card style={{width: '70%'}}>
-          <TablaAdmins adminList={props} />
-        </Card>
+    <Screen permissions={permissions} title="Panel de administradores">
+      <div className="App">
+        <div style={{marginLeft: '145px'}}>
+          <Card style={{width: '70%'}}>
+            <TablaAdmins adminList={props} />
+          </Card>
+        </div>
       </div>
-    </div>
+    </Screen>
   );
 }

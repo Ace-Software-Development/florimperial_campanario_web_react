@@ -1,0 +1,88 @@
+.guest-section-title {
+	margin-bottom: .5rem !important;
+}
+
+.guests-container {
+	position: relative;
+}
+
+.add-guest-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.guest-add-btn {
+	background-color: var(--primary-color);
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-size: large;
+	font-weight: bold;
+}
+
+.guest-add-btn:hover {
+	cursor: pointer;
+	background-color: var(--secondary-color);
+}
+
+.guest-text-input {
+	width: 75%;
+}
+
+.suggested-guests-container {
+	position: absolute;
+	width: 75%;
+	height: 150px;
+	bottom: 100%;
+	background-color: white;
+	overflow-y: scroll;
+	border-radius: 10px 10px 0 0 ;
+	box-shadow: -1px -5px 20px 0px rgba(221, 221, 221, 0.65);
+	-webkit-box-shadow: -1px -5px 20px 0px rgba(221, 221, 221, 0.65);
+	-moz-box-shadow: -1px -5px 20px 0px rgba(221, 221, 221, 0.65);
+}
+
+
+/* Suggested guests */
+.suggested-guests-scroll {
+	/*background-color: rgba(0, 255, 21, 0.411);*/
+	max-width: 100%;
+}
+
+.suggested-guests-scroll p {
+	color: var(--primary-color);
+	padding: .3rem .4rem;
+}
+
+.suggested-guest {
+	padding: .2rem .55rem;
+	color: var(--primary-color);
+}
+
+.suggested-guest:hover {
+	cursor: pointer;
+	background-color: rgb(231, 231, 231);
+}
+
+
+/* Guests list */
+.guests-list-container {
+	margin: 1rem 0;
+}
+
+.guest-container {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: .5rem;
+	background-color: var(--light-bg);
+	padding: .3rem .6rem;
+	border-radius: 5px;
+}
+
+.guest-delete-btn:hover {
+	cursor: pointer;
+}

@@ -1,14 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import Parse from 'parse';
 import '../css/Home.css';
-import {useParseQuery} from '@parse/react';
-import ParseObject from 'parse/lib/browser/ParseObject';
-import Button from 'react-bootstrap/Button';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
-import SidenavOverlay from '../components/SidenavOverlay';
-import {getPermissions, checkUser} from '../utils/client';
+import Screen from '../components/Screen';
+import {checkUser} from '../utils/client';
 import CirculoCarga from '../components/CirculoCarga';
 import HomeIcons from '../components/HomeIcons';
 
@@ -49,13 +43,10 @@ export default function Home() {
     );
 
   return (
-    <div className="App">
-      <Sidebar permissions={permissions} />
-      <Header processName={'Inicio'} />
-
+    <Screen permissions={permissions} title="Inicio">
       <div className="home-cards">
         <HomeIcons permissions={permissions} />
       </div>
-    </div>
+    </Screen>
   );
 }

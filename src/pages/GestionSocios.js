@@ -1,7 +1,6 @@
 import '../css/GestionSocios.css';
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import Sidebar from '../components/Sidebar';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -15,6 +14,7 @@ import CirculoCarga from '../components/CirculoCarga';
 import {createMember, checkUser} from '../utils/client';
 import {useHistory} from 'react-router-dom';
 import Papa from 'papaparse';
+import Screen from '../components/Screen';
 
 export default function GestionSocios() {
   const history = useHistory();
@@ -158,99 +158,100 @@ export default function GestionSocios() {
   ));
 
   return (
-    <div className="App">
-      <div onClick={e => e.stopPropagation()}>
-        <Modal size="lg" show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Registrar socios en el sistema</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div style={{display: `${uploading}`}}>
-              <CirculoCarga />
-            </div>
-
-            {csvForm}
-            <div style={{display: `${showReport}`}}>
-              Reporte de carga de usuarios:
-              {reportList}
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button className="btn-campanario" onClick={handleClose}>
-              Cancelar
-            </Button>
-            <Button
-              type="submit"
-              form="uploadCsv"
-              className="btn-publicar"
-              disabled={buttonDisabled}
-            >
-              Registrar socios
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
-
-      <div onClick={e => e.stopPropagation()}>
-        <Modal size="lg" show={showHelp} onHide={handleCloseHelp}>
-          <Modal.Header closeButton>
-            <Modal.Title>Ayuda</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Para realizar la carga de usuarios, se debe ingresar al sistema un archivo .csv con el
-            siguiente formato:
-            <TablaCsvEjemplo />
-            Se generará una cuenta para cada socio y se registrarán los números de acción que aún no
-            están en el sistema La contraseña por defalut para el socio será su número de acción.
-            <br />
-            <br />
-            Es importante solicitarle al socio que cambie su contraseña a la brevedad posible.
-            <br />
-            <br />
-            Posteriormente al registro de los números de acción, podrá gestionar el número de pases
-            disponibles desde el panel de gestión de socios.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button className="btn-publicar" onClick={handleCloseHelp}>
-              Cerrar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
-
-      <Sidebar permissions={permissions} />
-      <header className="app-header">
-        <h1 className="spacing">
-          Gestión de Socios
-          <button type="button" className="btn-information" onClick={handleShowHelp}>
-            <ion-icon name="information-circle-outline" style={{fontSize: '.5em'}}></ion-icon>
-          </button>
-        </h1>
-      </header>
-      <Container>
-        <Row xs={1} s={2} md={3} className="g-5">
-          <Col>
-            <Card
-              onClick={handleShow}
-              style={{width: '82rem'}}
-              className="card-imgs cargar-datos top-50 start-50 translate-middle "
-            >
-              <Card.Title className="text-center card-title">
-                <br /> Cargar datos
-              </Card.Title>
-              <div className="d-flex">
-                <ion-icon
-                  className="plus-icon-gestion"
-                  name="add-circle-outline"
-                  class="icon-plus"
-                ></ion-icon>
+    <Screen permissions={permissions} title="none">
+      <div className="App">
+        <div onClick={e => e.stopPropagation()}>
+          <Modal size="lg" show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Registrar socios en el sistema</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div style={{display: `${uploading}`}}>
+                <CirculoCarga />
               </div>
-              <a href="#" class="stretched-link"></a>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-      <div></div>
-    </div>
+
+              {csvForm}
+              <div style={{display: `${showReport}`}}>
+                Reporte de carga de usuarios:
+                {reportList}
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button className="btn-campanario" onClick={handleClose}>
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                form="uploadCsv"
+                className="btn-publicar"
+                disabled={buttonDisabled}
+              >
+                Registrar socios
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+
+        <div onClick={e => e.stopPropagation()}>
+          <Modal size="lg" show={showHelp} onHide={handleCloseHelp}>
+            <Modal.Header closeButton>
+              <Modal.Title>Ayuda</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Para realizar la carga de usuarios, se debe ingresar al sistema un archivo .csv con el
+              siguiente formato:
+              <TablaCsvEjemplo />
+              Se generará una cuenta para cada socio y se registrarán los números de acción que aún
+              no están en el sistema La contraseña por defalut para el socio será su número de
+              acción.
+              <br />
+              <br />
+              Es importante solicitarle al socio que cambie su contraseña a la brevedad posible.
+              <br />
+              <br />
+              Posteriormente al registro de los números de acción, podrá gestionar el número de
+              pases disponibles desde el panel de gestión de socios.
+            </Modal.Body>
+            <Modal.Footer>
+              <Button className="btn-publicar" onClick={handleCloseHelp}>
+                Cerrar
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+
+        <header className="app-header">
+          <h1 className="spacing">
+            Gestión de Socios
+            <button type="button" className="btn-information" onClick={handleShowHelp}>
+              <ion-icon name="information-circle-outline" style={{fontSize: '.5em'}}></ion-icon>
+            </button>
+          </h1>
+        </header>
+        <Container>
+          <Row xs={1} s={2} md={3} className="g-5">
+            <Col>
+              <Card
+                onClick={handleShow}
+                style={{width: '82rem'}}
+                className="card-imgs cargar-datos top-50 start-50 translate-middle "
+              >
+                <Card.Title className="text-center card-title">
+                  <br /> Cargar datos
+                </Card.Title>
+                <div className="d-flex">
+                  <ion-icon
+                    className="plus-icon-gestion"
+                    name="add-circle-outline"
+                    class="icon-plus"
+                  ></ion-icon>
+                </div>
+                <a href="#" class="stretched-link"></a>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </Screen>
   );
 }

@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
 import Anuncios from './pages/Anuncios';
-import DetalleAnun from './pages/DetalleAnun';
 import SalidasGolf from './pages/Golf/SalidasGolf';
 import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
@@ -17,16 +16,6 @@ export default function App() {
         <Route path="/home">
           <Home />
         </Route>
-        <Route
-          path="/anuncios/:anuncioId"
-          render={() => {
-            return (
-              <div>
-                <DetalleAnun />
-              </div>
-            );
-          }}
-        />
         <Route path="/golf/salidas">
           <SalidasGolf />
         </Route>
@@ -36,14 +25,14 @@ export default function App() {
         <Route path="/gestion-de-socios">
           <GestionSocios />
         </Route>
-        <Route path="/panel-de-administradores">
-          <PanelAdmins />
-        </Route>
         <Route path="/recovery">
           <PasswordRecovery />
         </Route>
         <Route path="/cerrar-sesion">
           <LogOut />
+        </Route>
+        <Route path="/panel-de-administradores">
+          <PanelAdmins />
         </Route>
         <Route path="/">
           <Auth />

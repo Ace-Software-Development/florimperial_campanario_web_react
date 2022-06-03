@@ -4,7 +4,7 @@ import '../css/Dashboard.css';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import React from 'react';
 
-function Sidebar(permissions) {
+export default function Sidebar(permissions) {
   let anuncios,
     golf,
     raqueta,
@@ -154,5 +154,3 @@ function Sidebar(permissions) {
     </Router>
   );
 }
-
-export default Sidebar;

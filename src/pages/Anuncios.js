@@ -13,8 +13,7 @@ import Form from 'react-bootstrap/Form';
 import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from '../components/CirculoCarga';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
+import Screen from '../components/Screen';
 import {getAnuncios, checkUser} from '../utils/client';
 
 export default function Anuncios() {
@@ -185,53 +184,48 @@ export default function Anuncios() {
   const testform = FormExample();
 
   return (
-    <div className="App">
-      <Sidebar permissions={permissions} />
-      <Header processName={'Anuncios'} />
+    <Screen permissions={permissions} title="Anuncios">
+      <div className="App">
+        <div onClick={e => e.stopPropagation()}>
+          <Modal size="lg" show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Crear anuncio</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{testform}</Modal.Body>
+            <Modal.Footer>
+              <Button className="btn-campanario" onClick={handleClose}>
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                form="createAnnouncementForm"
+                className="btn-publicar"
+                disabled={buttonDisabled}
+              >
+                Publicar
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
 
-      <div className="posts-container"></div>
+        <Container>
+          <Row xs={1} s={2} md={3} className="g-4">
+            <Col>
+              <Card className="card-imgs top-50 start-50 translate-middle " onClick={handleShow}>
+                <Card.Title className="text-center card-title-anuncios">
+                  <br /> Agregar un anuncio
+                </Card.Title>
+                <div className="d-flex">
+                  <ion-icon name="add-circle-outline" class="icon-plus-anuncios"></ion-icon>
+                </div>
 
-      <div onClick={e => e.stopPropagation()}>
-        <Modal size="lg" show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Crear anuncio</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{testform}</Modal.Body>
-          <Modal.Footer>
-            <Button className="btn-campanario" onClick={handleClose}>
-              Cancelar
-            </Button>
-            <Button
-              type="submit"
-              form="createAnnouncementForm"
-              className="btn-publicar"
-              disabled={buttonDisabled}
-            >
-              Publicar
-            </Button>
-          </Modal.Footer>
-        </Modal>
+                <a href="#" class="stretched-link"></a>
+              </Card>
+            </Col>
+            {listItems}
+          </Row>
+        </Container>
       </div>
-
-      <Container>
-        <Row xs={1} s={2} md={3} className="g-4">
-          <Col>
-            <Card className="card-imgs top-50 start-50 translate-middle " onClick={handleShow}>
-              <Card.Title className="text-center card-title-anuncios">
-                <br /> Agregar un anuncio
-              </Card.Title>
-              <div className="d-flex">
-                <ion-icon name="add-circle-outline" class="icon-plus-anuncios"></ion-icon>
-              </div>
-
-              <a href="#" class="stretched-link"></a>
-            </Card>
-          </Col>
-          {listItems}
-        </Row>
-      </Container>
-
-      <div></div>
-    </div>
+    </Screen>
   );
 }
