@@ -3,16 +3,17 @@ import Dialog from '@mui/material/Dialog';
 import Datetime from 'react-datetime';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent, DialogActions } from '@mui/material';
-import { getReservationGolf, getAllActiveUsers, getAllCoaches, updateGolfReservation } from '../../utils/client';
+import { getReservationGolf, getAllActiveUsers, getAllCoaches, updateGolfReservation } from '../utils/client';
 import { Button } from '@mui/material';
-import GuestsSection from '../../components/GuestsSection';
-import InputSelector from '../../components/InputSelector';
+import GuestsSection from '../components/GuestsSection';
+import InputSelector from '../components/InputSelector';
 import "react-datetime/css/react-datetime.css";
 
 export default function EditGolfAppointmentSlot(props) {
     const [appointment, setAppointment] = useState(props.appointmentData);
     const [maxGuests, setMaxGuests] = useState(appointment.maximoJugadores);
-    const [guests, setGuests] = useState([]);
+    const [holes, setHoles] = useState(9);
+	const [guests, setGuests] = useState([]);
 	const [disabledButton, setDisabledButton] = useState(false);
 
     useEffect(async () => {
@@ -38,8 +39,8 @@ export default function EditGolfAppointmentSlot(props) {
         delete appointment.title;
         delete appointment.id;
         
-        appointment.reservacionGolf = golfAppointment;
-        updateGolfReservation(appointment, guests).then(() => window.location.reload());
+        // appointment.reservacionGolf = golfAppointment;
+        // updateGolfReservation(appointment, guests).then(() => window.location.reload());
     }
 
     return(
@@ -88,6 +89,18 @@ export default function EditGolfAppointmentSlot(props) {
 								</td>
 							</tr>
 						}
+
+						<tr>
+							<td>
+								<p>Hoyos a jugar</p>
+							</td>
+							<td>
+								<select defaultValue={holes} onChange={setHoles}>
+									<option value={9}>9</option>
+									<option value={18}>18</option>
+								</select>
+							</td>
+						</tr>
 
 						<tr>
 							<td>

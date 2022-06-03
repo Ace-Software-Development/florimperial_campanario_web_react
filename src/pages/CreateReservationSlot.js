@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import { createGolfReservation } from '../../utils/client';
 import { DialogContent, DialogActions } from '@mui/material';
 import { Button } from '@mui/material';
-import { getAllCoaches } from '../../utils/client';
-import InputSelector from '../../components/InputSelector';
+import { getAllCoaches, createGolfReservation } from '../utils/client';
+import InputSelector from '../components/InputSelector';
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 

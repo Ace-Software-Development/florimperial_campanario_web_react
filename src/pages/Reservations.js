@@ -3,28 +3,19 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import CreateReservationSlot from './CreateAppointmentSlot';
+import CreateReservationSlot from './CreateReservationSlot';
 import esLocale from '@fullcalendar/core/locales/es';
-import CirculoCarga from "../../components/CirculoCarga";
-import Screen from "../../components/Screen";
+import CirculoCarga from '../components/CirculoCarga';
+import Screen from "../components/Screen";
 import EditReservation from './EditReservation';
 
-export default function SalidasGolf() {
-    const [appointments, setAppointments] = useState([]);
+export default function Reservations(props) {
+    const [appointments, setAppointments] = useState(props.reservationData);
     const [newSlotStart, setNewSlotStart] = useState("");
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [loading, setLoading] = useState(true);
-
-    useEffect(async() => {
-        setLoading(true);
-        // Reservations
-        const results = await props.getReservationsData();
-        setAppointments(results);
-        setLoading(false);
-        return;
-    }, [])
 
     const addAppointmentSlot = (dateClickInfo) => {
         setNewSlotStart(dateClickInfo.date);
@@ -41,7 +32,7 @@ export default function SalidasGolf() {
         return <CirculoCarga/>;
 
     return (
-        <Screen title={props.screenTitle} screenPath={props.screenPath}  permissions={permissions}>
+        <Screen title={props.screenTitle} screenPath={props.screenPath} >
             <FullCalendar
                 locale={esLocale}
                 dateClick={addAppointmentSlot}
@@ -78,7 +69,7 @@ export default function SalidasGolf() {
             }
 
             { openCreate &&
-                <CreateGolfAppointmentSlot 
+                <CreateReservationSlot 
                     open={openCreate} 
                     onClose={setOpenCreate}
                     startingDate={newSlotStart}

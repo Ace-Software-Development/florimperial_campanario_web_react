@@ -177,6 +177,19 @@ export async function createGolfReservation(dataReservation) {
 
 // General API calls
 
+
+export async function getAllAvailableReservations(module) {
+	let data = [];
+	switch (module) {
+		case 'golf':
+			data = getAllGolfAppointmentSlots();
+			break;
+
+	}
+
+	return data;
+}
+
 /**
  * Retrieves all active users from DB
  * @returns {array} data
