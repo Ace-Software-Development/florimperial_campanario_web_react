@@ -28,9 +28,6 @@ export default function Reservations(props) {
         setOpenEdit(true);
     }
 
-    if (loading)
-        return <CirculoCarga/>;
-
     return (
         <Screen title={props.screenTitle} screenPath={props.screenPath} >
             <FullCalendar

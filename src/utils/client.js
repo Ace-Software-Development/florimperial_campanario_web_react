@@ -182,11 +182,11 @@ export async function getAllAvailableReservations(module) {
 	let data = [];
 	switch (module) {
 		case 'golf':
-			data = getAllGolfAppointmentSlots();
+			data = await getAllGolfAppointmentSlots();
 			break;
 
 	}
-
+	console.log("data = ", data);
 	return data;
 }
 

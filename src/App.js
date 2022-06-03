@@ -13,12 +13,20 @@ import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
 import { getAllAvailableReservations, getReservationGolf } from './utils/client';
 import Reservations from './pages/Reservations';
+import { useEffect, useState } from 'react';
 
 // import {getAllGolfAppointmentSlots} from '../utils/client';
 
 
 export default function App() {
-  return (
+    const [golfReservationData, setGolfReservationData] = useState(null);
+
+    useEffect(async () => {
+        const data = await getAllAvailableReservations('golf');
+        setGolfReservationData(data);
+    }, [])
+
+    return (
     <Router>
         <Switch>
             <Route path="/home">
@@ -30,7 +38,7 @@ export default function App() {
                     // Reservation Calendar
                     screenTitle='Reservaciones de Golf'
                     screenPath='golf/salidas'
-                    reservationsData={ getAllAvailableReservations } // Here we need to get the data from db and format it
+                    reservationsData={ golfReservationData } // Here we need to get the data from db and format it
 
                     // Edit and create Reservation
                     sitios={[]}
@@ -60,7 +68,7 @@ export default function App() {
             </Route>
         </Switch>
     </Router>
-  );
+    );
 }
 
 // TODO: hacer una query que junte las queries de getReservationGolf() y getAllGolfAppointmentSlots()
@@ -117,28 +125,28 @@ export default function App() {
 //     },
 // ]
 
-const testData = [
-    {
-        'objectId': "1yJiN1uBBA",
-        'id': "1yJiN1uBBA",
-        'title': "daniel",
-        'start': "16May2022T18:30:00",
-        'estatus': 1,
-        'maximoJugadores': 5,
-        'sitio': {
-            'objectId': "f9UD2GDs2e",
-            'nombre': "Hoyo 10",
-            'tableName': 'Sitio'
-        },
-        'profesor': null,
-        'user': null,
-        'golfAppointment': { // only present if it's a golf reservation
-            'objectId': '',
-            'carritosReservados': 0,
-            'cantidadHoyos': 9,
-            'reservation': {
-                'objectId': ''
-            },
-        }
-    },
-]
+// const testData = [
+//     {
+//         'objectId': "1yJiN1uBBA",
+//         'id': "1yJiN1uBBA",
+//         'title': "daniel",
+//         'start': "16May2022T18:30:00",
+//         'estatus': 1,
+//         'maximoJugadores': 5,
+//         'sitio': {
+//             'objectId': "f9UD2GDs2e",
+//             'nombre': "Hoyo 10",
+//             'tableName': 'Sitio'
+//         },
+//         'profesor': null,
+//         'user': null,
+//         'golfAppointment': { // only present if it's a golf reservation
+//             'objectId': '',
+//             'carritosReservados': 0,
+//             'cantidadHoyos': 9,
+//             'reservation': {
+//                 'objectId': ''
+//             },
+//         }
+//     },
+// ]
