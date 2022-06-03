@@ -67,12 +67,12 @@ export default function Sidebar(permissions) {
                   <NavText>Anuncios</NavText>
                 </NavItem>
 
-                <NavItem eventKey="sugerencias">
+                {/*  <NavItem eventKey="sugerencias">
                   <NavIcon>
                     <ion-icon name="bulb" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Sugerencias</NavText>
-                </NavItem>
+            </NavItem>
 
                 <NavItem eventKey="perfil">
                   <NavIcon>
@@ -80,6 +80,7 @@ export default function Sidebar(permissions) {
                   </NavIcon>
                   <NavText>Perfil</NavText>
                 </NavItem>
+            */}
 
                 <NavItem eventKey="panel-de-administradores" style={{display: `${gestion}`}}>
                   <NavIcon>
@@ -87,14 +88,14 @@ export default function Sidebar(permissions) {
                   </NavIcon>
                   <NavText>Panel de administradores</NavText>
                 </NavItem>
-
+                {/*
                 <NavItem eventKey="reglas" style={{display: `${gestion}`}}>
                   <NavIcon>
                     <ion-icon name="book" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Reglas</NavText>
                 </NavItem>
-
+          */}
                 <NavItem eventKey="golf" style={{display: `${golf}`}}>
                   <NavIcon>
                     <ion-icon name="golf" style={{fontSize: '1.25em'}}></ion-icon>
@@ -105,7 +106,7 @@ export default function Sidebar(permissions) {
                   </NavItem>
                 </NavItem>
 
-                <NavItem eventKey="raqueta" style={{display: `${raqueta}`}}>
+                {/*<NavItem eventKey="raqueta" style={{display: `${raqueta}`}}>
                   <NavIcon>
                     <ion-icon name="tennisball" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
@@ -139,7 +140,7 @@ export default function Sidebar(permissions) {
                   <NavItem eventKey="alberca/reservaciones">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
-                </NavItem>
+                </NavItem>*/}
                 <NavItem eventKey="cerrar-sesion">
                   <NavIcon>
                     <ion-icon name="log-out" style={{fontSize: '1.25em'}}></ion-icon>
