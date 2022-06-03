@@ -25,6 +25,7 @@ export default function App() {
     useEffect(async () => {
         const data = await getAllAvailableReservations('golf');
         setGolfReservationData(data);
+        console.log("datos : ", golfReservationData); 
     }, [])
 
     return (

@@ -10,6 +10,7 @@ const COACH_MODEL = Parse.Object.extend("Profesor");
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend("Invitado");
 
+// Golf module
 export async function getAllGolfAppointmentSlots(){
 	try {
 		// Query all sitios belonging to Golf
@@ -172,9 +173,15 @@ export async function createGolfReservation(dataReservation) {
 	return result;
 }
 
+// Gym module
+
 // General API calls
 
-
+/**
+ * Retrieves all available module reservations from db
+ * @param {string} module 
+ * @returns {array} data
+ */
 export async function getAllAvailableReservations(module) {
 	let data = [];
 	switch (module) {
