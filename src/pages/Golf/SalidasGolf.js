@@ -1,76 +1,158 @@
 import React, { useEffect, useState } from 'react';
-import Parse from 'parse';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import CreateGolfAppointmentSlot from './CreateGolfAppointmentSlot';
+import EditGolfAppointmentSlot from './EditGolfAppointmentSlot';
+import esLocale from '@fullcalendar/core/locales/es';
+import CirculoCarga from "../../components/CirculoCarga";
+import Screen from "../../components/Screen";
+import {getAllGolfAppointmentSlots} from '../../utils/client';
+
+// Permissions
+import {useHistory} from 'react-router-dom';
+import {checkUser} from '../../utils/client';
+
 
 export default function SalidasGolf() {
     const [appointments, setAppointments] = useState([]);
+    const [newSlotStart, setNewSlotStart] = useState("");
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
+    const [openCreate, setOpenCreate] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-       async function getGolfAppointments() {
-            try {
-                const query = new Parse.Query('ReservacionGolf');
-                query.include("reservacion");
-                query.include(["reservacion.user"]);
-                query.include(["reservacion.sitio"]);
+    // Permissions
+    const history = useHistory();
+    const [permissions, setPermissions] = useState({});
 
-                const reservaciones = await query.find();
-                const resultados = new Array(0);
+    useEffect(async() => {
+        setLoading(true);
 
-                for (let i = 0; i < reservaciones.length; i++) {
-                    let title = '';
-
-                    if (!reservaciones[i].get("reservacion").get("user")) {
-                        title = 'Disponible';
-                    } else {
-                        title = reservaciones[i].get("reservacion").get("user").get("username");
-                    }
-                    
-                    resultados.push({
-                        'id': reservaciones[i].id,
-                        'title': title,
-                        'start': reservaciones[i].get("reservacion").get("fechaInicio"),
-                        'hole': reservaciones[i].get("reservacion").get("sitio").get("nombre")
-                    })
-                    
-                    console.log(reservaciones[i].get("reservacion").get("sitio").get("nombre"));
-                }
-
-                setAppointments(resultados);
-           } catch (error) {
-               console.log(`Ha ocurrido un error: ${ error }`);
-           }
+        // PErmissions
+        const permissionsJson = await checkUser();
+        if(permissionsJson === 'NO_USER') {
+        alert(
+            "Necesitas haber ingresado al sistema para consultar esta página."
+        );  
+        history.push("/");
         }
-        
-        getGolfAppointments();
+        else if (permissionsJson === 'NOT_ADMIN'){
+        alert(
+            "Necesitas ser administrador para acceder al sistema."
+        );
+        history.push("/");
+        }
+        else if (permissionsJson === 'INVALID_SESSION'){
+        alert(
+            "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
+        );
+        history.push("/");
+        }
+        setPermissions(permissionsJson);
+        try {
+        setLoading(true);
+        const permissionsJson = await checkUser();
+        setPermissions(permissionsJson);
+        setLoading(false);
+        } catch (error) {
+        setLoading(false);
+        console.log(error);
+        }
 
+        // Reservations
+        const appointments = await getAllGolfAppointmentSlots();
+        const resultados = [];
+		appointments.forEach( appointment => {
+			resultados.push({
+				'objectId': appointment.id,
+				'id': appointment.id,
+				'title': appointment.get("user")===undefined || appointment.get("estatus") === 1 ? 'Disponible' : appointment.get("user").get("username"),
+				'start': appointment.get("fechaInicio"),
+				'estatus': appointment.get("estatus"),
+				'maximoJugadores': appointment.get("maximoJugadores"),
+                'sitio': {
+                    'objectId': appointment.get("sitio").id,
+                    'nombre': appointment.get("sitio").get("nombre"),
+                    'tableName': 'Sitio'
+                },
+                'profesor': appointment.get('profesor') ? {
+                    'objectId': appointment.get('profesor').id,
+                    'nombre': appointment.get('profesor').get('nombre'),
+                    'tableName': 'Profesor'
+                } : null,
+				'user': appointment.get('user') ? {
+                    'objectId': appointment.get('user').id,
+                    'username': appointment.get('user').get('username'),
+                    'tableName': 'User'
+                } : null
+			})
+        });
+        setAppointments(resultados);
+        setLoading(false);
         return;
-    }, [appointments.length])
+    }, [])
+
+    const addAppointmentSlot = (dateClickInfo) => {
+        setNewSlotStart(dateClickInfo.date);
+        setOpenCreate(true);
+    }
+
+    const editAppointment = (eventClick) => {
+        const id = eventClick.event._def.publicId;
+        setSelectedAppointment(appointments.find(row => row.objectId == id));
+        setOpenEdit(true);
+    }
+
+    if (loading)
+        return <CirculoCarga/>;
 
     return (
-        <div>
-        <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin]}
-            views={{
-                customMonth : {
-                    buttonText : 'Mes'
-                },
-                customWeek : {
-                    buttonText : 'Semana'
-                },
-                customDay : {
-                    buttonText : 'Día'
-                }
-            }}
-            headerToolbar={{
-                left: 'today prev,next',
-                center: 'title',
-                right: 'dayGridMonth,dayGridWeek,timeGridDay'
-            }}
-            initialView='dayGridMonth'
-            events={appointments}
+        <Screen title='Reservaciones de Golf' permissions={permissions}>
+            <FullCalendar
+                locale={esLocale}
+                dateClick={addAppointmentSlot}
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                views={{
+                    customMonth : {
+                        buttonText : 'Mes'
+                    },
+                    customWeek : {
+                        buttonText : 'Semana'
+                    },
+                    customDay : {
+                        buttonText : 'Día'
+                    }
+                }}
+                headerToolbar={{
+                    left: 'today prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,timeGridDay'
+                }}
+                initialView='dayGridMonth'
+                events={appointments}
+                eventClick={editAppointment}
             />
-        </div>
+
+            { openEdit &&
+                <div>
+                    <script src='fullcalendar/lang/es.js'></script>
+                    <EditGolfAppointmentSlot 
+                        open={openEdit} 
+                        onClose={setOpenEdit}
+                        appointmentData={selectedAppointment}
+                    />
+                </div>
+            }
+
+            { openCreate &&
+                <CreateGolfAppointmentSlot 
+                    open={openCreate} 
+                    onClose={setOpenCreate}
+                    startingDate={newSlotStart}
+                />
+            }
+        </Screen>
     );
 }

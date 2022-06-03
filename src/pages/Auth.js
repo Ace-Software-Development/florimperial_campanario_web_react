@@ -18,15 +18,14 @@ const Auth = () => {
     user.set('password', password);
 
     user.logIn().then((user) => {
-      if (user.attributes.isAdmin === false) {
+      if (!user.attributes.isAdmin) {
         alert(
           "Necesitas ser administrador para acceder al sistema."
         );
-        Parse.User.logOut().then(() => {
-        });
-        }
-        else {
-      history.push('/home');
+        Parse.User.logOut();
+      }
+      else {
+        history.push('/home');
       }
     }).catch(err => {
       if (err.message==="username/email is required."){

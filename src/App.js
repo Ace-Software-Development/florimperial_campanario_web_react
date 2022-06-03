@@ -6,9 +6,8 @@ import {
 } from "react-router-dom";
 import Home from './pages/Home';
 import Auth from './pages/Auth';
-import Anuncios from './pages/Anuncios'
-import DetalleAnun from './pages/DetalleAnun'
-import SalidasGolf from './pages/Golf/SalidasGolf'
+import Anuncios from './pages/Anuncios';
+import SalidasGolf from './pages/Golf/SalidasGolf';
 import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
@@ -20,18 +19,9 @@ export default function App() {
           <Route path="/home">
             <Home />
           </Route>
-          <Route path= "/anuncios/:anuncioId" render={()=> {
-           return (
-            <div>
-              <DetalleAnun/>
-            </div>
-          )
-         }
-         }    
-         />
-        <Route path="/golf/salidas">
-            <SalidasGolf />
-        </Route>
+          <Route path="/golf/salidas">
+              <SalidasGolf />
+          </Route>
           <Route path="/anuncios">
             <Anuncios />
           </Route>
