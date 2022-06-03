@@ -10,15 +10,12 @@ import InputSelector from '../components/InputSelector';
 import "react-datetime/css/react-datetime.css";
 
 export default function EditGolfAppointmentSlot(props) {
-    const [appointment, setAppointment] = useState(props.appointmentData);
+	const [appointment, setAppointment] = useState(props.appointmentData);
     const [maxGuests, setMaxGuests] = useState(appointment.maximoJugadores);
-    const [holes, setHoles] = useState(9);
 	const [guests, setGuests] = useState([]);
 	const [disabledButton, setDisabledButton] = useState(false);
-
-    useEffect(async () => {
-    }, []);
-
+	
+	console.log(appointment);
     const handleClose = () => {
         props.onClose(false);
     }
@@ -39,8 +36,7 @@ export default function EditGolfAppointmentSlot(props) {
         delete appointment.title;
         delete appointment.id;
         
-        // appointment.reservacionGolf = golfAppointment;
-        // updateGolfReservation(appointment, guests).then(() => window.location.reload());
+		updateGolfReservation(appointment, guests).then(() => window.location.reload());
     }
 
     return(
@@ -92,18 +88,6 @@ export default function EditGolfAppointmentSlot(props) {
 
 						<tr>
 							<td>
-								<p>Hoyos a jugar</p>
-							</td>
-							<td>
-								<select defaultValue={holes} onChange={setHoles}>
-									<option value={9}>9</option>
-									<option value={18}>18</option>
-								</select>
-							</td>
-						</tr>
-
-						<tr>
-							<td>
 								<p>Máximo asistentes</p>
 							</td>
 							<td>
@@ -112,12 +96,16 @@ export default function EditGolfAppointmentSlot(props) {
 									type="number"
 									min="1"
 									defaultValue={maxGuests}
-									onChange={event => appointmentOnChange('maximoJugadores', parseInt(event.target.value))} 
+									onChange={event => {
+											appointmentOnChange('maximoJugadores', parseInt(event.target.value));
+											setMaxGuests(parseInt(event.target.value));
+										}
+									} 
 								/>
 							</td>
 						</tr>
 
-						{props.appointment.user &&
+						{appointment.user &&
 							<tr>
 								<td>
 									<p>Socio que reservó</p>
@@ -158,10 +146,34 @@ export default function EditGolfAppointmentSlot(props) {
 											carritosReservados: parseInt(event.target.value),
 											cantidadHoyos: appointment.golfAppointment.cantidadHoyos,
 											reservacion: {
-												objectId: appointment.golfAppointment.reservacion.objectId
+												objectId: appointment.objectId
 											}
 										})} 
 									/>
+								</td>
+							</tr>
+						}
+						
+						{appointment.golfAppointment &&
+							<tr>
+								<td>
+									<p>Hoyos a jugar</p>
+								</td>
+								<td>
+									<select 
+										defaultValue={appointment.golfAppointment.cantidadHoyos} 
+										onChange={event => appointmentOnChange('golfAppointment', {
+											objectId: appointment.golfAppointment.objectId,
+											carritosReservados: appointment.golfAppointment.carritosReservados,
+											cantidadHoyos: parseInt(event.target.value),
+											reservacion: {
+												objectId: appointment.objectId
+											}
+										})} 
+									>
+										<option value={9}>9</option>
+										<option value={18}>18</option>
+									</select>
 								</td>
 							</tr>
 						}

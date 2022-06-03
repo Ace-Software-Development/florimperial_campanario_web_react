@@ -1,3 +1,4 @@
+// W8 W9 W10
 import React, { useEffect, useState } from 'react';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -5,18 +6,15 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import CreateReservationSlot from './CreateReservationSlot';
 import esLocale from '@fullcalendar/core/locales/es';
-import CirculoCarga from '../components/CirculoCarga';
 import Screen from "../components/Screen";
 import EditReservation from './EditReservation';
 
 export default function Reservations(props) {
-    const [appointments, setAppointments] = useState(props.reservationData);
     const [newSlotStart, setNewSlotStart] = useState("");
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
-    const [loading, setLoading] = useState(true);
-
+    
     const addAppointmentSlot = (dateClickInfo) => {
         setNewSlotStart(dateClickInfo.date);
         setOpenCreate(true);
@@ -24,7 +22,7 @@ export default function Reservations(props) {
 
     const editAppointment = (eventClick) => {
         const id = eventClick.event._def.publicId;
-        setSelectedAppointment(appointments.find(row => row.objectId == id));
+        setSelectedAppointment(props.reservationsData.find(row => row.objectId == id));
         setOpenEdit(true);
     }
 
@@ -51,7 +49,7 @@ export default function Reservations(props) {
                     right: 'dayGridMonth,dayGridWeek,timeGridDay'
                 }}
                 initialView='dayGridMonth'
-                events={appointments}
+                events={props.reservationsData}
                 eventClick={editAppointment}
             />
 

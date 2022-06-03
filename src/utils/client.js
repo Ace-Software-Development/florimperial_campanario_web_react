@@ -1,4 +1,5 @@
 import Parse from 'parse';
+import { formatReservationData } from './formatData';
 
 const RESERVACION_MODEL = Parse.Object.extend('Reservacion');
 const RESERVACION_GOLF_MODEL = Parse.Object.extend('ReservacionGolf');
@@ -74,7 +75,6 @@ async function updateGuestsEntry(reservationId) {
 		let guestQuery = new Parse.Query(INVITADO_MODEL);
 		guestQuery.equalTo('objectId', id);
 		guestQuery.find().then(results => {
-			console.log("resultados -> ", results)
 			Parse.Object.destroyAll(results);
 		})
 	}
@@ -87,7 +87,6 @@ export async function updateGolfReservation(dataReservation, guests) {
 			const reservationQuery = new Parse.Query(RESERVACION_MODEL);
 			const reservation = await reservationQuery.get(dataReservation.objectId);
 		
-			console.log(reservation);
 			const golfData = dataReservation.reservacionGolf;
 			const reservationGolfObj = new Parse.Object('ReservacionGolf');
 			reservationGolfObj.set('carritosReservados', golfData.carritosReservados);
@@ -101,7 +100,6 @@ export async function updateGolfReservation(dataReservation, guests) {
 
 		// Update Reservation entry
 		let reservationObj = new Parse.Object('Reservacion');
-		console.log(JSON.parse(JSON.stringify(dataReservation)));
 		for (const key in dataReservation) {
 			if (!dataReservation[key])
 				continue
@@ -114,7 +112,6 @@ export async function updateGolfReservation(dataReservation, guests) {
 			reservationObj.set(key, dataReservation[key]);
 		}
 		const reservation = await reservationObj.save();
-		console.log('new Reservation', reservation);
 
 		// Delete guests
 		updateGuestsEntry(dataReservation.objectId);
@@ -182,11 +179,13 @@ export async function getAllAvailableReservations(module) {
 	let data = [];
 	switch (module) {
 		case 'golf':
-			data = await getAllGolfAppointmentSlots();
+			const rawData = await getAllGolfAppointmentSlots();
+			rawData.forEach(async reservation => {
+				const golfReservationData = await getReservationGolf(reservation.id);
+				data.push(formatReservationData(reservation, golfReservationData));
+			});
 			break;
-
 	}
-	console.log("data = ", data);
 	return data;
 }
 
@@ -263,7 +262,6 @@ export async function getAnuncios() {
 
   const result = new Array();
   for (var i = 0; i < anuncios.length; i++) {
-    console.log(anuncios[i].get("titulo"));
     const fecha = new Date(anuncios[i].get("updatedAt").toString());
     result.push(
       new Array(
@@ -318,9 +316,7 @@ export async function createMember(email, pass, membershipNumber){
 export async function getPermissions(idRol) {
     const query = new Parse.Query('RolePermissions');
     query.equalTo('objectId', idRol);
-    console.log("obteniendo permisos...");
     const permisosQuery = await query.find();
-    console.log(permisosQuery);
    
     const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
       "Raqueta": permisosQuery[0].get("Raqueta"),

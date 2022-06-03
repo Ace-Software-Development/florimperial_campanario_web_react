@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 
 export default function App() {
     const [golfReservationData, setGolfReservationData] = useState(null);
+    const [sitiosData, setSitiosData] = useState([]);
 
     useEffect(async () => {
         const data = await getAllAvailableReservations('golf');
@@ -34,14 +35,14 @@ export default function App() {
             </Route>
 
             <Route path="/golf/salidas">
-                <Reservations // cambiar este componente por <Reservations />
+                <Reservations
                     // Reservation Calendar
                     screenTitle='Reservaciones de Golf'
                     screenPath='golf/salidas'
-                    reservationsData={ golfReservationData } // Here we need to get the data from db and format it
+                    reservationsData={ golfReservationData }
 
                     // Edit and create Reservation
-                    sitios={[]}
+                    sitios={sitiosData}
                     coachInput={true}
                     guestsInput={true}
                 />
