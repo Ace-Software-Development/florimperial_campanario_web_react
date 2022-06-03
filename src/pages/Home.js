@@ -1,34 +1,26 @@
-import {useEffect, useState } from 'react'
-import {useHistory} from 'react-router-dom';
-import '../css/Home.css';
-import Screen from '../components/Screen';
-import {checkUser} from '../utils/client';
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import "../css/Home.css";
+import Screen from "../components/Screen";
+import { checkUser } from "../utils/client";
 import CirculoCarga from "../components/CirculoCarga";
-import HomeIcons from '../components/HomeIcons'
+import HomeIcons from "../components/HomeIcons";
 
 export default function Home() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
 
-  useEffect(async() => {
+  useEffect(async () => {
     const permissionsJson = await checkUser();
-    if(permissionsJson === 'NO_USER') {
-      alert(
-        "Necesitas haber ingresado al sistema para consultar esta página."
-      );  
+    if (permissionsJson === "NO_USER") {
+      alert("Necesitas haber ingresado al sistema para consultar esta página.");
       history.push("/");
-    }
-    else if (permissionsJson === 'NOT_ADMIN'){
-      alert(
-        "Necesitas ser administrador para acceder al sistema."
-      );
+    } else if (permissionsJson === "NOT_ADMIN") {
+      alert("Necesitas ser administrador para acceder al sistema.");
       history.push("/");
-    }
-    else if (permissionsJson === 'INVALID_SESSION'){
-      alert(
-        "Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
-      );
+    } else if (permissionsJson === "INVALID_SESSION") {
+      alert("Tu sesión ha finalizado. Por favor, inicia sesión nuevamente.");
       history.push("/");
     }
     setPermissions(permissionsJson);
@@ -43,14 +35,17 @@ export default function Home() {
     }
   }, []);
 
-  if(loading) return (
-    <span><CirculoCarga/></span>
-  );
+  if (loading)
+    return (
+      <span>
+        <CirculoCarga />
+      </span>
+    );
 
   return (
-    <Screen permissions={permissions}>
+    <Screen permissions={permissions} title="Inicio">
       <div className="home-cards">
-        <HomeIcons permissions = {permissions}  />
+        <HomeIcons permissions={permissions} />
       </div>
     </Screen>
   );
