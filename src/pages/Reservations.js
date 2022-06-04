@@ -18,9 +18,13 @@ export default function Reservations(props) {
     const [openEdit, setOpenEdit] = useState(false);
     const [reservationsData, setReservationsData] = useState([]);
 
-    useEffect(async () => {
-        const data = await getAllAvailableReservations('golf');
+    useEffect(() => {
+        async function fetch(){
+            const response = await getAllAvailableReservations('golf');
+        };
+        const data = fetch()
         setReservationsData(data);
+        return;
     }, []);
     
     const addAppointmentSlot = (dateClickInfo) => {
