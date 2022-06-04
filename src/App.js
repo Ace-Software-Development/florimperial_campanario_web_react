@@ -11,7 +11,6 @@ import Anuncios from './pages/Anuncios';
 import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
-import { getAllAvailableReservations, getReservationGolf } from './utils/client';
 import Reservations from './pages/Reservations';
 import { useEffect, useState } from 'react';
 
@@ -19,14 +18,7 @@ import { useEffect, useState } from 'react';
 
 
 export default function App() {
-    const [golfReservationData, setGolfReservationData] = useState(null);
     const [sitiosData, setSitiosData] = useState([]);
-
-    useEffect(async () => {
-        const data = await getAllAvailableReservations('golf');
-        setGolfReservationData(data);
-        console.log("datos : ", golfReservationData); 
-    }, [])
 
     return (
     <Router>
@@ -40,7 +32,6 @@ export default function App() {
                     // Reservation Calendar
                     screenTitle='Reservaciones de Golf'
                     screenPath='golf/salidas'
-                    reservationsData={ golfReservationData }
 
                     // Edit and create Reservation
                     sitios={sitiosData}

@@ -13,7 +13,6 @@ export default function Screen(props){
 
 	useEffect(async() => {
 		const permissionsJson = await checkUser();
-		console.log(permissionsJson);
 		if(permissionsJson === 'NO_USER') {
 			alert(
 			"Necesitas haber ingresado al sistema para consultar esta página."

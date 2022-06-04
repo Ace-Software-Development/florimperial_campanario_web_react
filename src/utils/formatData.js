@@ -15,24 +15,21 @@ export function formatReservationData(reservation, golfReservation=null, multipl
 			objectId: reservation.get('profesor').id,
 			nombre: reservation.get('profesor').get('nombre'),
 			tableName: 'Profesor',
-		} : null
-	}
-
-	if (reservation.user)
-		formatedData['user'] = {
+		} : null,
+		user: reservation.get('user') ? {
 			objectId: reservation.get('user').id,
 			username: reservation.get('user').get('username'),
 			tableName: 'User'
-		};
-	
-	if (golfReservation)
-		formatedData['golfAppointment'] = {
+		} : null,
+		golfAppointment: golfReservation ? {
 			objectId: golfReservation.id,
 			carritosReservados: golfReservation.get('carritosReservados'),
 			cantidadHoyos: golfReservation.get('cantidadHoyos'),
 			reservacion: {
 				objectId: reservation.id
 			},
-		}
+		} : null
+	}
+
 	return formatedData;
 }

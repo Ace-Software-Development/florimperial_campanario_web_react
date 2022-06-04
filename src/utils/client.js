@@ -175,6 +175,8 @@ export async function createGolfReservation(dataReservation) {
 
 // Gym module
 
+export async function getReservationGym() {}
+
 // General API calls
 
 /**
