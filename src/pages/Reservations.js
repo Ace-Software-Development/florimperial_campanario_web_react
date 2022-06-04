@@ -1,5 +1,5 @@
 // W8 W9 W10
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createRef } from 'react';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -9,6 +9,7 @@ import esLocale from '@fullcalendar/core/locales/es';
 import Screen from "../components/Screen";
 import EditReservation from './EditReservation';
 import { getAllAvailableReservations, getReservationGolf } from '../utils/client';
+import CirculoCarga from '../components/CirculoCarga';
 
 
 export default function Reservations(props) {
@@ -17,16 +18,18 @@ export default function Reservations(props) {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [reservationsData, setReservationsData] = useState([]);
-
-    useEffect(() => {
-        async function fetch(){
-            const response = await getAllAvailableReservations('golf');
-        };
-        const data = fetch()
+    const [loading, setLoading] = useState(true);
+    let calendarData = [];
+    useEffect(async() => {
+        setLoading(true);
+        const data = await getAllAvailableReservations('golf');
         setReservationsData(data);
-        return;
+        calendarData = data;
+       
+        setLoading(false);
     }, []);
     
+  
     const addAppointmentSlot = (dateClickInfo) => {
         setNewSlotStart(dateClickInfo.date);
         setOpenCreate(true);
@@ -38,11 +41,22 @@ export default function Reservations(props) {
         setOpenEdit(true);
     }
 
-    if (reservationsData.length > 1)
-        return (
-            <Screen title={props.screenTitle} screenPath={props.screenPath} >
-                {console.log('rendering', reservationsData)}
 
+    
+    if (loading){
+          return (
+            <Screen title={props.screenTitle} screenPath={props.screenPath}>
+                <CirculoCarga />
+            </Screen>
+        );
+      
+    }
+    else{
+          return (
+              
+            <Screen title={props.screenTitle} screenPath={props.screenPath} >
+            
+                {console.log('Data rendered', reservationsData)}
                 <FullCalendar
                     locale={esLocale}
                     dateClick={addAppointmentSlot}
@@ -89,8 +103,5 @@ export default function Reservations(props) {
                 }
             </Screen>
         );
-    else
-        return (
-            <Screen title={props.screenTitle} screenPath={props.screenPath}></Screen>
-        );
+    }
 } 

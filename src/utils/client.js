@@ -186,16 +186,26 @@ export async function getReservationGym() {}
  */
 export async function getAllAvailableReservations(module) {
 	let data = [];
+	let rawData=[];
 	switch (module) {
 		case 'golf':
-			const rawData = await getAllGolfAppointmentSlots();
-			rawData.forEach(async reservation => {
+			rawData = await getAllGolfAppointmentSlots();
+			/*rawData.forEach(async reservation => {
 				const golfReservationData = await getReservationGolf(reservation.id);
 				data.push(formatReservationData(reservation, golfReservationData));
-			});
+			});*/
+
+			await Promise.all(rawData.map(async (reservation) => {
+			const golfReservationData = await getReservationGolf(reservation.id);
+			data.push(formatReservationData(reservation, golfReservationData));
+			}));
+
+
 			break;
 	}
-	return data;
+		return data;
+	
+
 }
 
 /**
