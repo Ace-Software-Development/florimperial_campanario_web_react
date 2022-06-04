@@ -28,6 +28,9 @@ export function formatReservationData(reservation, golfReservation=null, multipl
 			reservacion: {
 				objectId: reservation.id
 			},
+		} : null,
+		multipleReservation: multipleReservations ? {
+			multipleReservations
 		} : null
 	}
 

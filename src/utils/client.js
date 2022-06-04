@@ -9,6 +9,7 @@ const USER_MODEL = Parse.Object.extend("_User");
 const COACH_MODEL = Parse.Object.extend("Profesor");
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend("Invitado");
+const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend("ReservacionMultiple");
 
 // Golf module
 export async function getAllGolfAppointmentSlots(){
@@ -175,7 +176,111 @@ export async function createGolfReservation(dataReservation) {
 
 // Gym module
 
-export async function getReservationGym() {}
+export async function getReservationsGym() {
+	try {
+		// Query all sitios belonging to Golf
+		const areaQuery = new Parse.Query(AREA_MODEL);
+		areaQuery.equalTo('eliminado', false);
+		areaQuery.equalTo('nombre', 'Gimnasio');
+
+		const sitiosQuery = new Parse.Query(SITIO_MODEL);
+		sitiosQuery.select("nombre");
+		sitiosQuery.equalTo('eliminado', false);
+		sitiosQuery.matchesQuery('area', areaQuery);
+		sitiosQuery.include('area');
+
+		// Query all reservations
+		const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+		reservationQuery.equalTo('eliminado', false);
+		reservationQuery.matchesQuery('sitio', sitiosQuery);
+		reservationQuery.include('sitio');
+		reservationQuery.include('profesor');
+		reservationQuery.include('user');
+		let data = await reservationQuery.find();
+		return data;
+		
+	} catch (error) {
+		console.log(`Ha ocurrido un error: ${ error }`);
+		return null;
+	}
+}
+
+// Raqueta module
+
+export async function getReservationsRaqueta() {
+	try {
+		// Query all sitios belonging to Rqueta
+		const areaQuery = new Parse.Query(AREA_MODEL);
+		areaQuery.equalTo('eliminado', false);
+		areaQuery.equalTo('nombre', 'Raqueta');
+
+		const sitiosQuery = new Parse.Query(SITIO_MODEL);
+		sitiosQuery.select("nombre");
+		sitiosQuery.equalTo('eliminado', false);
+		sitiosQuery.matchesQuery('area', areaQuery);
+		sitiosQuery.include('area');
+
+		// Query all reservations
+		const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+		reservationQuery.equalTo('eliminado', false);
+		reservationQuery.matchesQuery('sitio', sitiosQuery);
+		reservationQuery.include('sitio');
+		reservationQuery.include('profesor');
+		reservationQuery.include('user');
+		let data = await reservationQuery.find();
+		return data;
+		
+	} catch (error) {
+		console.log(`Ha ocurrido un error: ${ error }`);
+		return null;
+	}
+}
+
+// Pool module
+
+export async function getReservationsPool() {
+	try {
+		// Query all sitios belonging to Rqueta
+		const areaQuery = new Parse.Query(AREA_MODEL);
+		areaQuery.equalTo('eliminado', false);
+		areaQuery.equalTo('nombre', 'Alberca');
+
+		const sitiosQuery = new Parse.Query(SITIO_MODEL);
+		sitiosQuery.select("nombre");
+		sitiosQuery.equalTo('eliminado', false);
+		sitiosQuery.matchesQuery('area', areaQuery);
+		sitiosQuery.include('area');
+
+		// Query all reservations
+		const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+		reservationQuery.equalTo('eliminado', false);
+		reservationQuery.matchesQuery('sitio', sitiosQuery);
+		reservationQuery.include('sitio');
+		reservationQuery.include('profesor');
+		reservationQuery.include('user');
+		let data = await reservationQuery.find();
+		return data;
+		
+	} catch (error) {
+		console.log(`Ha ocurrido un error: ${ error }`);
+		return null;
+	}
+}
+
+export async function getMultipleReservations(reservationId) {
+	try {
+		const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+		reservationQuery.equalTo('objectId', reservationId);
+
+		const multipleReservationsQuery = new Parse.Query(MULTIPLE_RESERVATION_MODEL);
+		multipleReservationsQuery.matchesQuery('reservacion', reservationQuery);
+		let data = await multipleReservationsQuery.find();
+		return data;
+	} catch (error) {
+		console.log(`Ha ocurrido un error: ${ error }`);
+		return null;
+	}
+}
 
 // General API calls
 
@@ -186,14 +291,38 @@ export async function getReservationGym() {}
  */
 export async function getAllAvailableReservations(module) {
 	let data = [];
+	let rawData = [];
 	switch (module) {
+
 		case 'golf':
-			const rawData = await getAllGolfAppointmentSlots();
+			rawData = await getAllGolfAppointmentSlots();
 			rawData.forEach(async reservation => {
 				const golfReservationData = await getReservationGolf(reservation.id);
 				data.push(formatReservationData(reservation, golfReservationData));
 			});
 			break;
+		
+		case 'gym':
+			rawData = await getReservationsGym();
+			rawData.forEach(async reservation => {
+				const gymReservationData = await getMultipleReservations(reservation.id);
+				data.push(formatReservationData(reservation, null, gymReservationData));
+			});
+			break;
+
+		case 'raqueta':
+			rawData = await getReservationsRaqueta();
+			rawData.forEach(async reservation => data.push(formatReservationData(reservation)));
+			break;
+
+		case 'pool':
+			rawData = await getReservationsPool();
+			rawData.forEach(async reservation => {
+				const poolReservationData = await getMultipleReservations(reservation.id);
+				data.push(formatReservationData(reservation, null, poolReservationData));
+			});
+			break;
+		
 	}
 	return data;
 }

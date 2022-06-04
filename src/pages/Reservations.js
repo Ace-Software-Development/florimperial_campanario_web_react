@@ -19,11 +19,15 @@ export default function Reservations(props) {
     const [reservationsData, setReservationsData] = useState([]);
 
     useEffect(() => {
-        async function fetch(){
-            const response = await getAllAvailableReservations('golf');
-        };
-        const data = fetch()
-        setReservationsData(data);
+        // async function fetch(){
+        //     const response = await getAllAvailableReservations('golf');
+        // };
+        // const data = fetch()
+        // setReservationsData(data);
+        console.log("golf : ", getAllAvailableReservations('golf'));
+        console.log("gym : ", getAllAvailableReservations('gym'));
+        console.log("raqueta : ", getAllAvailableReservations('raqueta'));
+        console.log("pool : ", getAllAvailableReservations('pool'));
         return;
     }, []);
     
