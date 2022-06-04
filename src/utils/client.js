@@ -296,10 +296,17 @@ export async function getAllAvailableReservations(module) {
 
 		case 'golf':
 			rawData = await getAllGolfAppointmentSlots();
-			rawData.forEach(async reservation => {
+			/*rawData.forEach(async reservation => {
 				const golfReservationData = await getReservationGolf(reservation.id);
 				data.push(formatReservationData(reservation, golfReservationData));
-			});
+			});*/
+
+			await Promise.all(rawData.map(async (reservation) => {
+			const golfReservationData = await getReservationGolf(reservation.id);
+			data.push(formatReservationData(reservation, golfReservationData));
+			}));
+
+
 			break;
 		
 		case 'gym':
@@ -324,7 +331,9 @@ export async function getAllAvailableReservations(module) {
 			break;
 		
 	}
-	return data;
+		return data;
+	
+
 }
 
 /**
