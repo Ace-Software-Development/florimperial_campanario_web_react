@@ -7,14 +7,11 @@ import {
 import Home from './pages/Home';
 import Auth from './pages/Auth';
 import Anuncios from './pages/Anuncios';
-// import SalidasGolf from './pages/Golf/SalidasGolf';
 import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
 import Reservations from './pages/Reservations';
 import { useEffect, useState } from 'react';
-
-// import {getAllGolfAppointmentSlots} from '../utils/client';
 
 
 export default function App() {

@@ -170,8 +170,16 @@ export async function createGolfReservation(dataReservation) {
 		const profesorObj = await profesorQuery.get(dataReservation.profesor.objectId);
 		reservationObj.set('profesor', profesorObj);
 	}
-	const result = await reservationObj.save();
-	return result;
+	const reservation = await reservationObj.save();
+
+	// También queremos crear un  nuevo registro en ReservacionGolf
+	const reservationGolfObj = new RESERVACION_GOLF_MODEL();
+	reservationGolfObj.set('reservacion', reservation);
+	reservationGolfObj.set('carritosReservados', 0);
+	reservationGolfObj.set('cantidadHoyos', 9);
+	reservationGolfObj.save();
+
+	return reservation;
 }
 
 // Gym module
@@ -296,22 +304,14 @@ export async function getAllAvailableReservations(module) {
 
 		case 'golf':
 			rawData = await getAllGolfAppointmentSlots();
-			/*rawData.forEach(async reservation => {
+			await Promise.all(rawData.map(async (reservation) => {
 				const golfReservationData = await getReservationGolf(reservation.id);
 				data.push(formatReservationData(reservation, golfReservationData));
-			});*/
-
-			await Promise.all(rawData.map(async (reservation) => {
-			const golfReservationData = await getReservationGolf(reservation.id);
-			data.push(formatReservationData(reservation, golfReservationData));
 			}));
-
-
 			break;
 		
 		case 'gym':
 			rawData = await getReservationsGym();
-			
 			await Promise.all(rawData.map(async (reservation) => {
 				const gymReservationData = await getMultipleReservations(reservation.id);
 				data.push(formatReservationData(reservation, null, gymReservationData));
@@ -326,7 +326,6 @@ export async function getAllAvailableReservations(module) {
 
 		case 'pool':
 			rawData = await getReservationsPool();
-			
 			await Promise.all(rawData.map(async (reservation) => {
 				const poolReservationData = await getMultipleReservations(reservation.id);
 				data.push(formatReservationData(reservation, null, poolReservationData));

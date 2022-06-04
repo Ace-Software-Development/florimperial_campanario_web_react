@@ -8,7 +8,7 @@ export function formatReservationData(reservation, golfReservation=null, multipl
 		maximoJugadores: reservation.get('maximoJugadores'),
 		sitio: {
 			objectId: reservation.get('sitio').id,
-			nombre: reservation.get('sitio').nombre,
+			nombre: reservation.get('sitio').get('nombre'),
 			tableName: 'Sitio',
 		},
 		profesor: reservation.get('profesor') ? {
@@ -33,6 +33,9 @@ export function formatReservationData(reservation, golfReservation=null, multipl
 			multipleReservations
 		} : null
 	}
+
+	if (reservation.id == "TGC7E5pakO")
+		console.log(golfReservation)
 
 	return formatedData;
 }

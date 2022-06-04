@@ -39,7 +39,7 @@ export default function CreateGolfAppointmentSlot(props) {
         delete appointment.title;
         delete appointment.id;
         
-        createGolfReservation(appointment);
+        createGolfReservation(appointment).then(() => window.location.reload());
     }
 
     return(

@@ -19,34 +19,11 @@ export default function Reservations(props) {
     const [openEdit, setOpenEdit] = useState(false);
     const [reservationsData, setReservationsData] = useState([]);
     const [loading, setLoading] = useState(true);
-    let calendarData = [];
-    useEffect(async() => {
+
+    useEffect(async () => {
         setLoading(true);
-        
-        let data = [];
-        switch (props.module) {
-            
-            case 'golf':
-                data = await getAllAvailableReservations('golf');
-                break;
-
-            case 'gym':
-                data = await getAllAvailableReservations('gym');
-                break;
-
-            case 'raqueta':
-                data = await getAllAvailableReservations('raqueta');
-                break;
-
-            case 'pool':
-                data = await getAllAvailableReservations('pool');
-                break;
-                
-        }
-
+        let data = await getAllAvailableReservations(props.module);
         setReservationsData(data);
-        calendarData = data;
-       
         setLoading(false);
     }, []);
     
@@ -76,8 +53,6 @@ export default function Reservations(props) {
           return (
               
             <Screen title={props.screenTitle} screenPath={props.screenPath} >
-            
-                {console.log('Data rendered', reservationsData)}
                 <FullCalendar
                     locale={esLocale}
                     dateClick={addAppointmentSlot}
