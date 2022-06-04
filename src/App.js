@@ -34,9 +34,24 @@ export default function App() {
                     screenPath='golf/salidas'
 
                     // Edit and create Reservation
+                    module={'golf'}
                     sitios={sitiosData}
                     coachInput={true}
                     guestsInput={true}
+                />
+            </Route>
+
+            <Route path="/gym/salidas">
+                <Reservations
+                    // Reservation Calendar
+                    screenTitle='Reservaciones de Gimnasio'
+                    screenPath='gym/salidas'
+
+                    // Edit and create Reservation
+                    module={'gym'}
+                    sitios={sitiosData}
+                    coachInput={true}
+                    guestsInput={false}
                 />
             </Route>
 

@@ -311,23 +311,27 @@ export async function getAllAvailableReservations(module) {
 		
 		case 'gym':
 			rawData = await getReservationsGym();
-			rawData.forEach(async reservation => {
+			
+			await Promise.all(rawData.map(async (reservation) => {
 				const gymReservationData = await getMultipleReservations(reservation.id);
 				data.push(formatReservationData(reservation, null, gymReservationData));
-			});
+				}));
+
 			break;
 
 		case 'raqueta':
 			rawData = await getReservationsRaqueta();
-			rawData.forEach(async reservation => data.push(formatReservationData(reservation)));
+			await Promise.all(rawData.map(async (reservation) => data.push(formatReservationData(reservation))));
 			break;
 
 		case 'pool':
 			rawData = await getReservationsPool();
-			rawData.forEach(async reservation => {
+			
+			await Promise.all(rawData.map(async (reservation) => {
 				const poolReservationData = await getMultipleReservations(reservation.id);
 				data.push(formatReservationData(reservation, null, poolReservationData));
-			});
+				}));
+
 			break;
 		
 	}

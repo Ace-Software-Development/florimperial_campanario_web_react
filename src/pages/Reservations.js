@@ -22,7 +22,28 @@ export default function Reservations(props) {
     let calendarData = [];
     useEffect(async() => {
         setLoading(true);
-        const data = await getAllAvailableReservations('golf');
+        
+        let data = [];
+        switch (props.module) {
+            
+            case 'golf':
+                data = await getAllAvailableReservations('golf');
+                break;
+
+            case 'gym':
+                data = await getAllAvailableReservations('gym');
+                break;
+
+            case 'raqueta':
+                data = await getAllAvailableReservations('raqueta');
+                break;
+
+            case 'pool':
+                data = await getAllAvailableReservations('pool');
+                break;
+                
+        }
+
         setReservationsData(data);
         calendarData = data;
        
