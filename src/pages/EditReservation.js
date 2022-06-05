@@ -3,9 +3,10 @@ import Dialog from '@mui/material/Dialog';
 import Datetime from 'react-datetime';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent, DialogActions } from '@mui/material';
-import { getAllActiveUsers, getAllCoaches, updateGolfReservation, deleteReservation } from '../utils/client';
+import { getAllActiveUsers, getAllCoaches, updateReservation, deleteReservation } from '../utils/client';
 import { Button } from '@mui/material';
 import GuestsSection from '../components/GuestsSection';
+import MultipleUsers from '../components/MultipleUsers';
 import InputSelector from '../components/InputSelector';
 import 'react-datetime/css/react-datetime.css';
 
@@ -13,9 +14,9 @@ export default function EditGolfAppointmentSlot(props) {
 	const [appointment, setAppointment] = useState(props.appointmentData);
     const [maxGuests, setMaxGuests] = useState(appointment.maximoJugadores);
 	const [guests, setGuests] = useState([]);
+	const [users, setUsers] = useState([]);
 	const [disabledButton, setDisabledButton] = useState(false);
 	const [deleteDisabledButton, setDeleteDisabledButton] = useState(false);
-	//console.log(appointment);
     
 	const handleClose = () => {
         props.onClose(false);
@@ -43,11 +44,17 @@ export default function EditGolfAppointmentSlot(props) {
             return false;
         }
 
+		if (users.length > maxGuests) {
+            window.alert('Se ha rebasado el máximo de reservaciones.');
+            return false;
+        }
+
         // Parse data so it matches DB fields
         delete appointment.start;
         delete appointment.title;
         delete appointment.id;
-		await updateGolfReservation(appointment, guests);
+        delete appointment.multipleReservation;
+		await updateReservation(appointment, guests, users);
 		return true;
     }
 
@@ -85,7 +92,12 @@ export default function EditGolfAppointmentSlot(props) {
 															value={sitio.objectId}
 															name="sitio"
 															defaultChecked={appointment.sitio.objectId === sitio.objectId}
-															onChange={event => appointmentOnChange('sitio', {nombre: sitio.nombre, objectId: event.target.value, tableName: 'Sitio'})}
+															onChange={event => appointmentOnChange('sitio', {
+																nombre: sitio.nombre, 
+																objectId: event.target.value, 
+																variasReservaciones: sitio.variasReservaciones,
+																tableName: 'Sitio',
+															})}
 														/>
 														<label htmlFor={sitio.objectId}>{sitio.nombre}</label>
 													</div>
@@ -115,7 +127,7 @@ export default function EditGolfAppointmentSlot(props) {
 									</td>
 								</tr>
 
-								{!appointment.multipleReservation &&
+								{!appointment.sitio.variasReservaciones &&
 									<tr>
 										<td>
 											<p>Socio que reservó</p>
@@ -226,7 +238,18 @@ export default function EditGolfAppointmentSlot(props) {
 								</tr>
 							</tbody>
 						</table>
-						{props.guestsInput &&
+						
+						{/* Same logic for multiple users reservations as for guests */}
+						{appointment.sitio.variasReservaciones &&
+							<MultipleUsers 
+								maxUsers={maxGuests} 
+								users={users} 
+								setUsers={setUsers} 
+								reservationId={appointment.objectId} 
+							/>
+						}
+
+						{props.guestsInput && !appointment.sitio.variasReservaciones &&
 							<GuestsSection 
 								maxGuests={maxGuests} 
 								guests={guests} 
@@ -254,7 +277,7 @@ export default function EditGolfAppointmentSlot(props) {
 						const status = await onSubmit();
 						if (status) {
 							setDisabledButton(true);
-							window.location.reload();
+							//window.location.reload();
 						}
 					}} type="submit">Actualizar</Button>
 				</DialogActions> 

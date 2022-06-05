@@ -1,6 +1,5 @@
 export function formatReservationData(reservation, golfReservation=null, multipleReservations=null){
 	let title = '';
-	console.log(reservation.get('user'));
 	if (reservation.get('estatus') === 1)
 		title = 'Disponible';
 	else if (reservation.get('user')===undefined && reservation.get('estatus') !== 1)
@@ -18,6 +17,7 @@ export function formatReservationData(reservation, golfReservation=null, multipl
 		sitio: {
 			objectId: reservation.get('sitio').id,
 			nombre: reservation.get('sitio').get('nombre'),
+			variasReservaciones: reservation.get('sitio').get('variasReservaciones'),
 			tableName: 'Sitio',
 		},
 		profesor: reservation.get('profesor') ? {
@@ -38,9 +38,18 @@ export function formatReservationData(reservation, golfReservation=null, multipl
 				objectId: reservation.id
 			},
 		} : null,
-		multipleReservation: multipleReservations ? {
-			multipleReservations
-		} : null
+		multipleReservation: multipleReservations && multipleReservations.length>0 ? multipleReservations.map(reservation => {
+			return {
+				objectId: reservation.id,
+				user: {
+					objectId: reservation.get('user').id,
+					username: reservation.get('user').get('username'),
+				},
+				reservacion: {
+					objectId: reservation.get('reservacion').id
+				},
+			};
+		}) : null
 	}
 	return formatedData;
 }
@@ -49,6 +58,7 @@ export function formatSitioData(sitio) {
 	return {
 		objectId: sitio.id,
 		nombre: sitio.get('nombre'),
+		variasReservaciones: sitio.get('variasReservaciones'),
 		tableName: 'Sitio'
 	};
 }
