@@ -293,6 +293,7 @@ export async function getAllAvailableReservations(module) {
 }
 
 export async function updateReservation(dataReservation, guests, users) {
+	const dataReservationCopy = JSON.parse(JSON.stringify(dataReservation));
 	console.log('client: update', JSON.parse(JSON.stringify(dataReservation)));
 	//try {
 		// Create GolfReservation entry
@@ -323,11 +324,11 @@ export async function updateReservation(dataReservation, guests, users) {
 			}
 			reservationObj.set(key, dataReservation[key]);
 		}
-		const updatedReservationObj = await reservationObj.save();
+		await reservationObj.save();
 
 		// Delete guests and multiple reservations
-		await updateGuestsEntry(dataReservation.objectId);
-		await updateUsersEntry(dataReservation.objectId);
+		await updateGuestsEntry(dataReservationCopy.objectId);
+		await updateUsersEntry(dataReservationCopy.objectId);
 
 		// Create guests entry
 		for(let i = 0; i < guests.length; i++){
@@ -350,7 +351,7 @@ export async function updateReservation(dataReservation, guests, users) {
 		}
 
 		// Create multipleReservations
-		if (dataReservation.sitio.variasReservaciones)
+		if (dataReservationCopy.sitio.variasReservaciones)
 			for(let i = 0; i < users.length; i++){
 				const multipleReservationObj = new MULTIPLE_RESERVATION_MODEL();
 				const userObj = new USER_MODEL();
@@ -383,7 +384,7 @@ export async function getSitiosByArea(areaId) {
 	return await sitioQuery.find();
 }
 
-export async function deleteReservation(dataReservation, guests=[]) {
+export async function deleteReservation(dataReservation) {
 	//console.log('delete request', dataReservation);
 	if (dataReservation.golfAppointment) {
 		const golfReservationObj = new RESERVACION_GOLF_MODEL();
@@ -392,10 +393,11 @@ export async function deleteReservation(dataReservation, guests=[]) {
 	}
 	const reservationObj = new RESERVACION_MODEL();
 	reservationObj.set('objectId', dataReservation.objectId);
-	reservationObj.destroy();
+	await reservationObj.destroy();
 
-	// TODO:daniel delete the guests from all tables
-	// TODO:delete reservacionesMultiples
+	// Delete guests and multiple reservations
+	updateGuestsEntry(dataReservation.objectId);
+	updateUsersEntry(dataReservation.objectId);
 }
 
 /**

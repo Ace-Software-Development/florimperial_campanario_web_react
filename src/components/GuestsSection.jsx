@@ -79,7 +79,7 @@ export default function GuestsSection(props) {
     return (
         /* Agrega los invitados */
         <div className="guests-section">
-            <p className="subtitle-2 guest-section-title">Agrega más socios o invitados</p>
+            <p className="subtitle-2 guest-section-title">Agrega más invitados</p>
             
             <div className="guests-container">
                 {/* Partners list */}
