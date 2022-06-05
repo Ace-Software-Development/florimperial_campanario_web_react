@@ -57,7 +57,16 @@ export default function Sidebar(permissions) {
                   <NavIcon>
                     <ion-icon name="people" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
-                  <NavText>Gestión de socios</NavText>
+                  <NavText>Socios</NavText>
+                  <NavItem eventKey="socios/gestion-de-socios">
+                    <NavText>Gestión de socios</NavText>
+                  </NavItem>
+                  <NavItem eventKey="socios/lista-de-socios">
+                    <NavText>Lista de socios</NavText>
+                  </NavItem>
+                  <NavItem eventKey="socios/perfil-de-socio">
+                    <NavText>Perfil Prueba de socio</NavText>
+                  </NavItem>
                 </NavItem>
 
                 <NavItem eventKey="anuncios" style={{display: `${anuncios}`}}>

@@ -9,6 +9,9 @@ import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
 import PanelAdmins from './pages/PanelAdmins';
 import MiPerfil from './pages/MiPerfil';
+import ListaSocios from './pages/ListaSocios';
+import PerfilSocio from './pages/PerfilSocio';
+
 export default function App() {
   return (
     <Router>
@@ -22,8 +25,14 @@ export default function App() {
         <Route path="/anuncios">
           <Anuncios />
         </Route>
-        <Route path="/gestion-de-socios">
+        <Route path="/socios/gestion-de-socios">
           <GestionSocios />
+        </Route>
+        <Route path="/socios/lista-de-socios">
+          <ListaSocios />
+        </Route>
+        <Route path="/socios/perfil-de-socio">
+          <PerfilSocio />
         </Route>
         <Route path="/mi-perfil">
           <MiPerfil />

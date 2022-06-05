@@ -1,4 +1,3 @@
-import '../css/PerfilSocios.css';
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import {useEffect, useState} from 'react';
@@ -8,9 +7,8 @@ import {useHistory} from 'react-router-dom';
 import Screen from '../components/Screen';
 import Parse from 'parse';
 import ParseObject from 'parse/lib/browser/ParseObject';
-import InfoSocio from '../components/InfoSocio';
 
-export default function PerilSocio() {
+export default function ListaSocios() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
@@ -57,13 +55,7 @@ export default function PerilSocio() {
     );
 
   return (
-    <Screen permissions={permissions} title="Perfil de socio">
-      <div className="App">
-        <div style={{marginLeft: '15px'}}>
-          <InfoSocio/>
-          <br />
-        </div>
-      </div>
+    <Screen permissions={permissions} title="Lista de socios">
     </Screen>
   );
 }

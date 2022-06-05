@@ -46,3 +46,18 @@ header.app-header h1 {
   height: 190px;
   width: 300px;
 }
+
+.btn-submit-pases-socio{
+  background-color: #2B4066 !important;
+  color: #fff !important;
+}
+
+.btn-submit-pases-socio{
+  background-color: #2B4066 !important;
+  color: #fff !important;
+}
+.btn-submit-pases-socio:hover {
+  background-color: #56738B !important; 
+  color: #2B4066;
+}
+
