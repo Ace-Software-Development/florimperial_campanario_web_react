@@ -112,15 +112,6 @@ export default function Sidebar(permissions) {
                   <NavText>Reglas</NavText>
                 </NavItem>
           */}
-                <NavItem eventKey="golf" style={{display: `${golf}`}}>
-                  <NavIcon>
-                    <ion-icon name="golf" style={{fontSize: '1.25em'}}></ion-icon>
-                  </NavIcon>
-                  <NavText>Golf</NavText>
-                  <NavItem eventKey="golf/salidas">
-                    <NavText>Reservaciones</NavText>
-                  </NavItem>
-                </NavItem>
 
                 {/*<NavItem eventKey="raqueta" style={{display: `${raqueta}`}}>
                   <NavIcon>
