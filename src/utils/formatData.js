@@ -1,8 +1,16 @@
 export function formatReservationData(reservation, golfReservation=null, multipleReservations=null){
+	let title = '';
+	if (reservation.get('estatus') === 1)
+		title = 'Disponible';
+	else if (reservation.get('user')===undefined || reservation.get('estatus') !== 1)
+		title = 'Bloqueado';
+	else
+		title = reservation.get('user').get('username');
+
 	const formatedData = {
 		objectId: reservation.id,
 		id: reservation.id,
-		title: reservation.get('user')===undefined || reservation.get('estatus') === 1 ? 'Disponible' : reservation.get('user').get('username'),
+		title: title,
 		start: reservation.get('fechaInicio'),
 		estatus: reservation.get('estatus'),
 		maximoJugadores: reservation.get('maximoJugadores'),

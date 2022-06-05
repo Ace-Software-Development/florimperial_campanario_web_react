@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import Datetime from 'react-datetime';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent, DialogActions } from '@mui/material';
-import { getAllActiveUsers, getAllCoaches, updateGolfReservation } from '../utils/client';
+import { getAllActiveUsers, getAllCoaches, updateGolfReservation, deleteReservation } from '../utils/client';
 import { Button } from '@mui/material';
 import GuestsSection from '../components/GuestsSection';
 import InputSelector from '../components/InputSelector';
@@ -14,6 +14,7 @@ export default function EditGolfAppointmentSlot(props) {
     const [maxGuests, setMaxGuests] = useState(appointment.maximoJugadores);
 	const [guests, setGuests] = useState([]);
 	const [disabledButton, setDisabledButton] = useState(false);
+	const [deleteDisabledButton, setDeleteDisabledButton] = useState(false);
 	//console.log(appointment);
     
 	const handleClose = () => {
@@ -24,6 +25,11 @@ export default function EditGolfAppointmentSlot(props) {
         const updatedAppointment = {...appointment, [key]: data};
         setAppointment(updatedAppointment);
     }
+
+	const handleDelete = async () => {
+		await deleteReservation(appointment, guests);
+		return true;
+	}
 
     const onSubmit = async () => {
 		// Validaciones
@@ -231,17 +237,24 @@ export default function EditGolfAppointmentSlot(props) {
 					</div>
 				</div>
 
-				
-
 				<DialogActions>
 					<Button onClick={handleClose}>Cancelar</Button>
+					<Button onClick={async () => {
+						if (deleteDisabledButton)
+							return;
+						const status = await handleDelete();
+						if (status) {
+							setDeleteDisabledButton(true);
+							window.location.reload();
+						}
+					}}>Eliminar</Button>
 					<Button onClick={async () => {
 						if(disabledButton)
 							return;
 						const status = await onSubmit();
 						if (status) {
 							setDisabledButton(true);
-							window.location.reload()
+							window.location.reload();
 						}
 					}} type="submit">Actualizar</Button>
 				</DialogActions> 

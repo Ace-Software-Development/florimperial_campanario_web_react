@@ -154,6 +154,7 @@ export async function updateGolfReservation(dataReservation, guests) {
  * else @returns false
  */
 export async function createGolfReservation(dataReservation) {
+	console.log(dataReservation);
 	// Hacer query de Sitio
 	const sitioQuery = new Parse.Query(SITIO_MODEL);
 	const sitioObject = await sitioQuery.get(dataReservation.sitio.objectId);
@@ -177,8 +178,8 @@ export async function createGolfReservation(dataReservation) {
 	reservationGolfObj.set('reservacion', reservation);
 	reservationGolfObj.set('carritosReservados', 0);
 	reservationGolfObj.set('cantidadHoyos', 9);
-	reservationGolfObj.save();
-
+	const reservationGolf = await reservationGolfObj.save();
+	console.log(reservationGolf);
 	return reservation;
 }
 
@@ -353,6 +354,20 @@ export async function getSitiosByArea(areaId) {
 	const sitioQuery = new Parse.Query(SITIO_MODEL);
 	sitioQuery.equalTo('area', areaObj);
 	return await sitioQuery.find();
+}
+
+export async function deleteReservation(dataReservation, guests=[]) {
+	//console.log('delete request', dataReservation);
+	if (dataReservation.golfAppointment) {
+		const golfReservationObj = new RESERVACION_GOLF_MODEL();
+		golfReservationObj.set('objectId', dataReservation.golfAppointment.objectId);
+		golfReservationObj.destroy();
+	}
+	const reservationObj = new RESERVACION_MODEL();
+	reservationObj.set('objectId', dataReservation.objectId);
+	reservationObj.destroy();
+
+	// TODO:daniel delete the guests from all tables
 }
 
 /**

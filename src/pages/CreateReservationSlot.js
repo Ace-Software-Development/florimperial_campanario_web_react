@@ -26,6 +26,17 @@ export default function CreateGolfAppointmentSlot(props) {
         }
     });
 
+    useEffect(() => {
+        if (props.sitios && props.sitios.length===1) {
+            const sitioNewData = {
+                'objectId': props.sitios[0].objectId,
+                'nombre': props.sitios[0].nombre,
+                'tableName': 'Sitio'
+            };
+            setAppointment({...appointment, sitio: sitioNewData});
+        }
+    }, []);
+
     const handleClose = () => {
         props.onClose(false);
     }
