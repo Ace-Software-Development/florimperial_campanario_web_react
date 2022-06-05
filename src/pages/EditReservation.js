@@ -249,7 +249,7 @@ export default function EditGolfAppointmentSlot(props) {
 							/>
 						}
 
-						{props.guestsInput && !appointment.sitio.variasReservaciones &&
+						{props.guestsInput &&
 							<GuestsSection 
 								maxGuests={maxGuests} 
 								guests={guests} 
