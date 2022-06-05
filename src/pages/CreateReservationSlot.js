@@ -1,26 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent, DialogActions } from '@mui/material';
 import { Button } from '@mui/material';
-import { getAllCoaches, createGolfReservation } from '../utils/client';
+import { getAllCoaches, createGolfReservation, getAreaByName, getSitiosByArea } from '../utils/client';
 import InputSelector from '../components/InputSelector';
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 
 
 export default function CreateGolfAppointmentSlot(props) {
+	const [disabledButton, setDisabledButton] = useState(false);
     const [appointment, setAppointment] = useState({
         'fechaInicio': props.startingDate,
         'maximoJugadores': 5,
-        'estatus': 1,
-        'sitio': {
-            'objectId': 'JH5D3uksh0',
-            'nombre': 'Hoyo 1'
+        'sitio': props.sitios ? props.sitios[0] : {
+            'objectId': null,
+            'nombre': '',
+            'tableName': 'Sitio'
         },
         'profesor': {
             'objectId': null,
-            'nombre': ''
+            'nombre': '',
+            'tableName': 'Profesor'
         }
     });
 
@@ -33,13 +35,17 @@ export default function CreateGolfAppointmentSlot(props) {
         setAppointment(updatedAppointment);
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
+        // Validations
+        // TODO: validate data before sending it
+
         // Parse data so it matches DB fields
         delete appointment.start;
         delete appointment.title;
         delete appointment.id;
         
-        createGolfReservation(appointment).then(() => window.location.reload());
+        await createGolfReservation(appointment);
+        return true;
     }
 
     return(
@@ -63,7 +69,7 @@ export default function CreateGolfAppointmentSlot(props) {
                                 </td>
                             </tr>
 
-                            {props.sitios.length > 1 &&
+                            {props.sitios && props.sitios.length > 1 &&
 								<tr>
 									<td>
 										<p>Sitio de salida</p>
@@ -71,8 +77,9 @@ export default function CreateGolfAppointmentSlot(props) {
 									<td>
 										{props.sitios.map(sitio => {
 											return(
-												<div>
+												<div key={`${sitio.objectId}-sitio-div`}>
 													<input
+                                                        key={`${sitio.objectId}-sitio-input`}
 														type="radio"
 														id={sitio.objectId}
 														value={sitio.objectId}
@@ -106,20 +113,7 @@ export default function CreateGolfAppointmentSlot(props) {
                                     />
                                 </td>
                             </tr>
-
-                            <tr>
-                                <td>
-                                    <p>Estatus</p>
-                                </td>
-                                <td>
-                                    <select className='input' defaultValue={appointment.estatus} onChange={event => appointmentOnChange('reservacion', 'estatus', parseInt(event.target.value))}>
-                                        <option value={1}>Disponible</option>
-                                        <option value={2}>Reservado</option>
-                                        <option value={3}>Reservado permanente</option>
-                                    </select>
-                                </td>
-                            </tr>
-
+                            
 							{props.coachInput &&
 								<tr>
 									<td>
@@ -149,7 +143,15 @@ export default function CreateGolfAppointmentSlot(props) {
 
                     <DialogActions>
                         <Button onClick={handleClose}>Cancelar</Button>
-                        <Button onClick={onSubmit} type="submit">Crear</Button>
+                        <Button onClick={async () => {
+                            if(disabledButton)
+                                return;
+                            const status = await onSubmit();
+                            if (status) {
+                                setDisabledButton(true);
+                                window.location.reload()
+                            }
+                        }} type="submit">Crear</Button>
                     </DialogActions> 
             </DialogContent>
         </Dialog>

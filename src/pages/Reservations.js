@@ -8,8 +8,9 @@ import CreateReservationSlot from './CreateReservationSlot';
 import esLocale from '@fullcalendar/core/locales/es';
 import Screen from "../components/Screen";
 import EditReservation from './EditReservation';
-import { getAllAvailableReservations, getReservationGolf } from '../utils/client';
+import { getAllAvailableReservations } from '../utils/client';
 import CirculoCarga from '../components/CirculoCarga';
+import '../css/Reservations.css';
 
 
 export default function Reservations(props) {
@@ -22,7 +23,7 @@ export default function Reservations(props) {
 
     useEffect(async () => {
         setLoading(true);
-        let data = await getAllAvailableReservations(props.module);
+        const data = await getAllAvailableReservations(props.module);
         setReservationsData(data);
         setLoading(false);
     }, []);
@@ -84,6 +85,7 @@ export default function Reservations(props) {
                         onClose={setOpenEdit}
                         appointmentData={selectedAppointment}
                         coachInput={props.coachInput}
+                        guestsInput={props.guestsInput}
                         sitios={props.sitios}
                     />
                 }
@@ -94,6 +96,7 @@ export default function Reservations(props) {
                         onClose={setOpenCreate}
                         startingDate={newSlotStart}
                         coachInput={props.coachInput}
+                        guestsInput={props.guestsInput}
                         sitios={props.sitios}
                     />
                 }

@@ -11,11 +11,32 @@ import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
 import Reservations from './pages/Reservations';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getAreaByName, getSitiosByArea } from './utils/client';
+import { formatSitioData } from './utils/formatData';
 
 
 export default function App() {
     const [sitiosData, setSitiosData] = useState([]);
+
+    useEffect(async () => {
+        const golfArea = await getAreaByName('Golf');
+        const gymArea = await getAreaByName('Gimnasio');
+        const raquetaArea = await getAreaByName('Raqueta');
+        const poolArea = await getAreaByName('Alberca');
+
+        const golfSitios = await getSitiosByArea(golfArea.id);
+        const gymSitios = await getSitiosByArea(gymArea.id);
+        const raquetaSitios = await getSitiosByArea(raquetaArea.id);
+        const poolSitios = await getSitiosByArea(poolArea.id);
+
+        setSitiosData({
+            golf: golfSitios.map(i => formatSitioData(i)),
+            gym: gymSitios.map(i => formatSitioData(i)),
+            raqueta: raquetaSitios.map(i => formatSitioData(i)),
+            pool: poolSitios.map(i => formatSitioData(i))
+        });
+    }, []);
 
     return (
     <Router>
@@ -32,21 +53,49 @@ export default function App() {
 
                     // Edit and create Reservation
                     module={'golf'}
-                    sitios={sitiosData}
+                    sitios={sitiosData.golf}
                     coachInput={true}
                     guestsInput={true}
                 />
             </Route>
 
-            <Route path="/gym/salidas">
+            <Route path="/gym/reservaciones">
                 <Reservations
                     // Reservation Calendar
                     screenTitle='Reservaciones de Gimnasio'
-                    screenPath='gym/salidas'
+                    screenPath='gym/reservaciones'
 
                     // Edit and create Reservation
                     module={'gym'}
-                    sitios={sitiosData}
+                    sitios={sitiosData.gym}
+                    coachInput={true}
+                    guestsInput={false}
+                />
+            </Route>
+
+            <Route path="/raqueta/reservaciones">
+                <Reservations
+                    // Reservation Calendar
+                    screenTitle='Reservaciones de Raqueta'
+                    screenPath='raqueta/reservaciones'
+
+                    // Edit and create Reservation
+                    module={'raqueta'}
+                    sitios={sitiosData.raqueta}
+                    coachInput={true}
+                    guestsInput={false}
+                />
+            </Route>
+
+            <Route path="/alberca/reservaciones">
+                <Reservations
+                    // Reservation Calendar
+                    screenTitle='Reservaciones de Alberca'
+                    screenPath='alberca/reservaciones'
+
+                    // Edit and create Reservation
+                    module={'pool'}
+                    sitios={sitiosData.pool}
                     coachInput={true}
                     guestsInput={false}
                 />

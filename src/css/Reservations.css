@@ -1,0 +1,12 @@
+.reservations-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.reservations-container > div {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	margin: 0 .5rem;
+}

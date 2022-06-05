@@ -33,9 +33,13 @@ export function formatReservationData(reservation, golfReservation=null, multipl
 			multipleReservations
 		} : null
 	}
-
-	if (reservation.id == "TGC7E5pakO")
-		console.log(golfReservation)
-
 	return formatedData;
+}
+
+export function formatSitioData(sitio) {
+	return {
+		objectId: sitio.id,
+		nombre: sitio.get('nombre'),
+		tableName: 'Sitio'
+	};
 }

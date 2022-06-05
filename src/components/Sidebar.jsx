@@ -140,19 +140,19 @@ export default function Sidebar(props){
                         </NavItem>
                     </NavItem>
                     
-                    <NavItem eventKey="gimnasio" style={{display: `${salones_gym}`}}>
+                    <NavItem eventKey="gym" style={{display: `${salones_gym}`}}>
                         <NavIcon>
                             <ion-icon name="barbell"></ion-icon>
                         </NavIcon>
                         <NavText>
                             Gimnasio
                         </NavText>
-                        <NavItem eventKey="gimnasio/reservaciones">
+                        <NavItem eventKey="gym/reservaciones">
                             <NavText>
                                 Reservaciones
                             </NavText>
                         </NavItem>
-                        <NavItem eventKey="raqueta/rutinas">
+                        <NavItem eventKey="gym/rutinas">
                             <NavText>
                                 Rutinas
                             </NavText>

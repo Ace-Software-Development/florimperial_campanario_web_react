@@ -83,21 +83,21 @@ async function updateGuestsEntry(reservationId) {
 }
 
 export async function updateGolfReservation(dataReservation, guests) {
+	console.log(JSON.parse(JSON.stringify(dataReservation)));
 	try {
 		// Create GolfReservation entry
-		if (dataReservation.reservacionGolf){
+		if (dataReservation.golfAppointment){
 			const reservationQuery = new Parse.Query(RESERVACION_MODEL);
 			const reservation = await reservationQuery.get(dataReservation.objectId);
-		
-			const golfData = dataReservation.reservacionGolf;
+			const golfData = dataReservation.golfAppointment;
 			const reservationGolfObj = new Parse.Object('ReservacionGolf');
+			reservationGolfObj.set('objectId', golfData.objectId);
 			reservationGolfObj.set('carritosReservados', golfData.carritosReservados);
-			//reservationGolfObj.set('cantidadHoyos', dataReservationGolf.cantidadHoyos);
+			reservationGolfObj.set('cantidadHoyos', golfData.cantidadHoyos);
 			reservationGolfObj.set('reservacion', reservation);
-			await reservationGolfObj.save();
-
+			const response = await reservationGolfObj.save();
 			// We remove the key so we don't sync it after
-			delete dataReservation.reservacionGolf;
+			delete dataReservation.golfAppointment;
 		}
 
 		// Update Reservation entry
@@ -339,6 +339,22 @@ export async function getAllAvailableReservations(module) {
 
 }
 
+export async function getAreaByName(name) {
+	const areaQuery = new Parse.Query(AREA_MODEL);
+	areaQuery.equalTo('nombre', name);
+	const response = await areaQuery.find();
+	return response[0];
+}
+
+export async function getSitiosByArea(areaId) {
+	//console.log(areaId);
+	const areaQuery = new Parse.Query(AREA_MODEL);
+	const areaObj = await areaQuery.get(areaId);
+	const sitioQuery = new Parse.Query(SITIO_MODEL);
+	sitioQuery.equalTo('area', areaObj);
+	return await sitioQuery.find();
+}
+
 /**
  * Retrieves all active users from DB
  * @returns {array} data
@@ -392,7 +408,7 @@ export async function checkUser() {
   if (!currentUser) {
     return("NO_USER");
   }
-  else if (currentUser.attributes.isAdmin == false) {
+  else if (!currentUser.attributes.isAdmin) {
     return("NOT_ADMIN");
   }
   try{
