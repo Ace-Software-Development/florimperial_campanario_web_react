@@ -1,8 +1,9 @@
 export function formatReservationData(reservation, golfReservation=null, multipleReservations=null){
 	let title = '';
+	console.log(reservation.get('user'));
 	if (reservation.get('estatus') === 1)
 		title = 'Disponible';
-	else if (reservation.get('user')===undefined || reservation.get('estatus') !== 1)
+	else if (reservation.get('user')===undefined && reservation.get('estatus') !== 1)
 		title = 'Bloqueado';
 	else
 		title = reservation.get('user').get('username');
