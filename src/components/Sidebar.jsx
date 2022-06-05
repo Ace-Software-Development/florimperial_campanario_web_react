@@ -58,6 +58,12 @@ export default function Sidebar(permissions) {
                     <ion-icon name="people" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Gestión de socios</NavText>
+                  <NavItem eventKey="gestion-de-socios">
+                    <NavText>Dar socios de alta</NavText>
+                  </NavItem>
+                  <NavItem eventKey="numero-emergencia">
+                    <NavText>Número de emergecia</NavText>
+                  </NavItem>
                 </NavItem>
 
                 <NavItem eventKey="anuncios" style={{display: `${anuncios}`}}>
@@ -65,6 +71,16 @@ export default function Sidebar(permissions) {
                     <ion-icon name="newspaper" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Anuncios</NavText>
+                </NavItem>
+
+                <NavItem eventKey="golf" style={{display: `${golf}`}}>
+                  <NavIcon>
+                    <ion-icon name="golf" style={{fontSize: '1.25em'}}></ion-icon>
+                  </NavIcon>
+                  <NavText>Golf</NavText>
+                  <NavItem eventKey="golf/salidas">
+                    <NavText>Reservaciones</NavText>
+                  </NavItem>
                 </NavItem>
 
                 {/*  <NavItem eventKey="sugerencias">
