@@ -78,7 +78,7 @@ export default function Sidebar(permissions) {
                   <NavIcon>
                     <ion-icon name="person" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
-                  <NavText>Perfil</NavText>
+                  <NavText>Mi Perfil</NavText>
                 </NavItem>
 
                 <NavItem eventKey="panel-de-administradores" style={{display: `${gestion}`}}>

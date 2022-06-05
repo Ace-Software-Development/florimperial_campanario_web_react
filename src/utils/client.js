@@ -9,6 +9,11 @@ const COACH_MODEL = Parse.Object.extend('Profesor');
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend('Invitado');
 
+/**
+ * Returns all the data of golf appoinntments
+ * @returns {Array(ParseObject)}
+ *
+ */
 export async function getAllGolfAppointmentSlots() {
   try {
     // Query all sitios belonging to Golf
@@ -51,7 +56,10 @@ export async function getReservationGolf(appointmentId) {
     console.log(`Ha ocurrido un error ${error}`);
   }
 }
-
+/**
+ * Clears the guests of a reservations
+ * @param {number} reservationId
+ */
 async function updateGuestsEntry(reservationId) {
   const guestsIds = [];
 
@@ -79,6 +87,13 @@ async function updateGuestsEntry(reservationId) {
   }
 }
 
+/**
+ * updates a golf reservation in the DB
+ * @param {array} dataReservation
+ * @param {array} guests
+ * @returns true if reservation data saved succesfully
+ * else @returns false
+ */
 export async function updateGolfReservation(dataReservation, guests) {
   try {
     // Create GolfReservation entry
@@ -311,6 +326,11 @@ export async function getAnuncios() {
   return result;
 }
 
+/**
+ * getAdminUsers
+ * @description it returns the relation table of all the admins and their roles
+ * @returns {Array(ParseObject)} An array of objects containing the relation table
+ */
 export async function getAdminUsers() {
   const query = new Parse.Query('AdminRol');
   const result = await query.find();
