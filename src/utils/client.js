@@ -413,3 +413,20 @@ export async function setAdminRole(idAdmin, idRol) {
   await adminRolObj.set('rol', rolePointer);
   await adminRolObj.save();
 }
+
+/**
+ * setSupportNumber
+ * @description it sets a new support number
+ * @param {number} idNumero: the Number objectId
+ * @param {number} nuevoNum: the new value for attribute Numero
+ */
+export async function setSupportNumber(idNumero, nuevoNum) {
+  console.log('idnum:', idNumero);
+  const query = new Parse.Query('NumeroAtencion');
+  query.equalTo('objectId', idNumero);
+  const result = await query.find();
+  const numeroEnDb = result[0];
+  console.log(numeroEnDb);
+  await numeroEnDb.set('Numero', nuevoNum);
+  await numeroEnDb.save();
+}

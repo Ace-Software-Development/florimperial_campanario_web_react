@@ -6,22 +6,27 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Parse from 'parse/lib/browser/Parse';
 import {FormControl} from 'react-bootstrap';
-import {setAdminRole} from '../utils/client';
+import {setSupportNumber} from '../utils/client';
+import {useEffect, useState} from 'react';
 
 const TablaNumeros = supportNumbers => {
+  const [newNumber, setNumber] = useState('');
+  const [username, setUsername] = useState('');
+
   /**
    * handleChangeRole
    * @description It takes the role selected and assigns it to the chosen user
    * @param event: contains the form with the information of the user and role
    */
-  const handleChangeRole = event => {
+  const handleChangeNumber = event => {
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
-    const idAdmin = form.id;
-    const idRol = form.roleSelection.value;
-    setAdminRole(idAdmin, idRol).then(() => {
-      alert('Se cambió exitosamente el rol del administrador');
+    const idNumero = form.id;
+    const nuevoNumero = form.nuevoNum.value;
+
+    setSupportNumber(idNumero, parseInt(nuevoNumero)).then(() => {
+      alert('Se actualizó exitosamente el número.');
       window.location.reload();
     });
   };
@@ -33,12 +38,20 @@ const TablaNumeros = supportNumbers => {
         <Container>
           <Row>
             <Col s={10} m={10}>
-              <Form id={number.id} onSubmit={handleChangeRole}>
-                <Form.Control type="text" id="inputPassword5" value={number.attributes.Numero} />
-              </Form>
+              <form id={number.id} onSubmit={handleChangeNumber}>
+                <div class="form-outline">
+                  <input
+                    type="number"
+                    id="nuevoNum"
+                    className="form-control"
+                    defaultValue={number.attributes.Numero}
+                    onChange={e => setNumber(e.target.value)}
+                  />
+                </div>
+              </form>
             </Col>
             <Col className="col-2">
-              <Button type="submit" form="a">
+              <Button type="submit" form={number.id}>
                 Guardar
               </Button>
             </Col>

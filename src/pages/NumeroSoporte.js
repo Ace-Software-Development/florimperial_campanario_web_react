@@ -17,7 +17,7 @@ import Papa from 'papaparse';
 import Screen from '../components/Screen';
 import TablaNumeros from '../components/TablaNumeros';
 
-export default function NumeroEmergencia() {
+export default function NumeroSoporte() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
@@ -60,7 +60,7 @@ export default function NumeroEmergencia() {
     );
 
   return (
-    <Screen permissions={permissions} title="Número de emergencias">
+    <Screen permissions={permissions} title="Números de soporte">
       {console.log(supportNumbers)}
       <div className="App">
         <TablaNumeros supportNumbers={supportNumbers} />

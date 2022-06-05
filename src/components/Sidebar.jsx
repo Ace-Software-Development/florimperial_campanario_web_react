@@ -61,8 +61,8 @@ export default function Sidebar(permissions) {
                   <NavItem eventKey="gestion-de-socios">
                     <NavText>Dar socios de alta</NavText>
                   </NavItem>
-                  <NavItem eventKey="numero-emergencia">
-                    <NavText>Número de emergecia</NavText>
+                  <NavItem eventKey="numero-soporte">
+                    <NavText>Números de soporte</NavText>
                   </NavItem>
                 </NavItem>
 
