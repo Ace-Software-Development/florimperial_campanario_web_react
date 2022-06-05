@@ -30,7 +30,6 @@ export default function CreateGolfAppointmentSlot(props) {
 
     useEffect(() => {
         if (props.sitios) {
-            console.log(props.sitios);
             setLoading(false);
             const sitioNewData = {
                 'objectId': props.sitios[0].objectId,

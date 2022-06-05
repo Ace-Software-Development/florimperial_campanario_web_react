@@ -49,6 +49,10 @@ export default function EditGolfAppointmentSlot(props) {
             return false;
         }
 
+		if (appointment.sitio.variasReservaciones && users.length === maxGuests) {
+			appointment.estatus = 2;
+		}
+
         // Parse data so it matches DB fields
         delete appointment.start;
         delete appointment.title;

@@ -2,6 +2,8 @@ export function formatReservationData(reservation, golfReservation=null, multipl
 	let title = '';
 	if (reservation.get('estatus') === 1)
 		title = 'Disponible';
+	else if (reservation.get('sitio').get('variasReservaciones') && multipleReservations.length>=reservation.get('maximoJugadores'))
+		title = 'Cupo lleno';
 	else if (reservation.get('user')===undefined && reservation.get('estatus') !== 1)
 		title = 'Bloqueado';
 	else

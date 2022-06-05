@@ -393,7 +393,7 @@ export async function deleteReservation(dataReservation) {
 	}
 	const reservationObj = new RESERVACION_MODEL();
 	reservationObj.set('objectId', dataReservation.objectId);
-	reservationObj.destroy();
+	await reservationObj.destroy();
 
 	// Delete guests and multiple reservations
 	updateGuestsEntry(dataReservation.objectId);

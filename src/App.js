@@ -83,7 +83,7 @@ export default function App() {
                     module={'raqueta'}
                     sitios={sitiosData.raqueta}
                     coachInput={true}
-                    guestsInput={false}
+                    guestsInput={true}
                 />
             </Route>
 
