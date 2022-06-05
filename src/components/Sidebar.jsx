@@ -76,13 +76,13 @@ export default function Sidebar(permissions) {
                   <NavText>Anuncios</NavText>
                 </NavItem>
 
-                {/*  <NavItem eventKey="sugerencias">
+                 <NavItem eventKey="sugerencias">
                   <NavIcon>
                     <ion-icon name="bulb" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Sugerencias</NavText>
             </NavItem>
-                */}
+               
                 <NavItem eventKey="mi-perfil">
                   <NavIcon>
                     <ion-icon name="person" style={{fontSize: '1.25em'}}></ion-icon>

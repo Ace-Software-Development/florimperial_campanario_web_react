@@ -7,6 +7,8 @@ import {useHistory} from 'react-router-dom';
 import Screen from '../components/Screen';
 import Parse from 'parse';
 import ParseObject from 'parse/lib/browser/ParseObject';
+import Card from 'react-bootstrap/Card';
+import TablaSocios from '../components/TablaSocios';
 
 export default function ListaSocios() {
   const history = useHistory();
@@ -56,6 +58,13 @@ export default function ListaSocios() {
 
   return (
     <Screen permissions={permissions} title="Lista de socios">
+      <div className="App">
+        <div style={{marginLeft: '145px'}}>
+          <Card style={{width: '90%'}}>
+            <TablaSocios />
+          </Card>
+        </div>
+      </div>
     </Screen>
   );
 }
