@@ -8,7 +8,7 @@ import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
 import PanelAdmins from './pages/PanelAdmins';
-
+import NumeroEmergencia from './pages/NumeroEmergencia';
 export default function App() {
   return (
     <Router>
@@ -24,6 +24,9 @@ export default function App() {
         </Route>
         <Route path="/gestion-de-socios">
           <GestionSocios />
+        </Route>
+        <Route path="/numero-emergencia">
+          <NumeroEmergencia />
         </Route>
         <Route path="/recovery">
           <PasswordRecovery />

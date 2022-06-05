@@ -247,6 +247,17 @@ export async function getAdminRoleId(idUsuario) {
 }
 
 /**
+ * getSupportNumbers
+ * @description it obtains from db the different phone numbers registered
+ * @returns {Array(ParseObject)} an array of NumeroAtencion Objects
+ */
+export async function getSupportNumbers() {
+  const query = new Parse.Query('NumeroAtencion');
+  const result = await query.find();
+  return result;
+}
+
+/**
  * checkUser
  * @description it checks the current user and its permissions.
  * @returns {json|string} the permissions of the user in a json format | the error message.
