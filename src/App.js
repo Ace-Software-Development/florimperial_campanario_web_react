@@ -9,6 +9,7 @@ import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
 import PanelAdmins from './pages/PanelAdmins';
 import NumeroSoporte from './pages/NumeroSoporte';
+import ReservacionesSocio from './pages/ReservacionesSocio';
 export default function App() {
   return (
     <Router>
@@ -19,6 +20,16 @@ export default function App() {
         <Route path="/golf/salidas">
           <SalidasGolf />
         </Route>
+        <Route
+          path="/socios/:socioId"
+          render={() => {
+            return (
+              <div>
+                <ReservacionesSocio />
+              </div>
+            );
+          }}
+        />
         <Route path="/anuncios">
           <Anuncios />
         </Route>
