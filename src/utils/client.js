@@ -1,4 +1,5 @@
 import Parse from 'parse';
+import ParseUser from 'parse/lib/browser/ParseUser';
 
 const RESERVACION_MODEL = Parse.Object.extend('Reservacion');
 const RESERVACION_GOLF_MODEL = Parse.Object.extend('ReservacionGolf');
@@ -8,6 +9,7 @@ const USER_MODEL = Parse.Object.extend('_User');
 const COACH_MODEL = Parse.Object.extend('Profesor');
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend('Invitado');
+const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend('ReservacionMultiple');
 
 export async function getAllGolfAppointmentSlots() {
   try {
@@ -429,4 +431,79 @@ export async function setSupportNumber(idNumero, nuevoNum) {
   console.log(numeroEnDb);
   await numeroEnDb.set('Numero', nuevoNum);
   await numeroEnDb.save();
+}
+
+/**
+ * getReservations()
+ * @param none
+ * @returns array with all reservations made by user
+ * else @returns empty array
+ */
+export async function getReservations(userId) {
+  const userObj = new ParseUser();
+  userObj.set('objectId', userId);
+
+  const areaQuery = new Parse.Query(AREA_MODEL);
+  areaQuery.select('nombre');
+  areaQuery.equalTo('eliminado', false);
+
+  const sitiosQuery = new Parse.Query(SITIO_MODEL);
+  sitiosQuery.select('nombre');
+  sitiosQuery.equalTo('eliminado', false);
+  sitiosQuery.matchesQuery('area', areaQuery);
+  sitiosQuery.include('area');
+
+  const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+  reservationQuery.equalTo('user', userObj);
+  reservationQuery.equalTo('eliminado', false);
+  reservationQuery.equalTo('estatus', 2);
+  reservationQuery.include('sitio');
+
+  let data = await reservationQuery.find();
+
+  const multipleReservationIdQuery = new Parse.Query(MULTIPLE_RESERVATION_MODEL);
+  multipleReservationIdQuery.select('reservacion');
+  multipleReservationIdQuery.equalTo('user', userObj);
+
+  let reservacionMultipeId = await multipleReservationIdQuery.find();
+  const reservacionIDS = [];
+
+  for (let i of reservacionMultipeId) {
+    reservacionIDS.push(i.get('reservacion').id);
+  }
+
+  for (let i of reservacionIDS) {
+    const multipleReservationQuery = new Parse.Query(RESERVACION_MODEL);
+    multipleReservationQuery.equalTo('objectId', i);
+    multipleReservationQuery.equalTo('eliminado', false);
+    multipleReservationQuery.matchesQuery('sitio', sitiosQuery);
+    multipleReservationQuery.include('sitio');
+
+    let reservacion = await multipleReservationQuery.find();
+
+    data.push(reservacion[0]);
+  }
+
+  data.sort(function(a, b) {
+    return a.get('fechaInicio').toISOString() > b.get('fechaInicio').toISOString()
+      ? -1
+      : a.get('fechaInicio').toISOString() < b.get('fechaInicio').toISOString()
+      ? 1
+      : 0;
+  });
+
+  return data;
+}
+
+export async function getArea() {
+  const areaQuery = new Parse.Query(AREA_MODEL);
+  areaQuery.equalTo('eliminado', false);
+
+  let data = await areaQuery.find();
+  const areas = new Map();
+
+  for (let i of data) {
+    areas.set(i.id, i.get('nombre'));
+  }
+  return areas;
 }

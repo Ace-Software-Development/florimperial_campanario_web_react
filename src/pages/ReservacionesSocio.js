@@ -1,37 +1,25 @@
 import '../css/GestionSocios.css';
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Modal from 'react-bootstrap/Modal';
-import TablaCsvEjemplo from '../components/TablaCsvEjemplo';
 import {useEffect, useState} from 'react';
 import CirculoCarga from '../components/CirculoCarga';
-import {createMember, checkUser} from '../utils/client';
+import {checkUser, getArea, getReservations} from '../utils/client';
 import {useHistory, useParams} from 'react-router-dom';
-import Papa from 'papaparse';
 import Screen from '../components/Screen';
 import ReservationCard from '../components/ReservationCards';
+import {getMonthFormat} from '../utils/timeHelpers';
+import {createContext, useContext} from 'react';
 
 export default function ReservacionesSocio() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState('none');
   const [permissions, setPermissions] = useState({});
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [showHelp, setShowHelp] = useState(false);
-  const handleCloseHelp = () => setShowHelp(false);
-  const handleShowHelp = () => setShowHelp(true);
-  const [show, setShow] = useState(false);
-  const [validated, setValidated] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [statusReport, setStatusReport] = useState(new Array());
-  const [showReport, setShowReport] = useState('none');
+  const [areas, setallAreas] = useState([]);
+  const [reservations, setReservations] = useState([]);
+  const reservationMadeContext = createContext(false);
+  const {reservationMade, setReservationMade} = useContext(reservationMadeContext);
+
   let {socioId} = useParams();
   useEffect(async () => {
     const permissionsJson = await checkUser();
@@ -60,6 +48,15 @@ export default function ReservacionesSocio() {
     }
   }, []);
 
+  useEffect(() => {
+    const data = new Map();
+    getArea().then(data => setallAreas(data));
+  }, []);
+
+  useEffect(() => {
+    getReservations(socioId).then(data => setReservations(data));
+  }, [reservationMade]);
+
   if (loading)
     return (
       <span>
@@ -71,8 +68,21 @@ export default function ReservacionesSocio() {
     <Screen permissions={permissions} title="Resevaciones del socio">
       <div className="App">
         <Container>
-          aaaaaaaaaaaaaaaaaa {socioId}
-          {/* <ReservationCard props={props} */}
+          {reservations.map((reservation, i) => {
+            return (
+              <ReservationCard
+                key={i}
+                area={areas.get(reservation.get('sitio').get('area').id)}
+                sitio={reservation.get('sitio').get('nombre')}
+                hour={reservation
+                  .get('fechaInicio')
+                  .toISOString()
+                  .slice(11, 16)}
+                month={getMonthFormat(reservation.get('fechaInicio'))}
+                day={reservation.get('fechaInicio').getDate()}
+              />
+            );
+          })}
         </Container>
       </div>
     </Screen>
