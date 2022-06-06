@@ -2,7 +2,7 @@ import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import {useEffect, useState} from 'react';
 import CirculoCarga from '../components/CirculoCarga';
-import {checkUser, getAdminUsers, getRolesNames, getAdminRole} from '../utils/client';
+import {checkUser, getCuenta} from '../utils/client';
 import {useHistory} from 'react-router-dom';
 import Screen from '../components/Screen';
 import Parse from 'parse';
@@ -14,8 +14,7 @@ export default function ListaSocios() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
-  const [currentRole, setRole] = useState(new ParseObject());
-  const [currentUser, setCurrentUser] = useState(new Parse.User());
+  const [cuentas, setCuentas] = useState([]);
   useEffect(async () => {
     const permissionsJson = await checkUser();
     if (permissionsJson === 'NO_USER') {
@@ -35,13 +34,10 @@ export default function ListaSocios() {
       const permissionsJson = await checkUser();
       setPermissions(permissionsJson);
       // const user = await Parse.User.current();
-      Parse.User.currentAsync().then(user => {
-        console.log(user);
-        setCurrentUser(user);
-        getAdminRole(user.id).then(roleObj => {
-          setRole(roleObj);
-          setLoading(false);
-        });
+
+      getCuenta().then(cuenta => {
+        setCuentas(cuenta);
+        setLoading(false);
       });
     } catch (error) {
       setLoading(false);
@@ -61,7 +57,7 @@ export default function ListaSocios() {
       <div className="App">
         <div style={{marginLeft: '145px'}}>
           <Card style={{width: '90%'}}>
-            <TablaSocios />
+            <TablaSocios props={cuentas} />
           </Card>
         </div>
       </div>

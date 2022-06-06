@@ -541,3 +541,24 @@ export async function getArea() {
   }
   return areas;
 }
+
+export async function getCuenta() {
+  const cuentaQuery = new Parse.Query('Cuenta');
+  let data = await cuentaQuery.find();
+  return data;
+}
+
+/**
+ * setSupportNumber
+ * @description it sets a new support number
+ * @param {number} idNumero: the Number objectId
+ * @param {number} nuevoNum: the new value for attribute Numero
+ */
+export async function setPasesSocio(objId, numPases) {
+  const query = new Parse.Query('Cuenta');
+  query.equalTo('objectId', objId);
+  const result = await query.find();
+  const cuentaEnDb = result[0];
+  await cuentaEnDb.set('pases', numPases);
+  await cuentaEnDb.save();
+}
