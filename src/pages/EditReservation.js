@@ -49,7 +49,7 @@ export default function EditGolfAppointmentSlot(props) {
             return false;
         }
 
-		if (appointment.sitio.variasReservaciones && users.length === maxGuests) {
+		if (appointment.sitio.variasReservaciones && users.length+guests.length === maxGuests) {
 			appointment.estatus = 2;
 		}
 
