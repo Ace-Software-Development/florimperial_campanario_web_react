@@ -1,4 +1,5 @@
 import Parse from 'parse';
+import ParseUser from 'parse/lib/browser/ParseUser';
 
 const RESERVACION_MODEL = Parse.Object.extend('Reservacion');
 const RESERVACION_GOLF_MODEL = Parse.Object.extend('ReservacionGolf');
@@ -8,6 +9,7 @@ const USER_MODEL = Parse.Object.extend('_User');
 const COACH_MODEL = Parse.Object.extend('Profesor');
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend('Invitado');
+const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend('ReservacionMultiple');
 
 /**
  * Returns all the data of golf appoinntments
@@ -262,6 +264,16 @@ export async function getAdminRoleId(idUsuario) {
 }
 
 /**
+ * getSupportNumbers
+ * @description it obtains from db the different phone numbers registered
+ * @returns {Array(ParseObject)} an array of NumeroAtencion Objects
+ */
+export async function getSupportNumbers() {
+  const query = new Parse.Query('NumeroAtencion');
+  const result = await query.find();
+  return result;
+}
+/*
  * getAdminRole
  * @description it obtains from db the role of the received admin user
  * @param {number} idUsuario: the _User objectId
@@ -436,4 +448,96 @@ export async function setAdminRole(idAdmin, idRol) {
   };
   await adminRolObj.set('rol', rolePointer);
   await adminRolObj.save();
+}
+
+/**
+ * setSupportNumber
+ * @description it sets a new support number
+ * @param {number} idNumero: the Number objectId
+ * @param {number} nuevoNum: the new value for attribute Numero
+ */
+export async function setSupportNumber(idNumero, nuevoNum) {
+  console.log('idnum:', idNumero);
+  const query = new Parse.Query('NumeroAtencion');
+  query.equalTo('objectId', idNumero);
+  const result = await query.find();
+  const numeroEnDb = result[0];
+  console.log(numeroEnDb);
+  await numeroEnDb.set('Numero', nuevoNum);
+  await numeroEnDb.save();
+}
+
+/**
+ * getReservations()
+ * @param none
+ * @returns array with all reservations made by user
+ * else @returns empty array
+ */
+export async function getReservations(userId) {
+  const userObj = new ParseUser();
+  userObj.set('objectId', userId);
+
+  const areaQuery = new Parse.Query(AREA_MODEL);
+  areaQuery.select('nombre');
+  areaQuery.equalTo('eliminado', false);
+
+  const sitiosQuery = new Parse.Query(SITIO_MODEL);
+  sitiosQuery.select('nombre');
+  sitiosQuery.equalTo('eliminado', false);
+  sitiosQuery.matchesQuery('area', areaQuery);
+  sitiosQuery.include('area');
+
+  const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+  reservationQuery.equalTo('user', userObj);
+  reservationQuery.equalTo('eliminado', false);
+  reservationQuery.equalTo('estatus', 2);
+  reservationQuery.include('sitio');
+
+  let data = await reservationQuery.find();
+
+  const multipleReservationIdQuery = new Parse.Query(MULTIPLE_RESERVATION_MODEL);
+  multipleReservationIdQuery.select('reservacion');
+  multipleReservationIdQuery.equalTo('user', userObj);
+
+  let reservacionMultipeId = await multipleReservationIdQuery.find();
+  const reservacionIDS = [];
+
+  for (let i of reservacionMultipeId) {
+    reservacionIDS.push(i.get('reservacion').id);
+  }
+
+  for (let i of reservacionIDS) {
+    const multipleReservationQuery = new Parse.Query(RESERVACION_MODEL);
+    multipleReservationQuery.equalTo('objectId', i);
+    multipleReservationQuery.equalTo('eliminado', false);
+    multipleReservationQuery.matchesQuery('sitio', sitiosQuery);
+    multipleReservationQuery.include('sitio');
+
+    let reservacion = await multipleReservationQuery.find();
+
+    data.push(reservacion[0]);
+  }
+
+  data.sort(function(a, b) {
+    return a.get('fechaInicio').toISOString() > b.get('fechaInicio').toISOString()
+      ? -1
+      : a.get('fechaInicio').toISOString() < b.get('fechaInicio').toISOString()
+      ? 1
+      : 0;
+  });
+
+  return data;
+}
+
+export async function getArea() {
+  const areaQuery = new Parse.Query(AREA_MODEL);
+  areaQuery.equalTo('eliminado', false);
+
+  let data = await areaQuery.find();
+  const areas = new Map();
+
+  for (let i of data) {
+    areas.set(i.id, i.get('nombre'));
+  }
+  return areas;
 }

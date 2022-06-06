@@ -1,17 +1,15 @@
-import Sidebar from "./Sidebar";
-import Header from "./Header";
+import Sidebar from './Sidebar';
+import Header from './Header';
 
 export default function Screen(props) {
-  let header = "";
-  if (props.title === "none") {
+  let header = '';
+  if (props.title === 'none') {
     header = (
-      <div style={{ flexGrow: 1, padding: "2rem", overflowY: "scroll" }}>
-        {props.children}
-      </div>
+      <div style={{flexGrow: 1, padding: '1rem', overflowY: 'scroll'}}>{props.children}</div>
     );
   } else {
     header = (
-      <div style={{ flexGrow: 1, padding: "2rem", overflowY: "scroll" }}>
+      <div style={{flexGrow: 1, padding: '1rem', overflowY: 'scroll'}}>
         <Header processName={props.title} />
         {props.children}
       </div>
@@ -19,7 +17,7 @@ export default function Screen(props) {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "row", height: "100vh" }}>
+    <div style={{display: 'flex', flexDirection: 'row', height: '100vh'}}>
       <Sidebar permissions={props.permissions} />
       {header}
     </div>

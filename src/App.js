@@ -8,6 +8,8 @@ import PasswordRecovery from './pages/PasswordRecovery';
 import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
 import PanelAdmins from './pages/PanelAdmins';
+import NumeroSoporte from './pages/NumeroSoporte';
+import ReservacionesSocio from './pages/ReservacionesSocio';
 import MiPerfil from './pages/MiPerfil';
 import ListaSocios from './pages/ListaSocios';
 import PerfilSocio from './pages/PerfilSocio';
@@ -22,17 +24,28 @@ export default function App() {
         <Route path="/golf/salidas">
           <SalidasGolf />
         </Route>
+        <Route
+          path="/socios/:socioId"
+          render={() => {
+            return (
+              <div>
+                <ReservacionesSocio />
+              </div>
+            );
+          }}
+        />
         <Route path="/anuncios">
           <Anuncios />
         </Route>
-        <Route path="/socios/gestion-de-socios">
+        <Route path="/gestion-de-socios">
           <GestionSocios />
         </Route>
-        <Route path="/socios/lista-de-socios">
+        <Route path="/lista-de-socios">
           <ListaSocios />
         </Route>
-        <Route path="/socios/perfil-de-socio">
-          <PerfilSocio />
+
+        <Route path="/numero-soporte">
+          <NumeroSoporte />
         </Route>
         <Route path="/mi-perfil">
           <MiPerfil />

@@ -58,14 +58,17 @@ export default function Sidebar(permissions) {
                     <ion-icon name="people" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Socios</NavText>
-                  <NavItem eventKey="socios/gestion-de-socios">
-                    <NavText>Gestión de socios</NavText>
-                  </NavItem>
-                  <NavItem eventKey="socios/lista-de-socios">
+
+                  <NavItem eventKey="lista-de-socios">
                     <NavText>Lista de socios</NavText>
                   </NavItem>
-                  <NavItem eventKey="socios/perfil-de-socio">
-                    <NavText>Perfil Prueba de socio</NavText>
+
+                  <NavText>Gestión de socios</NavText>
+                  <NavItem eventKey="gestion-de-socios">
+                    <NavText>Dar socios de alta</NavText>
+                  </NavItem>
+                  <NavItem eventKey="numero-soporte">
+                    <NavText>Números de soporte</NavText>
                   </NavItem>
                 </NavItem>
 
@@ -76,13 +79,23 @@ export default function Sidebar(permissions) {
                   <NavText>Anuncios</NavText>
                 </NavItem>
 
-                 <NavItem eventKey="sugerencias">
+                <NavItem eventKey="golf" style={{display: `${golf}`}}>
+                  <NavIcon>
+                    <ion-icon name="golf" style={{fontSize: '1.25em'}}></ion-icon>
+                  </NavIcon>
+                  <NavText>Golf</NavText>
+                  <NavItem eventKey="golf/salidas">
+                    <NavText>Reservaciones</NavText>
+                  </NavItem>
+                </NavItem>
+
+                <NavItem eventKey="sugerencias">
                   <NavIcon>
                     <ion-icon name="bulb" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Sugerencias</NavText>
-            </NavItem>
-               
+                </NavItem>
+
                 <NavItem eventKey="mi-perfil">
                   <NavIcon>
                     <ion-icon name="person" style={{fontSize: '1.25em'}}></ion-icon>
@@ -104,15 +117,6 @@ export default function Sidebar(permissions) {
                   <NavText>Reglas</NavText>
                 </NavItem>
           */}
-                <NavItem eventKey="golf" style={{display: `${golf}`}}>
-                  <NavIcon>
-                    <ion-icon name="golf" style={{fontSize: '1.25em'}}></ion-icon>
-                  </NavIcon>
-                  <NavText>Golf</NavText>
-                  <NavItem eventKey="golf/salidas">
-                    <NavText>Reservaciones</NavText>
-                  </NavItem>
-                </NavItem>
 
                 {/*<NavItem eventKey="raqueta" style={{display: `${raqueta}`}}>
                   <NavIcon>
