@@ -48,7 +48,7 @@ export default function ReservacionesSocio() {
       </div>
     );
   }
-
+  console.log(reservations);
   return (
     <div className="App d-flex flex-column align-items-center">
       <Header processName="Reservaciones del socio" />
