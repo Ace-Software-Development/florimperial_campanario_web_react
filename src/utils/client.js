@@ -11,6 +11,11 @@ const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend('Invitado');
 const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend('ReservacionMultiple');
 
+/**
+ * Returns all the data of golf appoinntments
+ * @returns {Array(ParseObject)}
+ *
+ */
 export async function getAllGolfAppointmentSlots() {
   try {
     // Query all sitios belonging to Golf
@@ -53,7 +58,10 @@ export async function getReservationGolf(appointmentId) {
     console.log(`Ha ocurrido un error ${error}`);
   }
 }
-
+/**
+ * Clears the guests of a reservations
+ * @param {number} reservationId
+ */
 async function updateGuestsEntry(reservationId) {
   const guestsIds = [];
 
@@ -81,6 +89,13 @@ async function updateGuestsEntry(reservationId) {
   }
 }
 
+/**
+ * updates a golf reservation in the DB
+ * @param {array} dataReservation
+ * @param {array} guests
+ * @returns true if reservation data saved succesfully
+ * else @returns false
+ */
 export async function updateGolfReservation(dataReservation, guests) {
   try {
     // Create GolfReservation entry
@@ -232,7 +247,7 @@ export async function parseLogout() {
 
 /**
  * getAdminRoleId
- * @description it obtains from db the role of the received admin user
+ * @description it obtains from db the role ID of the received admin user
  * @param {number} idUsuario: the _User objectId
  * @returns {number} the objectId of admin's role
  */
@@ -257,6 +272,23 @@ export async function getSupportNumbers() {
   const query = new Parse.Query('NumeroAtencion');
   const result = await query.find();
   return result;
+}
+/*
+ * getAdminRole
+ * @description it obtains from db the role of the received admin user
+ * @param {number} idUsuario: the _User objectId
+ * @returns {ParseObject} the complete object of admin's role
+ */
+export async function getAdminRole(idUsuario) {
+  const query = new Parse.Query('AdminRol');
+  let userPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: idUsuario,
+  };
+  query.equalTo('Admin', userPointer);
+  const rolQuery = await query.find();
+  return rolQuery[0];
 }
 
 /**
@@ -306,12 +338,14 @@ export async function getAnuncios() {
   return result;
 }
 
+/**
+ * getAdminUsers
+ * @description it returns the relation table of all the admins and their roles
+ * @returns {Array(ParseObject)} An array of objects containing the relation table
+ */
 export async function getAdminUsers() {
   const query = new Parse.Query('AdminRol');
-  //query.include("rol");
   const result = await query.find();
-  //console.log(result.length);
-  //console.log(result[0].get("rol").id);
   return result;
 }
 
