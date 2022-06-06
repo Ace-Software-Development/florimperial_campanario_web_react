@@ -11,6 +11,7 @@ import PanelAdmins from './pages/PanelAdmins';
 import MiPerfil from './pages/MiPerfil';
 import ListaSocios from './pages/ListaSocios';
 import PerfilSocio from './pages/PerfilSocio';
+import Sugerencias from './pages/Sugerencias';
 
 export default function App() {
   return (
@@ -45,6 +46,9 @@ export default function App() {
         </Route>
         <Route path="/panel-de-administradores">
           <PanelAdmins />
+        </Route>
+        <Route path="/sugerencias">
+          <Sugerencias />
         </Route>
         <Route path="/">
           <Auth />
