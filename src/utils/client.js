@@ -105,11 +105,11 @@ async function updateUsersEntry(reservationId) {
  * else @returns false
  */
 export async function createGolfReservation(dataReservation) {
-	console.log(dataReservation);
+	console.log("sitio ", dataReservation.sitio.objectId);
 	// Hacer query de Sitio
 	const sitioQuery = new Parse.Query(SITIO_MODEL);
 	const sitioObject = await sitioQuery.get(dataReservation.sitio.objectId);
-	
+
 	// Update Reservation entry
 	const reservationObj = new RESERVACION_MODEL();
 	reservationObj.set('fechaInicio', dataReservation.fechaInicio);

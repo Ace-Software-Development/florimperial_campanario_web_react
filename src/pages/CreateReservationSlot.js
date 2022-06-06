@@ -100,7 +100,7 @@ export default function CreateGolfAppointmentSlot(props) {
                                                             value={sitio.objectId}
                                                             name="sitio"
                                                             defaultChecked={index === 0}
-                                                            onChange={event => appointmentOnChange('sitio', {nombre: sitio.nombre, objectId: event.target.value, tableName: 'Sitio'})}
+                                                            onChange={event => appointmentOnChange("", 'sitio', {nombre: sitio.nombre, objectId: event.target.value, tableName: 'Sitio'})}
                                                         />
                                                         <label htmlFor={sitio.objectId}>{sitio.nombre}</label>
                                                     </div>
