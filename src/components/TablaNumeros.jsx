@@ -44,7 +44,8 @@ const TablaNumeros = supportNumbers => {
               <form id={number.id} onSubmit={handleChangeNumber}>
                 <div class="form-outline">
                   <input
-                    type="number"
+                    type="tel"
+                    maxLength="10"
                     id="nuevoNum"
                     className="form-control"
                     defaultValue={number.attributes.Numero}
