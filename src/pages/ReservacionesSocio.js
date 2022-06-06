@@ -40,7 +40,7 @@ export default function ReservacionesSocio() {
       </span>
     );
 
-  if (reservations.length === 0) {
+  if (reservations.length === 0 && !loading) {
     return (
       <div className="App">
         <Header processName="Reservaciones del socio" />
