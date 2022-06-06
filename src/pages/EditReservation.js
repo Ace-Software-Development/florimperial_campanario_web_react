@@ -281,7 +281,7 @@ export default function EditGolfAppointmentSlot(props) {
 						const status = await onSubmit();
 						if (status) {
 							setDisabledButton(true);
-							//window.location.reload();
+							window.location.reload();
 						}
 					}} type="submit">Actualizar</Button>
 				</DialogActions> 

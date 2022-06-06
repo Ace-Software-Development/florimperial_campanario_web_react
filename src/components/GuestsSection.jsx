@@ -32,11 +32,11 @@ export default function GuestsSection(props) {
 
     /* Se agregan invitado a la lista unicamente si no se ha alcanzado el máximo de invitados */
     const handleAddGuests = () => {
-        if(props.guests.length < maxGuests && guest != null){
+        if(props.guests.length < maxGuests && guest != ""){
             let guestDic = {id: "", username: guest}
             props.setGuests([...props.guests, guestDic]);
-            setGuest(null);
-        }else if(guest == null){
+            setGuest("");
+        }else if(guest == ""){
 			pressed++;
 			if(pressed > 5){
 				window.alert('No se ha introducido ningún nombre')
@@ -52,7 +52,7 @@ export default function GuestsSection(props) {
         if (props.guests.length < maxGuests){
             let guestDic = {id: index.id, username: index.username}
             props.setGuests([...props.guests, {id: index.id, username: index.username}]);
-            setGuest(null);
+            setGuest("");
         }else{
 			window.alert('Ya no se pueden agregar mas invitados', [
 				{text: 'Aceptar'}
