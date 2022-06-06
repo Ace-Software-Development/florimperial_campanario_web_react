@@ -271,7 +271,8 @@ export async function getSupportNumbers() {
   const result = await query.find();
   return result;
 }
-* getAdminRole
+/** 
+ * getAdminRole
  * @description it obtains from db the role of the received admin user
  * @param {number} idUsuario: the _User objectId
  * @returns {ParseObject} the complete object of admin's role
