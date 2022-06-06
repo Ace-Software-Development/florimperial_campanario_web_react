@@ -9,6 +9,7 @@ import GestionSocios from './pages/GestionSocios';
 import LogOut from './pages/CerrarSesion';
 import PanelAdmins from './pages/PanelAdmins';
 import NumeroSoporte from './pages/NumeroSoporte';
+import MiPerfil from './pages/MiPerfil';
 export default function App() {
   return (
     <Router>
@@ -25,8 +26,13 @@ export default function App() {
         <Route path="/gestion-de-socios">
           <GestionSocios />
         </Route>
+
         <Route path="/numero-soporte">
           <NumeroSoporte />
+        </Route>
+
+        <Route path="/mi-perfil">
+          <MiPerfil />
         </Route>
         <Route path="/recovery">
           <PasswordRecovery />
