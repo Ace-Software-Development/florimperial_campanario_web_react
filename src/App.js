@@ -14,6 +14,7 @@ import Reservations from './pages/Reservations';
 import { useState, useEffect } from 'react';
 import { getAreaByName, getSitiosByArea } from './utils/client';
 import { formatSitioData } from './utils/formatData';
+import RegulationsPage from './pages/RegulationsPage';
 
 
 export default function App() {
@@ -56,6 +57,12 @@ export default function App() {
                     sitios={sitiosData.golf}
                     coachInput={true}
                     guestsInput={true}
+                />
+            </Route>
+
+            <Route path="/golf/reglamento">
+                <RegulationsPage
+                    module={'golf'}
                 />
             </Route>
 
