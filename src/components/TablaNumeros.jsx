@@ -24,11 +24,14 @@ const TablaNumeros = supportNumbers => {
     event.stopPropagation();
     const idNumero = form.id;
     const nuevoNumero = form.nuevoNum.value;
-
-    setSupportNumber(idNumero, parseInt(nuevoNumero)).then(() => {
-      alert('Se actualizó exitosamente el número.');
-      window.location.reload();
-    });
+    if (nuevoNumero.toString().length === 10) {
+      setSupportNumber(idNumero, parseInt(nuevoNumero)).then(() => {
+        alert('Se actualizó exitosamente el número.');
+        window.location.reload();
+      });
+    } else {
+      alert('El número introducido no es de 10 dígitos.');
+    }
   };
 
   const tableElements = supportNumbers.supportNumbers.map(number => (
