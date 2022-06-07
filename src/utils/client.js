@@ -10,6 +10,7 @@ const COACH_MODEL = Parse.Object.extend("Profesor");
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend("Invitado");
 const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend("ReservacionMultiple");
+const REGLAMENTO_MODEL = Parse.Object.extend("Reglamento");
 
 // Golf module
 export async function getAllGolfAppointmentSlots(){
@@ -560,4 +561,43 @@ export async function getPermissions(idRol) {
     return permissionsJson;
   }
 
+/**
+ * Retrieves all regulations from db
+ * @param {string} module 
+ * @returns {array} data
+ */
+export async function getRegulations(module) {
+	const areaQuery = new Parse.Query(AREA_MODEL);
+	areaQuery.equalTo('nombre', module);
+	
+	const regulationsQuery = new Parse.Query(REGLAMENTO_MODEL);
+	regulationsQuery.matchesQuery('area', areaQuery);
+	regulationsQuery.include('area');
 
+	const data = await regulationsQuery.find();
+	return data;
+}
+
+/**
+ * Saves changes made to regulations in db
+ * @param {array} regulationsData 
+ */
+export async function updateRegulations(regulationsData) {
+	try{
+		let areaObj = new Parse.Object('Area');
+		areaObj.set('objectId', regulationsData.areaId);
+		console.log("data",regulationsData.objectId)
+		let regulationsQuery = new Parse.Query(REGLAMENTO_MODEL);
+		const regulationsObj = await regulationsQuery.get(regulationsData.objectId);
+		
+		regulationsObj.set('titulo', regulationsData.titulo);
+		regulationsObj.set('contenido', regulationsData.contenido);
+		regulationsObj.set('area', areaObj);
+
+		regulationsObj.save();
+		return true;
+	}catch(error) {
+		console.log(error);
+		return false;
+	}
+}

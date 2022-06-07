@@ -14,6 +14,7 @@ import Reservations from './pages/Reservations';
 import { useState, useEffect } from 'react';
 import { getAreaByName, getSitiosByArea } from './utils/client';
 import { formatSitioData } from './utils/formatData';
+import RegulationsPage from './pages/RegulationsPage';
 
 
 export default function App() {
@@ -59,6 +60,12 @@ export default function App() {
                 />
             </Route>
 
+            <Route path="/golf/reglamento">
+                <RegulationsPage
+                    module={'Golf'}
+                />
+            </Route>
+
             <Route path="/gym/reservaciones">
                 <Reservations
                     // Reservation Calendar
@@ -70,6 +77,12 @@ export default function App() {
                     sitios={sitiosData.gym}
                     coachInput={true}
                     guestsInput={false}
+                />
+            </Route>
+
+            <Route path="/gym/reglamento">
+                <RegulationsPage
+                    module={'Gimnasio'}
                 />
             </Route>
 
@@ -87,6 +100,12 @@ export default function App() {
                 />
             </Route>
 
+            <Route path="/raqueta/reglamento">
+                <RegulationsPage
+                    module={'Raqueta'}
+                />
+            </Route>
+
             <Route path="/alberca/reservaciones">
                 <Reservations
                     // Reservation Calendar
@@ -98,6 +117,12 @@ export default function App() {
                     sitios={sitiosData.pool}
                     coachInput={true}
                     guestsInput={false}
+                />
+            </Route>
+
+            <Route path="/alberca/reglamento">
+                <RegulationsPage
+                    module={'Alberca'}
                 />
             </Route>
 
