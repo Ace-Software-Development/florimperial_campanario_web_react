@@ -570,11 +570,18 @@ export async function getMembers() {
  * @param {number} nuevoNum: the new value for attribute Numero
  */
 export async function setPasesSocio(objId, numPases) {
-  console.log('hola');
   const query = new Parse.Query('Cuenta');
   query.equalTo('objectId', objId);
   const result = await query.find();
   const cuentaEnDb = result[0];
   await cuentaEnDb.set('pases', numPases);
   await cuentaEnDb.save();
+}
+
+export async function getSugerencias() {
+  const query = new Parse.Query('Sugerencia');
+  query.include('area');
+  query.include('user');
+  let data = await query.find();
+  return data;
 }
