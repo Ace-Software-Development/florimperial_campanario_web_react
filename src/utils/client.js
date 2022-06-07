@@ -59,35 +59,27 @@ export async function getReservationGolf(appointmentId) {
 
 async function updateGuestsEntry(reservationId) {
 	const guestsIds = [];
-
+	console.log('id', reservationId);
 	// borrar todos los registros de reservacionInvitado e Invitado de una Reservacion
 	const reservationQuery = new Parse.Query(RESERVACION_MODEL);
-	const reservationObj = reservationQuery.get(reservationId);
+	reservationQuery.equalTo('objectId', reservationId);
 	
 	const guestReservation = new Parse.Query(RESERVACION_INVITADO_MODEL);
-	guestReservation.equalTo('reservacion', reservationObj);
+	guestReservation.matchesQuery('reservacion', reservationQuery);
 	guestReservation.include('invitado');
 
-	const results = await guestReservation.find();
-	console.log('ReservacionesInvidato', results, reservationId);
-	for (let guest of results) {
-		console.log('ReservacionInvitado will be deleted', guest);
+	const results = await guestReservation.find()
+	results.forEach(guest => {
 		guestsIds.push(guest.get("invitado").id);
-		await guest.destroy().then(result => {
-			console.log('ReservacionInvitado has been deleted', result);
-		});
-	}
-
+	})
+	Parse.Object.destroyAll(results);
+	
 	for(let id of guestsIds) {
 		let guestQuery = new Parse.Query(INVITADO_MODEL);
 		guestQuery.equalTo('objectId', id);
-		const guestsToDelete = await guestQuery.find();
-		console.log('Will be deleted',  guestsToDelete);
-		for (let guestToDelete of guestsToDelete) {
-			await guestToDelete.destroy().then(result => {
-				console.log('Invitado has been destroyed', result);
-			});
-		};
+		guestQuery.find().then(results => {
+			Parse.Object.destroyAll(results);
+		})
 	}
 }
 
@@ -100,9 +92,7 @@ async function updateUsersEntry(reservationId) {
 	multipleReservationsQuery.matchesQuery('reservacion', reservationQuery);
 	multipleReservationsQuery.include('user');
 	const response = await multipleReservationsQuery.find();
-	await Parse.Object.destroyAll(response).then(result => {
-		console.log('ReservacionMultiple has been destroyed', result);
-	})
+	await Parse.Object.destroyAll(response);
 	
 }
 
@@ -392,7 +382,10 @@ export async function getSitiosByArea(areaId) {
 }
 
 export async function deleteReservation(dataReservation) {
-	//console.log('delete request', dataReservation);
+	// Delete guests and multiple reservations
+	await updateGuestsEntry(dataReservation.objectId);
+	await updateUsersEntry(dataReservation.objectId);
+
 	if (dataReservation.golfAppointment) {
 		const golfReservationObj = new RESERVACION_GOLF_MODEL();
 		golfReservationObj.set('objectId', dataReservation.golfAppointment.objectId);
@@ -403,10 +396,6 @@ export async function deleteReservation(dataReservation) {
 	const reservationObj = new RESERVACION_MODEL();
 	reservationObj.set('objectId', dataReservation.objectId);
 	await reservationObj.destroy();
-
-	// Delete guests and multiple reservations
-	updateGuestsEntry(dataReservation.objectId);
-	updateUsersEntry(dataReservation.objectId);
 }
 
 /**
