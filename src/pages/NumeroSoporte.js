@@ -1,15 +1,18 @@
+import '../css/GestionSocios.css';
+import React from 'react';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import {useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
-import '../css/Home.css';
-import Screen from '../components/Screen';
-import {checkUser} from '../utils/client';
 import CirculoCarga from '../components/CirculoCarga';
-import HomeIcons from '../components/HomeIcons';
+import { checkUser, getSupportNumbers} from '../utils/client';
+import {useHistory} from 'react-router-dom';
+import Screen from '../components/Screen';
+import TablaNumeros from '../components/TablaNumeros';
 
-export default function Home() {
+export default function NumeroSoporte() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
+  const [supportNumbers, setSupportNumbers] = useState([]);
 
   useEffect(async () => {
     const permissionsJson = await checkUser();
@@ -23,15 +26,20 @@ export default function Home() {
       alert('Tu sesión ha finalizado. Por favor, inicia sesión nuevamente.');
       history.push('/');
     }
+    if (permissionsJson.Gestion === false) {
+      alert('No tienes acceso a esta página. Para más ayuda contacta con tu administrador.');
+      history.push('/home');
+    }
     setPermissions(permissionsJson);
     try {
       setLoading(true);
       const permissionsJson = await checkUser();
+      const numbers = await getSupportNumbers();
       setPermissions(permissionsJson);
+      setSupportNumbers(numbers);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
     }
   }, []);
 
@@ -43,9 +51,10 @@ export default function Home() {
     );
 
   return (
-    <Screen screenPath="home" title="Home">
-      <div className="home-cards">
-        <HomeIcons permissions={permissions} />
+    <Screen permissions={permissions} title="Números de soporte">
+      {console.log(supportNumbers)}
+      <div className="App">
+        <TablaNumeros supportNumbers={supportNumbers} />
       </div>
     </Screen>
   );

@@ -1,11 +1,8 @@
-import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
+import SideNav, {NavItem, NavIcon, NavText} from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import '../css/Dashboard.css';
-import {
-  BrowserRouter as Router,
-  Route,
-} from "react-router-dom";
-import React from "react"
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import React from 'react';
 
 export default function Sidebar(props){
     let anuncios, golf, raqueta, salones_gym, gestion, alberca = "";
@@ -28,18 +25,19 @@ export default function Sidebar(props){
         alberca = "none";
     }
 
-    return(
+  return (
     <Router>
-    <Route render={({ location, history }) => (
-        <React.Fragment>
+      <Route
+        render={({location, history}) => (
+          <React.Fragment>
             <SideNav
-                onSelect={(selected) => {   
-                    const to = '/' + selected;
-                    if (location.pathname !== to) {
-                        history.push(to);
-                    }
-                    window.location.reload();
-                }}
+              onSelect={selected => {
+                const to = '/' + selected;
+                if (location.pathname !== to) {
+                  history.push(to);
+                }
+                window.location.reload();
+              }}
             >
                 <SideNav.Toggle />
                 <SideNav.Nav defaultSelected={props.screenPath}>
@@ -202,9 +200,9 @@ export default function Sidebar(props){
                     </NavItem>
                 </SideNav.Nav>
             </SideNav>
-        </React.Fragment>
-    )}
-    />
-</Router>
-    )
+          </React.Fragment>
+        )}
+      />
+    </Router>
+  );
 }

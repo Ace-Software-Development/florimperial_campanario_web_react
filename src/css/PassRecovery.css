@@ -1,11 +1,11 @@
-.btn-recovery{
-    background-color: #2B4066;
-    font-family: 'Lato', sans-serif;
-    color: #EBEBEB;
+.btn-recovery {
+  background-color: #2b4066;
+  font-family: "Lato", sans-serif;
+  color: #ebebeb;
 }
-.recovery-title{
-    color: #2B4066;
+.recovery-title {
+  color: #2b4066;
 }
-.form-recovery:hover{
-    border: solid 3px #519D78;
+.form-recovery:hover {
+  border: solid 3px #519d78;
 }

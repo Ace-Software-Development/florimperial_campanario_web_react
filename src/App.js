@@ -1,9 +1,5 @@
 import './App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
 import Anuncios from './pages/Anuncios';
@@ -16,6 +12,9 @@ import { getAreaByName, getSitiosByArea } from './utils/client';
 import { formatSitioData } from './utils/formatData';
 import RegulationsPage from './pages/RegulationsPage';
 
+import PanelAdmins from './pages/PanelAdmins';
+import NumeroSoporte from './pages/NumeroSoporte';
+import MiPerfil from './pages/MiPerfil';
 
 export default function App() {
     const [sitiosData, setSitiosData] = useState([]);
@@ -142,90 +141,31 @@ export default function App() {
                 <LogOut  />
             </Route>
 
+            <Route path="/numero-soporte">
+                <NumeroSoporte />
+            </Route>
+
+            <Route path="/mi-perfil">
+                <MiPerfil />
+            </Route>
+
+            <Route path="/recovery">
+                <PasswordRecovery />
+            </Route>
+
+            <Route path="/cerrar-sesion">
+                <LogOut />
+            </Route>
+
+            <Route path="/panel-de-administradores">
+                <PanelAdmins />
+            </Route>
+
             <Route path="/">
                 <Auth />
             </Route>
+
         </Switch>
     </Router>
     );
 }
-
-// TODO: hacer una query que junte las queries de getReservationGolf() y getAllGolfAppointmentSlots()
-// ojo que getAllGolfAppointmentSlots regresa una lista de reservaciones generales 
-// y getReservationGolf
-
-// Este es el formato en el que se tiene que regresar la información de las queries, si algo no coincide puede que no funcione 
-// [
-//     {
-//         'objectId': appointment.id,
-//         'id': appointment.id,
-//         'title': appointment.get("user")===undefined || appointment.get("estatus") === 1 ? 'Disponible' : appointment.get("user").get("username"),
-//         'start': appointment.get("fechaInicio"),
-//         'estatus': appointment.get("estatus"),
-//         'maximoJugadores': appointment.get("maximoJugadores"),
-//         'sitio': {
-//             'objectId': appointment.get("sitio").id,
-//             'nombre': appointment.get("sitio").get("nombre"),
-//             'tableName': 'Sitio'
-//         },
-//         'profesor': appointment.get('profesor') ? {
-//             'objectId': appointment.get('profesor').id,
-//             'nombre': appointment.get('profesor').get('nombre'),
-//             'tableName': 'Profesor'
-//         } : null,
-//         'user': appointment.get('user') ? { // only present if it's a single user reservation
-//             'objectId': appointment.get('user').id,
-//             'username': appointment.get('user').get('username'),
-//             'tableName': 'User'
-//         } : null,
-//         'golfAppointment': { // only present if it's a golf reservation
-//             'objectId': '',
-//             'carritosReservados': 0,
-//             'cantidadHoyos': 9,
-//             'reservation': {
-//                 'objectId': ''
-//             },
-//         }
-//     },
-// ]
-
-// const sitios = [
-//     {
-//         'objectId': '...',
-//         'nombre': 'Hoyo 1',
-//     },
-//     {
-//         'objectId': '...',
-//         'nombre': 'Hoyo 10',
-//     },
-//     {
-//         'objectId': '...',
-//         'nombre': 'Tee de practica',
-//     },
-// ]
-
-// const testData = [
-//     {
-//         'objectId': "1yJiN1uBBA",
-//         'id': "1yJiN1uBBA",
-//         'title': "daniel",
-//         'start': "16May2022T18:30:00",
-//         'estatus': 1,
-//         'maximoJugadores': 5,
-//         'sitio': {
-//             'objectId': "f9UD2GDs2e",
-//             'nombre': "Hoyo 10",
-//             'tableName': 'Sitio'
-//         },
-//         'profesor': null,
-//         'user': null,
-//         'golfAppointment': { // only present if it's a golf reservation
-//             'objectId': '',
-//             'carritosReservados': 0,
-//             'cantidadHoyos': 9,
-//             'reservation': {
-//                 'objectId': ''
-//             },
-//         }
-//     },
-// ]

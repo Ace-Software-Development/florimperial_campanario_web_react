@@ -3,63 +3,70 @@ import { formatReservationData } from './formatData';
 
 const RESERVACION_MODEL = Parse.Object.extend('Reservacion');
 const RESERVACION_GOLF_MODEL = Parse.Object.extend('ReservacionGolf');
-const AREA_MODEL = Parse.Object.extend("Area");
-const SITIO_MODEL = Parse.Object.extend("Sitio");
-const USER_MODEL = Parse.Object.extend("_User");
-const COACH_MODEL = Parse.Object.extend("Profesor");
+const AREA_MODEL = Parse.Object.extend('Area');
+const SITIO_MODEL = Parse.Object.extend('Sitio');
+const USER_MODEL = Parse.Object.extend('_User');
+const COACH_MODEL = Parse.Object.extend('Profesor');
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
-const INVITADO_MODEL = Parse.Object.extend("Invitado");
-const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend("ReservacionMultiple");
-const REGLAMENTO_MODEL = Parse.Object.extend("Reglamento");
+const INVITADO_MODEL = Parse.Object.extend('Invitado');
 
-// Golf module
-export async function getAllGolfAppointmentSlots(){
-	try {
-		// Query all sitios belonging to Golf
-		const areaQuery = new Parse.Query(AREA_MODEL);
-		areaQuery.equalTo('eliminado', false);
-		areaQuery.equalTo('nombre', 'Golf');
+/**
+ * Returns all the data of golf appoinntments
+ * @returns {Array(ParseObject)}
+ *
+ */
+export async function getAllGolfAppointmentSlots() {
+  try {
+    // Query all sitios belonging to Golf
+    const areaQuery = new Parse.Query(AREA_MODEL);
+    areaQuery.equalTo('eliminado', false);
+    areaQuery.equalTo('nombre', 'Golf');
 
-		const sitiosQuery = new Parse.Query(SITIO_MODEL);
-		sitiosQuery.select("nombre");
-		sitiosQuery.equalTo('eliminado', false);
-		sitiosQuery.matchesQuery('area', areaQuery);
-		sitiosQuery.include('area');
+    const sitiosQuery = new Parse.Query(SITIO_MODEL);
+    sitiosQuery.select('nombre');
+    sitiosQuery.equalTo('eliminado', false);
+    sitiosQuery.matchesQuery('area', areaQuery);
+    sitiosQuery.include('area');
 
-		// Query all reservations
-		const reservationQuery = new Parse.Query(RESERVACION_MODEL);
-		reservationQuery.equalTo('eliminado', false);
-		reservationQuery.matchesQuery('sitio', sitiosQuery);
-		reservationQuery.include('sitio');
-		reservationQuery.include('profesor');
-		reservationQuery.include('user');
-		let data = await reservationQuery.find();
-		return data;
-		
-	} catch (error) {
-		console.log(`Ha ocurrido un error: ${ error }`);
-		return null;
-	}
+    // Query all reservations
+    const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+    reservationQuery.equalTo('eliminado', false);
+    reservationQuery.matchesQuery('sitio', sitiosQuery);
+    reservationQuery.include('sitio');
+    reservationQuery.include('profesor');
+    reservationQuery.include('user');
+    let data = await reservationQuery.find();
+    return data;
+  } catch (error) {
+    console.log(`Ha ocurrido un error: ${error}`);
+    return null;
+  }
 }
 
+/**
+ * @description it returns the GolfReservation given an id of a reservation
+ * @returns ParseObject
+ */
 export async function getReservationGolf(appointmentId) {
-	try {
-		const reservationQuery = new Parse.Query(RESERVACION_MODEL);
-		reservationQuery.equalTo('objectId', appointmentId);
+  try {
+    const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+    reservationQuery.equalTo('objectId', appointmentId);
 
-		const golfReservationQuery = new Parse.Query(RESERVACION_GOLF_MODEL);            
-		golfReservationQuery.matchesQuery('reservacion', reservationQuery);
+    const golfReservationQuery = new Parse.Query(RESERVACION_GOLF_MODEL);
+    golfReservationQuery.matchesQuery('reservacion', reservationQuery);
 
-		let results = await golfReservationQuery.find();
-		return results.length ? results[0] : null;
-	} catch (error) {
-		console.log(`Ha ocurrido un error ${ error }`);
-	}
+    let results = await golfReservationQuery.find();
+    return results.length ? results[0] : null;
+  } catch (error) {
+    console.log(`Ha ocurrido un error ${error}`);
+  }
 }
-
+/**
+ * Clears the guests of a reservations
+ * @param {number} reservationId
+ */
 async function updateGuestsEntry(reservationId) {
 	const guestsIds = [];
-	console.log('id', reservationId);
 	// borrar todos los registros de reservacionInvitado e Invitado de una Reservacion
 	const reservationQuery = new Parse.Query(RESERVACION_MODEL);
 	reservationQuery.equalTo('objectId', reservationId);
@@ -83,6 +90,10 @@ async function updateGuestsEntry(reservationId) {
 	}
 }
 
+/**
+ * @description clears all multiple reservations given a reservation id
+ * @param id of a reservation
+ */
 async function updateUsersEntry(reservationId) {
 	// borrar todos los registros de ReservacionMultiple de una Reservacion
 	const reservationQuery = new Parse.Query(RESERVACION_MODEL);
@@ -105,7 +116,6 @@ async function updateUsersEntry(reservationId) {
  * else @returns false
  */
 export async function createGolfReservation(dataReservation) {
-	console.log("sitio ", dataReservation.sitio.objectId);
 	// Hacer query de Sitio
 	const sitioQuery = new Parse.Query(SITIO_MODEL);
 	const sitioObject = await sitioQuery.get(dataReservation.sitio.objectId);
@@ -134,7 +144,10 @@ export async function createGolfReservation(dataReservation) {
 }
 
 // Gym module
-
+/**
+ * @description queries for all reservations where Sitio belongs to a Gym area
+ * @returns {Array(ParseObject)} An array of objects containing the relation table
+ */
 export async function getReservationsGym() {
 	try {
 		// Query all sitios belonging to Golf
@@ -165,7 +178,10 @@ export async function getReservationsGym() {
 }
 
 // Raqueta module
-
+/**
+ * @description queries for all reservations where Sitio belongs to a Raqueta area
+ * @returns {Array(ParseObject)} An array of objects containing the relation table
+ */
 export async function getReservationsRaqueta() {
 	try {
 		// Query all sitios belonging to Rqueta
@@ -196,7 +212,10 @@ export async function getReservationsRaqueta() {
 }
 
 // Pool module
-
+/**
+ * @description queries for all reservations where Sitio belongs to a Alberca area
+ * @returns {Array(ParseObject)} An array of objects containing the relation table
+ */
 export async function getReservationsPool() {
 	try {
 		// Query all sitios belonging to Rqueta
@@ -226,6 +245,10 @@ export async function getReservationsPool() {
 	}
 }
 
+/**
+ * @description queries for all reservations belonging a reservation
+ * @returns {Array(ParseObject)} An array of objects containing the relation table
+ */
 export async function getMultipleReservations(reservationId) {
 	try {
 		const reservationQuery = new Parse.Query(RESERVACION_MODEL);
@@ -292,10 +315,13 @@ export async function getAllAvailableReservations(module) {
 
 }
 
+/**
+ * @description updates a reservation
+ * @params formated data of a reservation, array of guests objects, array of user objects
+ */
 export async function updateReservation(dataReservation, guests, users) {
 	const dataReservationCopy = JSON.parse(JSON.stringify(dataReservation));
-	console.log('client: update', JSON.parse(JSON.stringify(dataReservation)));
-	//try {
+	try {
 		// Create GolfReservation entry
 		if (dataReservation.golfAppointment){
 			const reservationQuery = new Parse.Query(RESERVACION_MODEL);
@@ -359,12 +385,16 @@ export async function updateReservation(dataReservation, guests, users) {
 			}
 
 		return true;
-	//}catch (error) {
-	//	console.log(`Ha ocurrido un error ${ error }`);
-	//	return false;
-	//}
+	}catch (error) {
+		console.log(`Ha ocurrido un error ${ error }`);
+		return false;
+	}
 }
 
+/**
+ * @description return an Area query given a name
+ * @returns {ParseObject} An object containing the relation table
+ */
 export async function getAreaByName(name) {
 	const areaQuery = new Parse.Query(AREA_MODEL);
 	areaQuery.equalTo('nombre', name);
@@ -372,8 +402,11 @@ export async function getAreaByName(name) {
 	return response[0];
 }
 
+/**
+ * @description queries for all sitios where given an area id
+ * @returns {ParseObject} An object containing the relation table
+ */
 export async function getSitiosByArea(areaId) {
-	//console.log(areaId);
 	const areaQuery = new Parse.Query(AREA_MODEL);
 	const areaObj = await areaQuery.get(areaId);
 	const sitioQuery = new Parse.Query(SITIO_MODEL);
@@ -381,6 +414,10 @@ export async function getSitiosByArea(areaId) {
 	return await sitioQuery.find();
 }
 
+/**
+ * @description deletes all reservation related data
+ * @params formated data of a reservation
+ */
 export async function deleteReservation(dataReservation) {
 	// Delete guests and multiple reservations
 	await updateGuestsEntry(dataReservation.objectId);
@@ -402,43 +439,47 @@ export async function deleteReservation(dataReservation) {
  * Retrieves all active users from DB
  * @returns {array} data
  */
-export async function getAllActiveUsers(){
-	// Get current user loged in
-	const userObj = await Parse.User.currentAsync();
+export async function getAllActiveUsers() {
+  // Get current user loged in
+  const userObj = await Parse.User.currentAsync();
 
-	// Query all Users
-	const userQuery = new Parse.Query(USER_MODEL);
-	userQuery.equalTo('isAdmin', false);
-	userQuery.equalTo('active', true);
-	userQuery.notEqualTo('objectId', userObj.id);
-	userQuery.descending('username');
+  // Query all Users
+  const userQuery = new Parse.Query(USER_MODEL);
+  userQuery.equalTo('isAdmin', false);
+  userQuery.equalTo('active', true);
+  userQuery.notEqualTo('objectId', userObj.id);
+  userQuery.descending('username');
 
-	let data = await userQuery.find();
-	return data;
+  let data = await userQuery.find();
+  return data;
 }
 
-export async function getAllCoaches(){
-	// Query all Coaches
-	const userQuery = new Parse.Query(COACH_MODEL);
-	let data = await userQuery.find();
-	return data;
+/**
+ * @description queries for all profesores
+ * @returns {Array(ParseObject)} An array of objects containing the relation table
+ */
+export async function getAllCoaches() {
+  // Query all Coaches
+  const userQuery = new Parse.Query(COACH_MODEL);
+  let data = await userQuery.find();
+  return data;
 }
 /**
  * Retrieves all guests from a specific reservation
  * @param {string} id
  * @returns {array} data
  */
-export async function getAllReservationGuests(id){
-	//Get reservation
-	const reservationQuery = new Parse.Query(RESERVACION_MODEL);
-	reservationQuery.equalTo('objectId', id);
+export async function getAllReservationGuests(id) {
+  //Get reservation
+  const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+  reservationQuery.equalTo('objectId', id);
 
-	const guestReservation = new Parse.Query(RESERVACION_INVITADO_MODEL);
-	guestReservation.matchesQuery('reservacion', reservationQuery);
-	guestReservation.include('invitado');
+  const guestReservation = new Parse.Query(RESERVACION_INVITADO_MODEL);
+  guestReservation.matchesQuery('reservacion', reservationQuery);
+  guestReservation.include('invitado');
 
-	let data = await guestReservation.find();
-	return data;
+  let data = await guestReservation.find();
+  return data;
 }
 
 export async function getAllMultipleReservations(id){
@@ -454,11 +495,66 @@ export async function getAllMultipleReservations(id){
 	return data;
 }
 
-export async function parseLogout(){
+/**
+ * parseLogout
+ * @description It logs out the current parse user
+ */
+export async function parseLogout() {
   Parse.User.logOut();
   return;
 }
 
+/**
+ * getAdminRoleId
+ * @description it obtains from db the role ID of the received admin user
+ * @param {number} idUsuario: the _User objectId
+ * @returns {number} the objectId of admin's role
+ */
+export async function getAdminRoleId(idUsuario) {
+  const query = new Parse.Query('AdminRol');
+  let userPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: idUsuario,
+  };
+  query.equalTo('Admin', userPointer);
+  const rolQuery = await query.find();
+  return rolQuery[0].attributes.rol.id;
+}
+
+/**
+ * getSupportNumbers
+ * @description it obtains from db the different phone numbers registered
+ * @returns {Array(ParseObject)} an array of NumeroAtencion Objects
+ */
+export async function getSupportNumbers() {
+  const query = new Parse.Query('NumeroAtencion');
+  const result = await query.find();
+  return result;
+}
+/** 
+ * getAdminRole
+ * @description it obtains from db the role of the received admin user
+ * @param {number} idUsuario: the _User objectId
+ * @returns {ParseObject} the complete object of admin's role
+ */
+export async function getAdminRole(idUsuario) {
+  const query = new Parse.Query('AdminRol');
+  let userPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: idUsuario,
+  };
+  query.equalTo('Admin', userPointer);
+  const rolQuery = await query.find();
+  return rolQuery[0];
+}
+
+/**
+ * checkUser
+ * @description it checks the current user and its permissions.
+ * @returns {json|string} the permissions of the user in a json format | the error message.
+ */
 export async function checkUser() {
   const currentUser = await Parse.User.currentAsync();
   if (!currentUser) {
@@ -467,57 +563,78 @@ export async function checkUser() {
   else if (!currentUser.attributes.isAdmin) {
     return("NOT_ADMIN");
   }
-  try{
-    const permissionsJson = await getPermissions(currentUser.attributes.AdminPermissions.id);
-    return(permissionsJson);
+  try {
+    let adminRoleId = await getAdminRoleId(currentUser.id);
+    const permissionsJson = await getPermissions(adminRoleId);
+    return permissionsJson;
+  } catch (e) {
+    return 'INVALID_SESSION';
   }
-  catch(e){
-    return("INVALID_SESSION");
-  }
-
 }
 
+/**
+ * getAnuncios
+ * @description it gathers all the announcements and puts them in an matrix
+ * @returns {Array(Array)} a matrix containing each announcement and its properties pre-processed.
+ */
 export async function getAnuncios() {
-  const query = new Parse.Query("Anuncio");
+  const query = new Parse.Query('Anuncio');
   // query donde no esten eliminados
   const anuncios = await query.find();
 
   const result = new Array();
   for (var i = 0; i < anuncios.length; i++) {
-    const fecha = new Date(anuncios[i].get("updatedAt").toString());
+    const fecha = new Date(anuncios[i].get('updatedAt').toString());
     result.push(
       new Array(
-        anuncios[i].get("titulo"),
-        anuncios[i].get("contenido"),
-        anuncios[i].get("imagen").url(),
-        fecha.getDate() + "/" + (fecha.getMonth() +1) + "/" + fecha.getFullYear(),
+        anuncios[i].get('titulo'),
+        anuncios[i].get('contenido'),
+        anuncios[i].get('imagen').url(),
+        fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear(),
         anuncios[i].id
       )
     );
   }
-
   return result;
 }
 
-export async function createMember(email, pass, membershipNumber){
-  
-  const parseCuenta = Parse.Object.extend("Cuenta");
-  const query = new Parse.Query("Cuenta");
-  query.equalTo("noAccion", membershipNumber);
+/**
+ * getAdminUsers
+ * @description it returns the relation table of all the admins and their roles
+ * @returns {Array(ParseObject)} An array of objects containing the relation table
+ */
+export async function getAdminUsers() {
+  const query = new Parse.Query('AdminRol');
+  const result = await query.find();
+  return result;
+}
+
+/**
+ * createMember
+ * @description it creates a member (socio) in the database
+ * @param {string} email: the email to be registered
+ * @param {string} pass: the temporary password for the new user
+ * @param {string} membershipNumber. the membership number to be registered/updated in database
+ * @returns {string} the status of the transaction.
+ */
+export async function createMember(email, pass, membershipNumber) {
+  const parseCuenta = Parse.Object.extend('Cuenta');
+  const query = new Parse.Query('Cuenta');
+  query.equalTo('noAccion', membershipNumber);
   // query donde no esten eliminados
   const result = await query.find();
   let accountId = '';
   //Si no existe el numero de socio, lo crea
-  if (result.length === 0){
+  if (result.length === 0) {
     const newAccount = new parseCuenta();
     newAccount.set('noAccion', membershipNumber);
     newAccount.set('pases', 0);
     await newAccount.save();
-    accountId = newAccount.get("objectId");
+    accountId = newAccount.get('objectId');
   }
-  //Si ya existe, obtiene el id 
+  //Si ya existe, obtiene el id
   else {
-    accountId = result[0].get("objectId");
+    accountId = result[0].get('objectId');
   }
 
   const newUser = new Parse.User();
@@ -525,30 +642,36 @@ export async function createMember(email, pass, membershipNumber){
   newUser.set('email', email);
   newUser.set('password', pass);
   newUser.set('account', accountId);
-  try{
+  try {
     await newUser.save();
+  } catch (e) {
+    console.log('Error en createMember: ', e);
+    return e;
   }
-  catch(e){
-    console.log("Error en createMember: ", e);
-    return(e);
-  }
-  return("ok");
+  return 'ok';
 }
 
+/**
+ * getPermissions
+ * @description it gets the permissions of the current admin
+ * @param {number} idRol: the _User Role id
+ * @returns {json} the permissions of the admin in a json format
+ */
 export async function getPermissions(idRol) {
-    const query = new Parse.Query('RolePermissions');
-    query.equalTo('objectId', idRol);
-    const permisosQuery = await query.find();
-   
-    const permissionsJson = {"Golf" : permisosQuery[0].get("Golf"), 
-      "Raqueta": permisosQuery[0].get("Raqueta"),
-      "Salones_gym": permisosQuery[0].get("Salones_gym"),
-      "Anuncios": permisosQuery[0].get("Anuncios"),
-      "Gestion": permisosQuery[0].get("Gestion"),
-      "Alberca": permisosQuery[0].get("Alberca")}
-    
-    return permissionsJson;
-  }
+	const query = new Parse.Query('RolePermissions');
+	query.equalTo('objectId', idRol);
+	const permisosQuery = await query.find();
+
+	const permissionsJson = {
+		Golf: permisosQuery[0].get('Golf'),
+		Raqueta: permisosQuery[0].get('Raqueta'),
+		Salones_gym: permisosQuery[0].get('Salones_gym'),
+		Anuncios: permisosQuery[0].get('Anuncios'),
+		Gestion: permisosQuery[0].get('Gestion'),
+		Alberca: permisosQuery[0].get('Alberca'),
+	};
+	return permissionsJson;
+}
 
 /**
  * Retrieves all regulations from db
@@ -589,4 +712,58 @@ export async function updateRegulations(regulationsData) {
 		console.log(error);
 		return false;
 	}
+}
+
+/**
+ * getRoleNames
+ * @description it obtains from db the role of the received admin user
+ * @param {number} idUsuario: the _User objectId
+ * @returns {ParseObject:AdminRol} the object with the roleId, the username and the UserId
+ */
+export async function getRolesNames() {
+  const query = new Parse.Query('RolePermissions');
+  const permisosQuery = await query.find();
+  return permisosQuery;
+}
+
+/**
+ * setAdminRole
+ * @description it updates the role of the selected admin
+ * @param {number} idAdmin: the _User objectId
+ * @param {number} idRol: the role objectId
+ */
+export async function setAdminRole(idAdmin, idRol) {
+  const query = new Parse.Query('AdminRol');
+  let userPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: idAdmin,
+  };
+  query.equalTo('Admin', userPointer);
+  const result = await query.find();
+  const adminRolObj = result[0];
+  let rolePointer = {
+    __type: 'Pointer',
+    className: 'RolePermissions',
+    objectId: idRol,
+  };
+  await adminRolObj.set('rol', rolePointer);
+  await adminRolObj.save();
+}
+
+/**
+ * setSupportNumber
+ * @description it sets a new support number
+ * @param {number} idNumero: the Number objectId
+ * @param {number} nuevoNum: the new value for attribute Numero
+ */
+export async function setSupportNumber(idNumero, nuevoNum) {
+  console.log('idnum:', idNumero);
+  const query = new Parse.Query('NumeroAtencion');
+  query.equalTo('objectId', idNumero);
+  const result = await query.find();
+  const numeroEnDb = result[0];
+  console.log(numeroEnDb);
+  await numeroEnDb.set('Numero', nuevoNum);
+  await numeroEnDb.save();
 }
