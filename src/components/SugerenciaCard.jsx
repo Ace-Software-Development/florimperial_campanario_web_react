@@ -8,10 +8,43 @@ import Col from 'react-bootstrap/Col';
 import {useState} from 'react';
 import {setPasesSocio} from '../utils/client';
 import '../css/PerfilSocios.css';
+
 const SugerenciaCard = props => {
   const [showFull, setShowFalse] = useState(false);
   const handleCloseFull = () => setShowFalse(false);
   const handleShowFull = () => setShowFalse(true);
+  /*const confirmDelete = ObjId => {
+    confirmAlert({
+      title: 'Descartar sugerencia',
+      message: '¿Deseas decartar esta sugerencia?',
+      buttons: [
+        {
+          label: 'No',
+          onClick: () => {},
+        },
+        {
+          label: 'Sí',
+          onClick: () => {
+            var yourClass = Parse.Object.extend('Anuncio');
+            var query = new Parse.Query(yourClass);
+
+            query.get(ObjId).then(
+              yourObj => {
+                yourObj.destroy().then(() => {
+                  window.location.reload();
+                });
+                // window.location.reload();
+              },
+              error => {
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and description.
+              }
+            );
+          },
+        },
+      ],
+    });
+  };*/
 
   return (
     <div>
@@ -25,6 +58,9 @@ const SugerenciaCard = props => {
             <Button className="btn-publicar" onClick={handleCloseFull}>
               Cerrar
             </Button>
+            <button className="btn-eliminar-sugerencia">
+              <ion-icon name="trash-outline" style={{fontSize: '1.25em'}}></ion-icon>
+            </button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -39,13 +75,9 @@ const SugerenciaCard = props => {
                 </div>
               </Card.Text>
               <Card.Footer>
-                <div className="d-flex">
-                  <button className="btn-eliminar-sugerencia">
-                    <ion-icon name="trash-outline" style={{fontSize: '1.25em'}}></ion-icon>
-                  </button>
-                </div>
+                <div className="d-flex"></div>
               </Card.Footer>
-              <a href="#" class="stretched-link"></a>
+              Haz Clic para ver detalles
             </Card>
           </Col>
         </Row>

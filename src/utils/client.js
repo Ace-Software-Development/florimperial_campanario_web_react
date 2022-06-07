@@ -1,3 +1,4 @@
+import {queryByTestId} from '@testing-library/react';
 import Parse from 'parse';
 import ParseUser from 'parse/lib/browser/ParseUser';
 
@@ -580,8 +581,18 @@ export async function setPasesSocio(objId, numPases) {
 
 export async function getSugerencias() {
   const query = new Parse.Query('Sugerencia');
+  query.equalTo('eliminado', false);
   query.include('area');
   query.include('user');
   let data = await query.find();
   return data;
+}
+
+export async function deleteSugerencia(sugerenciaId) {
+  const query = new Parse.Query('Sugerencia');
+  query.equalTo('objectId', sugerenciaId);
+  let data = await query.find();
+  let sugerenciaEliminar = data[0];
+  sugerenciaEliminar.set('eliminado', true);
+  sugerenciaEliminar.save();
 }
