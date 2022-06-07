@@ -2,7 +2,7 @@ import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import {useEffect, useState} from 'react';
 import CirculoCarga from '../components/CirculoCarga';
-import {checkUser, getCuenta} from '../utils/client';
+import {checkUser, getCuenta, getMembers} from '../utils/client';
 import {useHistory} from 'react-router-dom';
 import Screen from '../components/Screen';
 import Parse from 'parse';
@@ -35,7 +35,8 @@ export default function ListaSocios() {
       setPermissions(permissionsJson);
       // const user = await Parse.User.current();
 
-      getCuenta().then(cuenta => {
+      //      getCuenta().then(cuenta => {
+      getMembers().then(cuenta => {
         setCuentas(cuenta);
         setLoading(false);
       });

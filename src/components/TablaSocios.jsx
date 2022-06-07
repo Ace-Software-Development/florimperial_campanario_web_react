@@ -1,14 +1,14 @@
 import Table from 'react-bootstrap/Table';
-import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import {useState} from 'react';
 import {setPasesSocio} from '../utils/client';
-
+import '../css/PerfilSocios.css';
 const TablaAdmins = props => {
   const [newNumber, setNumber] = useState('');
+  console.log(props.props);
 
   /**
    * handleChangeRole
@@ -29,25 +29,26 @@ const TablaAdmins = props => {
   };
   const tableElements = props.props.map(socio => (
     <tr>
-      <td>{socio.attributes.noAccion}</td>
+      <td>{socio.attributes.username}</td>
+      <td>{socio.attributes.account.get('noAccion')}</td>
       <td>
         <Container>
           <Row>
             <Col s={10} m={10}>
-              <form id={socio.id} onSubmit={handleChangeNumber}>
+              <form id={socio.attributes.account.id} onSubmit={handleChangeNumber}>
                 <div class="form-outline">
                   <input
                     type="number"
                     id="nuevoNum"
                     className="form-control"
-                    defaultValue={socio.attributes.pases}
+                    defaultValue={socio.attributes.account.get('pases')}
                     onChange={e => setNumber(e.target.value)}
                   />
                 </div>
               </form>
             </Col>
             <Col className="col-2">
-              <Button type="submit" form={socio.id}>
+              <Button type="submit" className="btn-guardar" form={socio.attributes.account.id}>
                 Guardar
               </Button>
             </Col>
@@ -60,26 +61,12 @@ const TablaAdmins = props => {
     <Table striped bordered hover>
       <thead>
         <tr>
-          <th>Nombre</th>
-          <th>Correo electrónico</th>
-          <th>Número de acceso</th>
-          <th>Status</th>
+          <th>Socio</th>
+          <th>Número de acción</th>
+          <th>Cantidad de Pases</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>Usuario Placeholder 1</td>
-          <td>correo@ejemplo.com</td>
-          <td>0176</td>
-          <td>Activo</td>
-        </tr>
-        <tr>
-          <td>Usuario Placeholder 2</td>
-          <td>correo@ejemplo.com</td>
-          <td>0177</td>
-          <td>Inactivo</td>
-        </tr>
-      </tbody>
+      <tbody>{tableElements}</tbody>
     </Table>
   );
 };

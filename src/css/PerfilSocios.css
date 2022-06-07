@@ -1,3 +1,25 @@
-.btn-submit-pases-socios{
-    color: #2B4066;
+.btn-submit-pases-socios {
+  color: #2b4066;
+}
+
+.btn-guardar {
+  background: #2b4066;
+  font-family: 'Lato', sans-serif;
+  color: #ebebeb;
+}
+
+.btn-guardar:active {
+  background: #ebebeb;
+  font-family: 'Lato', sans-serif;
+  color: #2b4066;
+}
+.btn-guardar:hover {
+  background: #ebebeb;
+  font-family: 'Lato', sans-serif;
+  color: #2b4066;
+}
+.btn-guardar:focus {
+  background: #ebebeb;
+  font-family: 'Lato', sans-serif;
+  color: #2b4066;
 }

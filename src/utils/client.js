@@ -376,12 +376,16 @@ export async function createMember(email, pass, membershipNumber) {
   else {
     accountId = result[0].get('objectId');
   }
-
+  let accountPointer = {
+    __type: 'Pointer',
+    className: 'Cuenta',
+    objectId: accountId,
+  };
   const newUser = new Parse.User();
   newUser.set('username', email);
   newUser.set('email', email);
   newUser.set('password', pass);
-  newUser.set('account', accountId);
+  newUser.set('account', accountPointer);
   try {
     await newUser.save();
   } catch (e) {
@@ -490,34 +494,35 @@ export async function getReservations(userId) {
   const reservationQuery = new Parse.Query(RESERVACION_MODEL);
   reservationQuery.equalTo('user', userObj);
   reservationQuery.equalTo('eliminado', false);
-  reservationQuery.equalTo('estatus', 2);
+  // reservationQuery.equalTo('estatus', 2);
   reservationQuery.include('sitio');
 
   let data = await reservationQuery.find();
 
   const multipleReservationIdQuery = new Parse.Query(MULTIPLE_RESERVATION_MODEL);
-  multipleReservationIdQuery.select('reservacion');
   multipleReservationIdQuery.equalTo('user', userObj);
+  //multipleReservationIdQuery.include('reservacion');
+  //multipleReservationIdQuery.include('reservacion.sitio');
+  //multipleReservationIdQuery.include('reservacion.sitio.area');
+  let reservacionMultipeList = await multipleReservationIdQuery.find();
+  /*
+  await Promise.all(
+    reservacionMultipeList.map(async object => {
+      const multipleReservationQuery = new Parse.Query(RESERVACION_MODEL);
+      multipleReservationQuery.equalTo('objectId', object.get('reservacion').id);
+      multipleReservationQuery.include('sitio');
+      multipleReservationQuery.include('sitio.area');
+      let reservacion = await multipleReservationQuery.find();
+      console.log(reservacion, object.get('reservacion').id);
+      data.push(reservacion[0]);
+    })
+  ); */
+  /*
+  reservacionMultipeList.forEach(async object => {
+    await object.get('reservacion').fetch();
+  });*/
 
-  let reservacionMultipeId = await multipleReservationIdQuery.find();
-  const reservacionIDS = [];
-
-  for (let i of reservacionMultipeId) {
-    reservacionIDS.push(i.get('reservacion').id);
-  }
-
-  for (let i of reservacionIDS) {
-    const multipleReservationQuery = new Parse.Query(RESERVACION_MODEL);
-    multipleReservationQuery.equalTo('objectId', i);
-    multipleReservationQuery.equalTo('eliminado', false);
-    multipleReservationQuery.matchesQuery('sitio', sitiosQuery);
-    multipleReservationQuery.include('sitio');
-
-    let reservacion = await multipleReservationQuery.find();
-
-    data.push(reservacion[0]);
-  }
-
+  //  console.log('dataxd', reservacionMultipeList);
   data.sort(function(a, b) {
     return a.get('fechaInicio').toISOString() > b.get('fechaInicio').toISOString()
       ? -1
@@ -525,7 +530,6 @@ export async function getReservations(userId) {
       ? 1
       : 0;
   });
-
   return data;
 }
 
@@ -543,7 +547,18 @@ export async function getArea() {
 }
 
 export async function getCuenta() {
-  const cuentaQuery = new Parse.Query('Cuenta');
+  const cuentaQuery = new Parse.Query('_User');
+  let data = await cuentaQuery.find();
+  return data;
+}
+
+export async function getMembers() {
+  const cuentaQuery = new Parse.Query('_User');
+  cuentaQuery.equalTo('isAdmin', false);
+  cuentaQuery.include('account');
+  cuentaQuery.include('account.noAccion'); // if user is the column name
+  cuentaQuery.include('account.pases'); // if activity is the column name
+  //cuentaQuery.notEqualTo('email', 'null');
   let data = await cuentaQuery.find();
   return data;
 }
@@ -555,6 +570,7 @@ export async function getCuenta() {
  * @param {number} nuevoNum: the new value for attribute Numero
  */
 export async function setPasesSocio(objId, numPases) {
+  console.log('hola');
   const query = new Parse.Query('Cuenta');
   query.equalTo('objectId', objId);
   const result = await query.find();
