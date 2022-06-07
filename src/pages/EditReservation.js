@@ -17,7 +17,7 @@ export default function EditGolfAppointmentSlot(props) {
 	const [users, setUsers] = useState([]);
 	const [disabledButton, setDisabledButton] = useState(false);
 	const [deleteDisabledButton, setDeleteDisabledButton] = useState(false);
-    
+
 	const handleClose = () => {
         props.onClose(false);
     }
@@ -203,6 +203,20 @@ export default function EditGolfAppointmentSlot(props) {
 										</td>
 									</tr>
 								}
+
+								<tr>
+									<td>
+										<p>Estatus</p>
+									</td>
+									<td>
+										<select className='input' defaultValue={appointment.estatus} onChange={event => appointmentOnChange('estatus', parseInt(event.target.value))}>
+											<option value={1}>Disponible</option>
+											<option value={2}>Reservado</option>
+											<option value={3}>Reservado permanente</option>
+										</select>
+									</td>
+								</tr>
+
 								{props.coachInput &&
 									<tr>
 										<td>
@@ -228,18 +242,6 @@ export default function EditGolfAppointmentSlot(props) {
 									</tr>
 								}
 
-								<tr>
-									<td>
-										<p>Estatus</p>
-									</td>
-									<td>
-										<select className='input' defaultValue={appointment.estatus} onChange={event => appointmentOnChange('estatus', parseInt(event.target.value))}>
-											<option value={1}>Disponible</option>
-											<option value={2}>Reservado</option>
-											<option value={3}>Reservado permanente</option>
-										</select>
-									</td>
-								</tr>
 							</tbody>
 						</table>
 						
@@ -272,7 +274,7 @@ export default function EditGolfAppointmentSlot(props) {
 						const status = await handleDelete();
 						if (status) {
 							setDeleteDisabledButton(true);
-							window.location.reload();
+							//window.location.reload();
 						}
 					}}>Eliminar</Button>
 					<Button onClick={async () => {
@@ -281,7 +283,7 @@ export default function EditGolfAppointmentSlot(props) {
 						const status = await onSubmit();
 						if (status) {
 							setDisabledButton(true);
-							window.location.reload();
+							//window.location.reload();
 						}
 					}} type="submit">Actualizar</Button>
 				</DialogActions> 

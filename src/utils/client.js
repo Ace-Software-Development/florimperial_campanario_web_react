@@ -61,29 +61,36 @@ async function updateGuestsEntry(reservationId) {
 
 	// borrar todos los registros de reservacionInvitado e Invitado de una Reservacion
 	const reservationQuery = new Parse.Query(RESERVACION_MODEL);
-	reservationQuery.equalTo('objectId', reservationId);
+	const reservationObj = reservationQuery.get(reservationId);
 	
 	const guestReservation = new Parse.Query(RESERVACION_INVITADO_MODEL);
-	guestReservation.matchesQuery('reservacion', reservationQuery);
+	guestReservation.equalTo('reservacion', reservationObj);
 	guestReservation.include('invitado');
 
-	const results = await guestReservation.find()
-	results.forEach(guest => {
+	const results = await guestReservation.find();
+	console.log('ReservacionesInvidato', results, reservationId);
+	for (let guest of results) {
+		console.log('ReservacionInvitado will be deleted', guest);
 		guestsIds.push(guest.get("invitado").id);
-	})
-	Parse.Object.destroyAll(results);
-	
+		await guest.destroy().then(result => {
+			console.log('ReservacionInvitado has been deleted', result);
+		});
+	}
+
 	for(let id of guestsIds) {
 		let guestQuery = new Parse.Query(INVITADO_MODEL);
 		guestQuery.equalTo('objectId', id);
-		guestQuery.find().then(results => {
-			Parse.Object.destroyAll(results);
-		})
+		const guestsToDelete = await guestQuery.find();
+		console.log('Will be deleted',  guestsToDelete);
+		for (let guestToDelete of guestsToDelete) {
+			await guestToDelete.destroy().then(result => {
+				console.log('Invitado has been destroyed', result);
+			});
+		};
 	}
 }
 
 async function updateUsersEntry(reservationId) {
-
 	// borrar todos los registros de ReservacionMultiple de una Reservacion
 	const reservationQuery = new Parse.Query(RESERVACION_MODEL);
 	reservationQuery.equalTo('objectId', reservationId);
@@ -92,7 +99,9 @@ async function updateUsersEntry(reservationId) {
 	multipleReservationsQuery.matchesQuery('reservacion', reservationQuery);
 	multipleReservationsQuery.include('user');
 	const response = await multipleReservationsQuery.find();
-	await Parse.Object.destroyAll(response);
+	await Parse.Object.destroyAll(response).then(result => {
+		console.log('ReservacionMultiple has been destroyed', result);
+	})
 	
 }
 
@@ -314,9 +323,6 @@ export async function updateReservation(dataReservation, guests, users) {
 		// Update Reservation entry
 		let reservationObj = new Parse.Object('Reservacion');
 		for (const key in dataReservation) {
-			if (!dataReservation[key])
-				continue
-
 			if (dataReservation[key] instanceof Object && dataReservation[key].objectId) {
 				const query = new Parse.Query(dataReservation[key].tableName);
 				const result = await query.get(dataReservation[key].objectId);
@@ -389,7 +395,9 @@ export async function deleteReservation(dataReservation) {
 	if (dataReservation.golfAppointment) {
 		const golfReservationObj = new RESERVACION_GOLF_MODEL();
 		golfReservationObj.set('objectId', dataReservation.golfAppointment.objectId);
-		golfReservationObj.destroy();
+		golfReservationObj.destroy().then(result => {
+			console.log('GolfReservation  has been deleted', result);
+		});
 	}
 	const reservationObj = new RESERVACION_MODEL();
 	reservationObj.set('objectId', dataReservation.objectId);

@@ -21,9 +21,11 @@ export default function InputSelector(props) {
 	};
 
 	const handleInputChange = () => {
-		if (selectedElement)
+		if (!displayText)
+			setSelectedElement(null);
+		else if (selectedElement)
 			setDisplayText(props.getDisplayText(selectedElement));
-		else 
+		else
 			setDisplayText('');
 		setFocused(false);
 	};
