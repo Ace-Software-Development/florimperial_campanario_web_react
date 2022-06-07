@@ -38,10 +38,10 @@ export default function Screen(props) {
   }, []);
   let header = '';
   if (props.title === 'none') {
-    header = <div style={{flexGrow: 1, padding: '1rem', overflowY: 'scroll'}}></div>;
+    header = <div style={{flexGrow: 1, padding: '1rem'}}></div>;
   } else {
     header = (
-      <div style={{flexGrow: 1, padding: '1rem', overflowY: 'scroll'}}>
+      <div style={{flexGrow: 1, padding: '1rem'}}>
         <Header processName={props.title} />
       </div>
     );
@@ -57,7 +57,7 @@ export default function Screen(props) {
   return (
     <div style={{display: 'flex', flexDirection: 'row', height: '100vh'}}>
       <Sidebar permissions={permissions} screenPath={props.screenPath} />
-      <div style={{flexGrow: 1, padding: '2rem', overflowY: 'scroll'}}>
+      <div style={{flexGrow: 1, padding: '2rem'}}>
         {header}
         {props.children}
       </div>
