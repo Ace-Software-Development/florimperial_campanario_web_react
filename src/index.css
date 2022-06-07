@@ -118,3 +118,11 @@ td {
   border-radius: 10px;
   background-color: var(--light-bg);
 }
+
+select {
+  border: 1px var(--grey) solid;
+  border-radius: 7px;
+  background-color: var(--grey);
+  color: var(--primary-color);
+  padding: .3rem .7rem;
+}

@@ -4,29 +4,29 @@ import '../css/Dashboard.css';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import React from 'react';
 
-export default function Sidebar(permissions) {
+export default function Sidebar(props) {
   let anuncios,
     golf,
     raqueta,
     salones_gym,
     gestion,
     alberca = '';
-  if (permissions.permissions.Anuncios === false) {
+  if (props.permissions.Anuncios === false) {
     anuncios = 'none';
   }
-  if (permissions.permissions.Raqueta === false) {
+  if (props.permissions.Raqueta === false) {
     raqueta = 'none';
   }
-  if (permissions.permissions.Salones_gym === false) {
+  if (props.permissions.Salones_gym === false) {
     salones_gym = 'none';
   }
-  if (permissions.permissions.Golf === false) {
+  if (props.permissions.Golf === false) {
     golf = 'none';
   }
-  if (permissions.permissions.Gestion === false) {
+  if (props.permissions.Gestion === false) {
     gestion = 'none';
   }
-  if (permissions.permissions.Alberca === false) {
+  if (props.permissions.Alberca === false) {
     alberca = 'none';
   }
 
@@ -45,7 +45,7 @@ export default function Sidebar(permissions) {
               }}
             >
               <SideNav.Toggle />
-              <SideNav.Nav defaultSelected="home">
+              <SideNav.Nav defaultSelected={props.screenPath}>
                 <NavItem eventKey="home">
                   <NavIcon>
                     <ion-icon name="home" style={{fontSize: '1.25em'}}></ion-icon>
@@ -58,12 +58,6 @@ export default function Sidebar(permissions) {
                     <ion-icon name="people" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Gestión de socios</NavText>
-                  <NavItem eventKey="gestion-de-socios">
-                    <NavText>Dar socios de alta</NavText>
-                  </NavItem>
-                  <NavItem eventKey="numero-soporte">
-                    <NavText>Números de soporte</NavText>
-                  </NavItem>
                 </NavItem>
 
                 <NavItem eventKey="anuncios" style={{display: `${anuncios}`}}>
@@ -71,6 +65,34 @@ export default function Sidebar(permissions) {
                     <ion-icon name="newspaper" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Anuncios</NavText>
+                </NavItem>
+
+                <NavItem eventKey="sugerencias">
+                  <NavIcon>
+                    <ion-icon name="bulb" style={{fontSize: '1.25em'}}></ion-icon>
+                  </NavIcon>
+                  <NavText>Sugerencias</NavText>
+                </NavItem>
+
+                <NavItem eventKey="mi-perfil">
+                  <NavIcon>
+                    <ion-icon name="person" style={{fontSize: '1.25em'}}></ion-icon>
+                  </NavIcon>
+                  <NavText>Perfil</NavText>
+                </NavItem>
+
+                <NavItem eventKey="panel-de-administradores" style={{display: `${gestion}`}}>
+                  <NavIcon>
+                    <ion-icon name="lock-closed" style={{fontSize: '1.25em'}}></ion-icon>
+                  </NavIcon>
+                  <NavText>Panel de administradores</NavText>
+                </NavItem>
+
+                <NavItem eventKey="reglas" style={{display: `${gestion}`}}>
+                  <NavIcon>
+                    <ion-icon name="book" style={{fontSize: '1.25em'}}></ion-icon>
+                  </NavIcon>
+                  <NavText>Reglas</NavText>
                 </NavItem>
 
                 <NavItem eventKey="golf" style={{display: `${golf}`}}>
@@ -81,38 +103,12 @@ export default function Sidebar(permissions) {
                   <NavItem eventKey="golf/salidas">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
+                  <NavItem eventKey="golf/reglamento">
+                    <NavText>Reglamento</NavText>
+                  </NavItem>
                 </NavItem>
 
-                {/*  <NavItem eventKey="sugerencias">
-                  <NavIcon>
-                    <ion-icon name="bulb" style={{fontSize: '1.25em'}}></ion-icon>
-                  </NavIcon>
-                  <NavText>Sugerencias</NavText>
-            </NavItem>
-                */}
-                <NavItem eventKey="mi-perfil">
-                  <NavIcon>
-                    <ion-icon name="person" style={{fontSize: '1.25em'}}></ion-icon>
-                  </NavIcon>
-                  <NavText>Mi Perfil</NavText>
-                </NavItem>
-
-                <NavItem eventKey="panel-de-administradores" style={{display: `${gestion}`}}>
-                  <NavIcon>
-                    <ion-icon name="lock-closed" style={{fontSize: '1.25em'}}></ion-icon>
-                  </NavIcon>
-                  <NavText>Panel de administradores</NavText>
-                </NavItem>
-                {/*
-                <NavItem eventKey="reglas" style={{display: `${gestion}`}}>
-                  <NavIcon>
-                    <ion-icon name="book" style={{fontSize: '1.25em'}}></ion-icon>
-                  </NavIcon>
-                  <NavText>Reglas</NavText>
-                </NavItem>
-          */}
-
-                {/*<NavItem eventKey="raqueta" style={{display: `${raqueta}`}}>
+                <NavItem eventKey="raqueta" style={{display: `${raqueta}`}}>
                   <NavIcon>
                     <ion-icon name="tennisball" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
@@ -123,18 +119,24 @@ export default function Sidebar(permissions) {
                   <NavItem eventKey="raqueta/canchas">
                     <NavText>Canchas</NavText>
                   </NavItem>
+                  <NavItem eventKey="raqueta/reglamento">
+                    <NavText>Reglamento</NavText>
+                  </NavItem>
                 </NavItem>
 
-                <NavItem eventKey="gimnasio" style={{display: `${salones_gym}`}}>
+                <NavItem eventKey="gym" style={{display: `${salones_gym}`}}>
                   <NavIcon>
                     <ion-icon name="barbell"></ion-icon>
                   </NavIcon>
                   <NavText>Gimnasio</NavText>
-                  <NavItem eventKey="gimnasio/reservaciones">
+                  <NavItem eventKey="gym/reservaciones">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
-                  <NavItem eventKey="raqueta/rutinas">
+                  <NavItem eventKey="gym/rutinas">
                     <NavText>Rutinas</NavText>
+                  </NavItem>
+                  <NavItem eventKey="gym/reglamento">
+                    <NavText>Reglamento</NavText>
                   </NavItem>
                 </NavItem>
 
@@ -146,7 +148,10 @@ export default function Sidebar(permissions) {
                   <NavItem eventKey="alberca/reservaciones">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
-                </NavItem>*/}
+                  <NavItem eventKey="alberca/reglamento">
+                    <NavText>Reglamento</NavText>
+                  </NavItem>
+                </NavItem>
                 <NavItem eventKey="cerrar-sesion">
                   <NavIcon>
                     <ion-icon name="log-out" style={{fontSize: '1.25em'}}></ion-icon>
