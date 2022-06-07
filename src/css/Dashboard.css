@@ -26,8 +26,8 @@ header.app-header {
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  padding: 20px 100px;
-  text-align: left;
+  padding: 0px 0px;
+  text-align: lef t;
   color: white;
   position: relative;
 }
