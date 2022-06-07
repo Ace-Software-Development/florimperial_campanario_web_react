@@ -274,7 +274,7 @@ export default function EditGolfAppointmentSlot(props) {
 						const status = await handleDelete();
 						if (status) {
 							setDeleteDisabledButton(true);
-							//window.location.reload();
+							window.location.reload();
 						}
 					}}>Eliminar</Button>
 					<Button onClick={async () => {
@@ -283,7 +283,7 @@ export default function EditGolfAppointmentSlot(props) {
 						const status = await onSubmit();
 						if (status) {
 							setDisabledButton(true);
-							//window.location.reload();
+							window.location.reload();
 						}
 					}} type="submit">Actualizar</Button>
 				</DialogActions> 

@@ -9,6 +9,8 @@ const USER_MODEL = Parse.Object.extend('_User');
 const COACH_MODEL = Parse.Object.extend('Profesor');
 const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend('Invitado');
+const REGLAMENTO_MODEL = Parse.Object.extend('Reglamento');
+const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend('ReservacionMultiple')
 
 /**
  * Returns all the data of golf appoinntments
