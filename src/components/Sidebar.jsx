@@ -119,6 +119,11 @@ export default function Sidebar(props){
                                 Reservaciones
                             </NavText>
                         </NavItem>
+                        <NavItem eventKey="golf/reglamento">
+                            <NavText>
+                                Reglamento
+                            </NavText>
+                        </NavItem>
                     </NavItem>
                     
                     <NavItem eventKey="raqueta" style={{display: `${raqueta}`}}>
@@ -136,6 +141,11 @@ export default function Sidebar(props){
                         <NavItem eventKey="raqueta/canchas">
                             <NavText>
                                 Canchas
+                            </NavText>
+                        </NavItem>
+                        <NavItem eventKey="raqueta/reglamento">
+                            <NavText>
+                                Reglamento
                             </NavText>
                         </NavItem>
                     </NavItem>
@@ -157,6 +167,11 @@ export default function Sidebar(props){
                                 Rutinas
                             </NavText>
                         </NavItem>
+                        <NavItem eventKey="gym/reglamento">
+                            <NavText>
+                                Reglamento
+                            </NavText>
+                        </NavItem>
                     </NavItem>
                     
                     <NavItem eventKey="Alberca" style={{display: `${alberca}`}}>
@@ -169,6 +184,11 @@ export default function Sidebar(props){
                         <NavItem eventKey="alberca/reservaciones">
                             <NavText>
                                 Reservaciones
+                            </NavText>
+                        </NavItem>
+                        <NavItem eventKey="alberca/reglamento">
+                            <NavText>
+                                Reglamento
                             </NavText>
                         </NavItem>
                     </NavItem> 

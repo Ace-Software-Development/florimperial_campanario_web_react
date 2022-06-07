@@ -62,7 +62,7 @@ export default function App() {
 
             <Route path="/golf/reglamento">
                 <RegulationsPage
-                    module={'golf'}
+                    module={'Golf'}
                 />
             </Route>
 
@@ -80,6 +80,12 @@ export default function App() {
                 />
             </Route>
 
+            <Route path="/gym/reglamento">
+                <RegulationsPage
+                    module={'Gimnasio'}
+                />
+            </Route>
+
             <Route path="/raqueta/reservaciones">
                 <Reservations
                     // Reservation Calendar
@@ -94,6 +100,12 @@ export default function App() {
                 />
             </Route>
 
+            <Route path="/raqueta/reglamento">
+                <RegulationsPage
+                    module={'Raqueta'}
+                />
+            </Route>
+
             <Route path="/alberca/reservaciones">
                 <Reservations
                     // Reservation Calendar
@@ -105,6 +117,12 @@ export default function App() {
                     sitios={sitiosData.pool}
                     coachInput={true}
                     guestsInput={false}
+                />
+            </Route>
+
+            <Route path="/alberca/reglamento">
+                <RegulationsPage
+                    module={'Alberca'}
                 />
             </Route>
 
