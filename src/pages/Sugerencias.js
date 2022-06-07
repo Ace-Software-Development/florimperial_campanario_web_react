@@ -65,11 +65,19 @@ export default function ListaSocios() {
         <CirculoCarga />
       </span>
     );
-  const listItems = sugerencias.map(sugerencia => <SugerenciaCard props={sugerencia} />);
+  const listItems = sugerencias.map(sugerencia => (
+    <Col> 
+      <SugerenciaCard props={sugerencia} />
+    </Col>
+));
 
   return (
     <Screen permissions={permissions} title="Sugerencias">
-      <div>{listItems} </div>
+      <Container>
+        <Row xs={1} s={2} md={3} className="g-4">
+        {listItems}
+        </Row>
+      </Container>
     </Screen>
   );
 }

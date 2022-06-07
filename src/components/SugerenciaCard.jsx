@@ -51,37 +51,30 @@ const SugerenciaCard = props => {
       <div onClick={e => e.stopPropagation()}>
         <Modal size="lg" show={showFull} onHide={handleCloseFull}>
           <Modal.Body>
-            Área: {props.props.attributes.area.attributes.nombre} <br />
+            <h5>{props.props.attributes.area.attributes.nombre} </h5>
             Comentario: {props.props.attributes.comentarios}
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn-publicar" onClick={handleCloseFull}>
               Cerrar
             </Button>
-            <button className="btn-eliminar-sugerencia">
-              <ion-icon name="trash-outline" style={{fontSize: '1.25em'}}></ion-icon>
-            </button>
           </Modal.Footer>
         </Modal>
       </div>
-      <Container>
-        <Row xs={1} s={2} md={3} className="g-4">
-          <Col>
-            <Card className="card-sugerencias" onClick={handleShowFull}>
-              <Card.Text>
-                <div className="card-sugerencias-contenido">
-                  Área: {props.props.attributes.area.attributes.nombre} <br />
+            <Card className="card-sugerencias" >
+              <Card.Text onClick={handleShowFull}>
+                <div className="card-sugerencias-contenido" >
+                  <h5>{props.props.attributes.area.attributes.nombre}</h5>
                   Comentario: {props.props.attributes.comentarios}
                 </div>
               </Card.Text>
               <Card.Footer>
                 <div className="d-flex"></div>
+                <button className="btn-eliminar-sugerencia">
+              <ion-icon name="trash-outline" style={{fontSize: '1.25em'}}></ion-icon>
+            </button>
               </Card.Footer>
-              Haz Clic para ver detalles
             </Card>
-          </Col>
-        </Row>
-      </Container>
     </div>
   );
 };

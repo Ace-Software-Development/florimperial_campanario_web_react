@@ -28,3 +28,8 @@
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
 }
+
+/* .sugerencias-container{
+    display: flex; 
+    flex-direction: row;
+} */
