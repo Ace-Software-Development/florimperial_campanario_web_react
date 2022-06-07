@@ -1,62 +1,66 @@
-import { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import {checkUser} from '../utils/client';
-import CirculoCarga from "../components/CirculoCarga";
+import CirculoCarga from '../components/CirculoCarga';
 
-export default function Screen(props){
-	// Permissions
-	const history = useHistory();
-	const [loading, setLoading] = useState(true);
-	const [permissions, setPermissions] = useState({});
+export default function Screen(props) {
+  // Permissions
+  const history = useHistory();
+  const [loading, setLoading] = useState(true);
+  const [permissions, setPermissions] = useState({});
 
-	useEffect(async() => {
-		const permissionsJson = await checkUser();
-		if(permissionsJson === 'NO_USER') {
-			alert(
-			"Necesitas haber ingresado al sistema para consultar esta página."
-			); 
-			history.push("/");
-		}
-		else if (permissionsJson === 'NOT_ADMIN'){
-			alert(
-			"Necesitas ser administrador para acceder al sistema."
-			);
-			history.push("/");
-		}
-		else if (permissionsJson === 'INVALID_SESSION'){
-			alert(
-			"Tu sesión ha finalizado. Por favor, inicia sesión nuevamente."
-			);
-			history.push("/");
-		}
-		
-		setPermissions(permissionsJson);
+  useEffect(async () => {
+    const permissionsJson = await checkUser();
+    if (permissionsJson === 'NO_USER') {
+      alert('Necesitas haber ingresado al sistema para consultar esta página.');
+      history.push('/');
+    } else if (permissionsJson === 'NOT_ADMIN') {
+      alert('Necesitas ser administrador para acceder al sistema.');
+      history.push('/');
+    } else if (permissionsJson === 'INVALID_SESSION') {
+      alert('Tu sesión ha finalizado. Por favor, inicia sesión nuevamente.');
+      history.push('/');
+    }
 
-		try {
-			setLoading(true);
-			const permissionsJson = await checkUser();
-			setPermissions(permissionsJson);
-			setLoading(false);
-		} catch (error) {
-			setLoading(false);
-			console.log(error);
-		}
-	}, []);
+    setPermissions(permissionsJson);
 
-	if (loading) 
-		return (
-			<span><CirculoCarga/></span>
-		);
+    try {
+      setLoading(true);
+      const permissionsJson = await checkUser();
+      setPermissions(permissionsJson);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  }, []);
+  let header = '';
+  if (props.title === 'none') {
+    header = <div style={{flexGrow: 1, padding: '1rem', overflowY: 'scroll'}}></div>;
+  } else {
+    header = (
+      <div style={{flexGrow: 1, padding: '1rem', overflowY: 'scroll'}}>
+        <Header processName={props.title} />
+      </div>
+    );
+  }
 
-	return (
-		<div style={{display:'flex',flexDirection:'row', height: '100vh'}}>
-			<Sidebar permissions={permissions} screenPath={props.screenPath} />
-			<div style={{flexGrow:1, padding: '2rem', overflowY: 'scroll'}}>
-				<Header processName={props.title}/>
-				{props.children}
-			</div>
-		</div>
-	);
+  if (loading)
+    return (
+      <span>
+        <CirculoCarga />
+      </span>
+    );
+
+  return (
+    <div style={{display: 'flex', flexDirection: 'row', height: '100vh'}}>
+      <Sidebar permissions={permissions} screenPath={props.screenPath} />
+      <div style={{flexGrow: 1, padding: '2rem', overflowY: 'scroll'}}>
+        {header}
+        {props.children}
+      </div>
+    </div>
+  );
 }
