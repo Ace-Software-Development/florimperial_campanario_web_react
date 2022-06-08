@@ -16,6 +16,10 @@ import PanelAdmins from './pages/PanelAdmins';
 import NumeroSoporte from './pages/NumeroSoporte';
 import ReservacionesSocio from './pages/ReservacionesSocio';
 import MiPerfil from './pages/MiPerfil';
+import ListaSocios from './pages/ListaSocios';
+import PerfilSocio from './pages/PerfilSocio';
+import Sugerencias from './pages/Sugerencias';
+
 export default function App() {
   const [sitiosData, setSitiosData] = useState([]);
 
@@ -129,13 +133,8 @@ export default function App() {
         <Route path="/gestion-de-socios">
           <GestionSocios />
         </Route>
-
-        <Route path="/recovery">
-          <PasswordRecovery />
-        </Route>
-
-        <Route path="/cerrar-sesion">
-          <LogOut />
+        <Route path="/lista-de-socios">
+          <ListaSocios />
         </Route>
 
         <Route path="/numero-soporte">
@@ -156,6 +155,9 @@ export default function App() {
 
         <Route path="/panel-de-administradores">
           <PanelAdmins />
+        </Route>
+        <Route path="/sugerencias">
+          <Sugerencias />
         </Route>
 
         <Route path="/">

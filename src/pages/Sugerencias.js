@@ -1,21 +1,32 @@
-import '../css/GestionSocios.css';
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import Card from 'react-bootstrap/Card';
-import TablaAdmins from '../components/TablaAdmins';
 import {useEffect, useState} from 'react';
 import CirculoCarga from '../components/CirculoCarga';
-import {checkUser, getAdminUsers, getRolesNames} from '../utils/client';
+import {
+  checkUser,
+  getAdminUsers,
+  getRolesNames,
+  getAdminRole,
+  getSugerencias,
+} from '../utils/client';
 import {useHistory} from 'react-router-dom';
 import Screen from '../components/Screen';
+import Parse from 'parse';
+import ParseObject from 'parse/lib/browser/ParseObject';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
+import '../css/Sugerencias.css';
+import Button from 'react-bootstrap/Button';
+import SugerenciaCard from '../components/SugerenciaCard';
 
-export default function PanelAdmins() {
+export default function ListaSocios() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
-  const [adminList, setAdminList] = useState([]);
-  const [roleNames, setRoleNames] = useState([]);
-  const [props, setProps] = useState([]);
+  const [sugerencias, setSugerencias] = useState(new ParseObject());
 
   useEffect(async () => {
     const permissionsJson = await checkUser();
@@ -35,27 +46,18 @@ export default function PanelAdmins() {
       setLoading(true);
       const permissionsJson = await checkUser();
       setPermissions(permissionsJson);
-      const admins = await getAdminUsers();
-      const a = await setAdminList(admins);
-      const roleNames = await getRolesNames();
-      const b = await setRoleNames(roleNames);
-      const propArray = [];
-      propArray.push(adminList);
-      propArray.push(roleNames);
-      await setProps(propArray);
-      await setLoading(false);
-      setLoading(false);
+      // const user = await Parse.User.current();
+
+      getSugerencias().then(sugerencias => {
+        setSugerencias(sugerencias);
+        console.log(sugerencias);
+        setLoading(false);
+      });
     } catch (error) {
       setLoading(false);
       console.log(error);
     }
   }, []);
-  useEffect(async () => {
-    const propArray = [];
-    propArray.push(adminList);
-    propArray.push(roleNames);
-    await setProps(propArray);
-  }, [adminList, roleNames]);
 
   if (loading)
     return (
@@ -63,16 +65,19 @@ export default function PanelAdmins() {
         <CirculoCarga />
       </span>
     );
+  const listItems = sugerencias.map(sugerencia => (
+    <Col> 
+      <SugerenciaCard props={sugerencia} />
+    </Col>
+));
 
   return (
-    <Screen permissions={permissions} title="Panel de administradores">
-      <div className="App">
-        <div style={{marginLeft: '145px'}}>
-          <Card style={{width: '90%'}}>
-            <TablaAdmins adminList={props} />
-          </Card>
-        </div>
-      </div>
+    <Screen permissions={permissions} title="Sugerencias">
+      <Container>
+        <Row xs={1} s={2} md={3} className="g-4">
+        {listItems}
+        </Row>
+      </Container>
     </Screen>
   );
 }

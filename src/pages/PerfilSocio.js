@@ -1,16 +1,21 @@
+import '../css/PerfilSocios.css';
+import React from 'react';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import {useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
-import '../css/Home.css';
-import Screen from '../components/Screen';
-import {checkUser} from '../utils/client';
 import CirculoCarga from '../components/CirculoCarga';
-import HomeIcons from '../components/HomeIcons';
+import {checkUser, getAdminUsers, getRolesNames, getAdminRole} from '../utils/client';
+import {useHistory} from 'react-router-dom';
+import Screen from '../components/Screen';
+import Parse from 'parse';
+import ParseObject from 'parse/lib/browser/ParseObject';
+import InfoSocio from '../components/InfoSocio';
 
-export default function Home() {
+export default function PerilSocio() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
-
+  const [currentRole, setRole] = useState(new ParseObject());
+  const [currentUser, setCurrentUser] = useState(new Parse.User());
   useEffect(async () => {
     const permissionsJson = await checkUser();
     if (permissionsJson === 'NO_USER') {
@@ -24,11 +29,20 @@ export default function Home() {
       history.push('/');
     }
     setPermissions(permissionsJson);
+
     try {
       setLoading(true);
       const permissionsJson = await checkUser();
       setPermissions(permissionsJson);
-      setLoading(false);
+      // const user = await Parse.User.current();
+      Parse.User.currentAsync().then(user => {
+        console.log(user);
+        setCurrentUser(user);
+        getAdminRole(user.id).then(roleObj => {
+          setRole(roleObj);
+          setLoading(false);
+        });
+      });
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -43,9 +57,12 @@ export default function Home() {
     );
 
   return (
-    <Screen screenPath="home" title="Inicio">
-      <div className="home-cards">
-        <HomeIcons permissions={permissions} />
+    <Screen permissions={permissions} title="Perfil de socio">
+      <div className="App">
+        <div style={{marginLeft: '15px'}}>
+          <InfoSocio/>
+          <br />
+        </div>
       </div>
     </Screen>
   );
