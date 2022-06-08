@@ -152,6 +152,20 @@ export default function Sidebar(props) {
                     <NavText>Reglamento</NavText>
                   </NavItem>
                 </NavItem>
+
+                <NavItem eventKey="salones" style={{display: `${salones_gym}`}}>
+                  {/*<NavIcon>
+                    <ion-icon name="water" style={{fontSize: '1.25em'}}></ion-icon>
+                  </NavIcon>*/}
+                  <NavText>Salones</NavText>
+                  <NavItem eventKey="salones/clinicas">
+                    <NavText>Reservaciones</NavText>
+                  </NavItem>
+                  <NavItem eventKey="salones/reglamento">
+                    <NavText>Reglamento</NavText>
+                  </NavItem>
+                </NavItem>
+
                 <NavItem eventKey="cerrar-sesion">
                   <NavIcon>
                     <ion-icon name="log-out" style={{fontSize: '1.25em'}}></ion-icon>
