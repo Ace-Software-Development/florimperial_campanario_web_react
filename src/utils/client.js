@@ -559,6 +559,7 @@ export async function getMembers() {
   cuentaQuery.include('account');
   cuentaQuery.include('account.noAccion'); // if user is the column name
   cuentaQuery.include('account.pases'); // if activity is the column name
+  cuentaQuery.include('email');
   //cuentaQuery.notEqualTo('email', 'null');
   let data = await cuentaQuery.find();
   return data;
@@ -577,6 +578,7 @@ export async function setPasesSocio(objId, numPases) {
   const cuentaEnDb = result[0];
   await cuentaEnDb.set('pases', numPases);
   await cuentaEnDb.save();
+  return 0;
 }
 
 export async function getSugerencias() {

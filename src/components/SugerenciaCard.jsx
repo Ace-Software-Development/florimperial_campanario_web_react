@@ -1,5 +1,6 @@
-import Modal from 'react-bootstrap/Modal';
+//W14 Consultar sugerencias
 
+import Modal from 'react-bootstrap/Modal';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
