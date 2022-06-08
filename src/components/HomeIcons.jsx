@@ -39,9 +39,9 @@ function HomeIcons(permissions) {
           <Col>
             <a href="/anuncios">
               <Card className="bg-dark text-white" style={{width: '100%', display: `${anuncios}`}}>
-                <Card.Img src="anunciosIMG.jpg" alt="Card image" />
-                <Card.ImgOverlay>
-                  <Card.Title>Anuncios</Card.Title>
+                <Card.Img className= "home-card-img" src="anunciosIMG.jpg" alt="Card image" />
+                <Card.ImgOverlay className= "home-card-overlay">
+                  <Card.Title className="home-card-title" >Anuncios</Card.Title>
                 </Card.ImgOverlay>
               </Card>
             </a>
@@ -49,9 +49,9 @@ function HomeIcons(permissions) {
           <Col>
             <a href="/golf/salidas">
               <Card className="bg-dark text-white" style={{width: '100%', display: `${golf}`}}>
-                <Card.Img src="golfIMG.png" alt="Card image" />
-                <Card.ImgOverlay>
-                  <Card.Title>Golf</Card.Title>
+                <Card.Img className= "home-card-img" src="golfIMG.png" alt="Card image" />
+                <Card.ImgOverlay className= "home-card-overlay">
+                  <Card.Title className="home-card-title">Golf</Card.Title>
                 </Card.ImgOverlay>
               </Card>
             </a>
@@ -59,9 +59,9 @@ function HomeIcons(permissions) {
           <Col>
             <a href="raqueta/reservaciones">
               <Card className="bg-dark text-white" style={{width: '100%', display: `${raqueta}`}}>
-                <Card.Img src="raquetaIMG.jpg" alt="Card image" />
-                <Card.ImgOverlay>
-                  <Card.Title>Raqueta</Card.Title>
+                <Card.Img className= "home-card-img" src="raquetaIMG.jpg" alt="Card image" />
+                <Card.ImgOverlay className= "home-card-overlay">
+                  <Card.Title className="home-card-title">Raqueta</Card.Title>
                 </Card.ImgOverlay>
               </Card>
             </a>
@@ -69,9 +69,9 @@ function HomeIcons(permissions) {
           <Col>
             <a href="/lista-de-socios">
               <Card className="bg-dark text-white" style={{width: '100%', display: `${gestion}`}}>
-                <Card.Img src="config.jpg" alt="Card image" />
-                <Card.ImgOverlay>
-                  <Card.Title>Gestión de socios</Card.Title>
+                <Card.Img className= "home-card-img" src="config.jpg" alt="Card image" />
+                <Card.ImgOverlay className= "home-card-overlay">
+                  <Card.Title className="home-card-title">Gestión de socios</Card.Title>
                 </Card.ImgOverlay>
               </Card>
             </a>
@@ -79,9 +79,9 @@ function HomeIcons(permissions) {
           <Col>
             <a href="/panel-de-administradores">
               <Card className="bg-dark text-white" style={{width: '100%', display: `${gestion}`}}>
-                <Card.Img src="config.jpg" alt="Card image" />
-                <Card.ImgOverlay>
-                  <Card.Title>Panel de administradores</Card.Title>
+                <Card.Img className= "home-card-img" src="config.jpg" alt="Card image" />
+                <Card.ImgOverlay className= "home-card-overlay">
+                  <Card.Title className="home-card-title">Panel de administradores</Card.Title>
                 </Card.ImgOverlay>
               </Card>
             </a>
@@ -92,9 +92,9 @@ function HomeIcons(permissions) {
                 className="bg-dark text-white"
                 style={{width: '100%', display: `${salones_gym}`}}
               >
-                <Card.Img src="gymIMG.jpg" alt="Card image" />
-                <Card.ImgOverlay>
-                  <Card.Title>Gym</Card.Title>
+                <Card.Img className= "home-card-img" src="gymIMG.jpg" alt="Card image" />
+                <Card.ImgOverlay className= "home-card-overlay">
+                  <Card.Title className="home-card-title">Gym</Card.Title>
                 </Card.ImgOverlay>
               </Card>
             </a>
@@ -102,9 +102,9 @@ function HomeIcons(permissions) {
           <Col>
             <a href="alberca/reservaciones">
               <Card className="bg-dark text-white" style={{width: '100%', display: `${alberca}`}}>
-                <Card.Img src="poolIMG.jpg" alt="Card image" />
-                <Card.ImgOverlay>
-                  <Card.Title>Alberca</Card.Title>
+                <Card.Img className= "home-card-img" src="poolIMG.jpg" alt="Card image" />
+                <Card.ImgOverlay className= "home-card-overlay">
+                  <Card.Title className="home-card-title">Alberca</Card.Title>
                 </Card.ImgOverlay>
               </Card>
             </a>

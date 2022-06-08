@@ -4,7 +4,6 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import {checkUser} from '../utils/client';
 import CirculoCarga from '../components/CirculoCarga';
-
 export default function Screen(props) {
   // Permissions
   const history = useHistory();
