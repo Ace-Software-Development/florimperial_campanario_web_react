@@ -881,6 +881,10 @@ export async function getAllClinicsReservations(module) {
   return data;
 }
 
+export async function createReservationClinic(reservationData) {
+  
+}
+
 export async function updateClinicsReservations(reservationData, users) {
 
 }
