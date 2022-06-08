@@ -18,7 +18,7 @@ export default function ReservationsClinicas(props) {
 		getAllClinicsReservations(props.module)
 		.then(data => {
 			const formatedData = formatClinicDataRows(data);
-			setClinicsData(formatedData);
+			//setClinicsData(formatedData);
 			setLoading(false);
 		})
 		.catch(error => {
