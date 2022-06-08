@@ -65,7 +65,7 @@ export function formatSitioData(sitio) {
 	};
 }
 
-export function formatClinicsData(clinic){
+export function formatClinicDataRows(clinic){
 	return {
 		objectId: clinic.id,
 		nombre: clinic.get('nombre'),

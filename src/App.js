@@ -16,6 +16,7 @@ import PanelAdmins from './pages/PanelAdmins';
 import NumeroSoporte from './pages/NumeroSoporte';
 import ReservacionesSocio from './pages/ReservacionesSocio';
 import MiPerfil from './pages/MiPerfil';
+import ReservationsClinicas from './pages/ReservationsClinicas';
 export default function App() {
   const [sitiosData, setSitiosData] = useState([]);
 
@@ -120,6 +121,10 @@ export default function App() {
 
         <Route path="/alberca/reglamento">
           <RegulationsPage module={'Alberca'} />
+        </Route>
+
+        <Route path="/salones/clinicas">
+          <ReservationsClinicas module="salones" />
         </Route>
 
         <Route path="/anuncios">

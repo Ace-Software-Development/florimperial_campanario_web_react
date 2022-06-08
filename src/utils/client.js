@@ -396,6 +396,10 @@ export async function updateReservation(dataReservation, guests, users) {
   }
 }
 
+export async function getAllClinicsReservations(module) {
+  return new Promise();
+}
+
 /**
  * @description return an Area query given a name
  * @returns {ParseObject} An object containing the relation table

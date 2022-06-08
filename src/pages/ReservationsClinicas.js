@@ -1,9 +1,10 @@
 // W28
 import React, { useEffect, useState, createRef } from 'react';
-import CreateReservationSlot from './CreateReservationSlot';
+import CreateReservationClinic from './CreateReservationClinic';
 import Screen from "../components/Screen";
 import EditReservationClinic from './EditReservationClinic';
-import { getAllAvailableReservations } from '../utils/client';
+import { getAllClinicsReservations } from '../utils/client';
+import { formatClinicDataRows } from '../utils/formatData';
 import CirculoCarga from '../components/CirculoCarga';
 
 export default function ReservationsClinicas(props) {
@@ -14,7 +15,7 @@ export default function ReservationsClinicas(props) {
 	const [selectedClinic, setSelectedClinic] = useState([]);
 
 	useEffect(async () => {
-		gestAllClinicsReservations(props.module)
+		getAllClinicsReservations(props.module)
 		.then(data => {
 			const formatedData = formatClinicDataRows(data);
 			setClinicsData(formatedData);
@@ -26,6 +27,10 @@ export default function ReservationsClinicas(props) {
 			window.alert('Ha ocurrido un error, intente volver a cargar la página');
 		});
 	}, []);
+
+	const handleEditClick = event => {
+		console.log(event.target.data);
+	}
 
 	return (
 		<Screen title={props.screenTitle} screenPath={props.screenPath}>
@@ -55,7 +60,7 @@ export default function ReservationsClinicas(props) {
 								<td>{row.fechaInicio}</td>
 								<td>{row.fechaFin}</td>
 								<td>
-									<button>Editar</button>
+									<button onClick={event => handleEditClick(event)}>Editar</button>
 									<button>Eliminar</button>
 								</td>
 							</tr>
@@ -67,6 +72,10 @@ export default function ReservationsClinicas(props) {
 
 			{openEdit &&
 				<EditReservationClinic />
+			}
+
+			{openCreate && 
+				<CreateReservationClinic />
 			}
 		</Screen>
 	);
