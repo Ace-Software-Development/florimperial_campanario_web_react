@@ -594,5 +594,6 @@ export async function deleteSugerencia(sugerenciaId) {
   let data = await query.find();
   let sugerenciaEliminar = data[0];
   sugerenciaEliminar.set('eliminado', true);
-  sugerenciaEliminar.save();
+  await sugerenciaEliminar.save();
+  return 0;
 }

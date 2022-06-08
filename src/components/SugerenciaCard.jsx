@@ -50,7 +50,11 @@ const SugerenciaCard = props => {
         </Card.Text>
         <Card.Footer>
           <div className="d-flex"></div>
-          <button className="btn-eliminar-sugerencia">
+          <button
+            className="btn-eliminar-sugerencia"
+            id={props.props.id}
+            onClick={handleDeleteSuggestion}
+          >
             <ion-icon name="trash-outline" style={{fontSize: '1.25em'}}></ion-icon>
           </button>
         </Card.Footer>
