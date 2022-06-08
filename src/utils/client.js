@@ -12,6 +12,8 @@ const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend('Invitado');
 const REGLAMENTO_MODEL = Parse.Object.extend('Reglamento');
 const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend('ReservacionMultiple');
+const CLINICA_MODEL = Parse.Object.extend('Clinica');
+
 
 /**
  * Returns all the data of golf appoinntments
@@ -845,4 +847,32 @@ export async function getArea() {
     areas.set(i.id, i.get('nombre'));
   }
   return areas;
+}
+
+/**
+ * Retrieves all clinics from a scecific site
+ * @param {string} module 
+ * @returns {array} data
+ */
+export async function getAllClinicsReservations(module) {
+  const areaQuery = new Parse.Query(AREA_MODEL);
+  areaQuery.equalTo('eliminado', false);
+  areaQuery.equalTo('nombre', module);
+
+  const sitiosQuery = new Parse.Query(SITIO_MODEL);
+  sitiosQuery.select('nombre');
+  sitiosQuery.equalTo('eliminado', false);
+  sitiosQuery.matchesQuery('area', areaQuery);
+  sitiosQuery.include('area');
+  
+  const clinicaQuery = new Parse.Query(CLINICA_MODEL);
+  clinicaQuery.matchesQuery('sitio', sitiosQuery);
+  clinicaQuery.include('sitio');
+
+  const data = await clinicaQuery.find();
+  return data;
+}
+
+export async function updateClinicsReservations(reservationData, users) {
+
 }

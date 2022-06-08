@@ -14,7 +14,7 @@ export default function ReservationsClinicas(props) {
 	const [selectedClinic, setSelectedClinic] = useState([]);
 
 	useEffect(async () => {
-		gestAllClinicsReservations(props.module)
+		getAllClinicsReservations(props.module)
 		.then(data => {
 			const formatedData = formatClinicDataRows(data);
 			setClinicsData(formatedData);
