@@ -63,7 +63,9 @@ export default function Sidebar(props) {
                     <NavText>Lista de socios</NavText>
                   </NavItem>
 
+                  <NavItem eventKey="gestion-de-socios">
                   <NavText>Gestión de socios</NavText>
+                </NavItem>
                 </NavItem>
 
                 <NavItem eventKey="anuncios" style={{display: `${anuncios}`}}>
