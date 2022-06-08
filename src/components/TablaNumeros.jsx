@@ -24,11 +24,14 @@ const TablaNumeros = supportNumbers => {
     event.stopPropagation();
     const idNumero = form.id;
     const nuevoNumero = form.nuevoNum.value;
-
-    setSupportNumber(idNumero, parseInt(nuevoNumero)).then(() => {
-      alert('Se actualizó exitosamente el número.');
-      window.location.reload();
-    });
+    if (nuevoNumero.toString().length === 10) {
+      setSupportNumber(idNumero, parseInt(nuevoNumero)).then(() => {
+        alert('Se actualizó exitosamente el número.');
+        window.location.reload();
+      });
+    } else {
+      alert('El número introducido no es de 10 dígitos.');
+    }
   };
 
   const tableElements = supportNumbers.supportNumbers.map(number => (
@@ -41,7 +44,8 @@ const TablaNumeros = supportNumbers => {
               <form id={number.id} onSubmit={handleChangeNumber}>
                 <div class="form-outline">
                   <input
-                    type="number"
+                    type="tel"
+                    maxLength="10"
                     id="nuevoNum"
                     className="form-control"
                     defaultValue={number.attributes.Numero}

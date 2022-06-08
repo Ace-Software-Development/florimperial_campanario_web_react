@@ -1,19 +1,10 @@
 import '../css/GestionSocios.css';
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Modal from 'react-bootstrap/Modal';
-import TablaCsvEjemplo from '../components/TablaCsvEjemplo';
 import {useEffect, useState} from 'react';
 import CirculoCarga from '../components/CirculoCarga';
-import {createMember, checkUser, getSupportNumbers} from '../utils/client';
+import { checkUser, getSupportNumbers} from '../utils/client';
 import {useHistory} from 'react-router-dom';
-import Papa from 'papaparse';
 import Screen from '../components/Screen';
 import TablaNumeros from '../components/TablaNumeros';
 
