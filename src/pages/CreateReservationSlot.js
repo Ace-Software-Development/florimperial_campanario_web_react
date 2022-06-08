@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DialogContent, DialogActions } from '@mui/material';
 import { Button } from '@mui/material';
-import { getAllCoaches, createGolfReservation, getAreaByName, getSitiosByArea } from '../utils/client';
+import { getAllCoaches, createGolfReservation } from '../utils/client';
 import CirculoCarga from '../components/CirculoCarga';
 import InputSelector from '../components/InputSelector';
 import Datetime from 'react-datetime';

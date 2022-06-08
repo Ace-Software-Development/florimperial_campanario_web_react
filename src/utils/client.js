@@ -401,7 +401,7 @@ export async function updateReservation(dataReservation, guests, users) {
  * @returns {ParseObject} An object containing the relation table
  */
 export async function getAllClinicsReservations(module) {
-  return new Promise();
+return new Promise();
 }
 
 /**
