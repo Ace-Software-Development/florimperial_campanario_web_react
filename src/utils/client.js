@@ -13,7 +13,7 @@ const INVITADO_MODEL = Parse.Object.extend('Invitado');
 const REGLAMENTO_MODEL = Parse.Object.extend('Reglamento');
 const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend('ReservacionMultiple');
 const CLINICA_MODEL = Parse.Object.extend('Clinica');
-
+const RESERVACION_CLINICA_MODEL = Parse.Object.extend('ReservacionClinica');
 
 /**
  * Returns all the data of golf appoinntments
@@ -879,10 +879,38 @@ export async function getAllClinicsReservations(module) {
 
   const data = await clinicaQuery.find();
   return data;
+  //hacer query de ReservacionCLinica
 }
 
 export async function createReservationClinic(reservationData) {
+  // Get sitio
+  const sitioQuery = new Parse.Query(SITIO_MODEL);
+  const sitioObject = await sitioQuery.get(reservationData.sitio.objectId);
   
+  // Create new Clinic entry
+  const clinicObj = new CLINICA_MODEL();
+  clinicObj.set('nombre', reservationData.nombre);
+  clinicObj.set('maximoJugadores', reservationData.maximoJugadores);
+  clinicObj.set('horario', reservationData.horario);
+  clinicObj.set('dias', reservationData.dias);
+  clinicObj.set('fechaInicio', reservationData.fechaInicio);
+  clinicObj.set('fechaFin', reservationData.fechaFin);
+  clinicObj.set('sitio', sitioObject);
+
+  const clinic = await clinicObj.save();
+
+  // Create users entry
+  reservationData.socios.forEach(socio => {
+    // Get socio
+    const socioQuery = new Parse.Query(USER_MODEL);
+    const socio = await socioQuery.get(socio);
+    
+    // Creata new ReservacionClinica entry
+    const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
+    clinicReservationObj.set('user', socio);
+    clinicReservationObj.set('clinica', clinic);
+    await clinicReservationObj.save();
+  })
 }
 
 export async function updateClinicsReservations(reservationData, users) {
