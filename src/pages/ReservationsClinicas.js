@@ -5,6 +5,7 @@ import Screen from "../components/Screen";
 import EditReservationClinic from './EditReservationClinic';
 import { getAllClinicsReservations } from '../utils/client';
 import { formatClinicDataRows } from '../utils/formatData';
+import { toDateString } from '../utils/dateHelpers';
 import CirculoCarga from '../components/CirculoCarga';
 import Table from 'react-bootstrap/Table';
 import '../css/Clinics.css';
@@ -26,11 +27,6 @@ export default function ReservationsClinicas(props) {
 		console.log(parsedData);
 		setClinicsData(parsedData);
 		setLoading(false);
-		//.catch(error => {
-		//	setLoading(false);
-		//	console.log(error);
-		//	window.alert('Ha ocurrido un error, intente volver a cargar la página');
-		//});
 	}, []);
 
 	const handleEditClick = event => {
@@ -39,11 +35,17 @@ export default function ReservationsClinicas(props) {
 
 	return (
 		<Screen title={props.screenTitle} screenPath={props.screenPath}>
+			<button 
+				className="primary-btn"
+				onClick={() => setOpenCreate(true)}
+			>
+				Crear clase
+			</button>
+
 			<Table striped bordered hover>
 				<thead>
 					<tr>
 						<td>Nombre de la clínica</td>
-						<td>Cupo actual</td>
 						<td>Cupo máx.</td>
 						<td>Hora</td>
 						<td>Días</td>
@@ -56,17 +58,16 @@ export default function ReservationsClinicas(props) {
 				<tbody>
 					{clinicsData.map(row => {
 						return (
-							<tr>
-								<td>{row.nombre}</td>
-								<td>{row.maximoJugadores}</td>
-								<td>?</td> 
-								<td>{row.horario}</td>
-								<td>{row.dias}</td>
-								<td>{row.fechaInicio}</td>
-								<td>{row.fechaFin}</td>
-								<td>
-									<button onClick={event => handleEditClick(event)}>Editar</button>
-									<button>Eliminar</button>
+							<tr key={`${row.objectId}-tr`}>
+								<td key={`${row.objectId}-td-1`}>{row.nombre}</td>
+								<td key={`${row.objectId}-td-2`}>{row.maximoJugadores}</td>
+								<td key={`${row.objectId}-td-4`}>{row.horario}</td>
+								<td key={`${row.objectId}-td-5`}>{row.dias}</td>
+								<td key={`${row.objectId}-td-6`}>{toDateString(row.fechaInicio)}</td>
+								<td key={`${row.objectId}-td-7`}>{toDateString(row.fechaFin)}</td>
+								<td key={`${row.objectId}-td-8`}>
+									<button key={`${row.objectId}-btn-edit`} onClick={event => handleEditClick(event)}>Editar</button>
+									<button key={`${row.objectId}-btn-dlt`}>Eliminar</button>
 								</td>
 							</tr>
 						)

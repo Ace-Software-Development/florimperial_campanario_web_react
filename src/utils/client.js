@@ -571,7 +571,7 @@ export async function checkUser() {
   }
   try {
     let adminRoleId = await getAdminRoleId(currentUser.id);
-    const d = await getPermissions(adminRoleId);
+    const permissionsJson = await getPermissions(adminRoleId);
     return permissionsJson;
   } catch (e) {
     return 'INVALID_SESSION';
@@ -874,6 +874,7 @@ export async function getAllClinicsReservations(module) {
 }
 
 export async function createReservationClinic(reservationData) {
+  console.log(reservationData);
   // Get sitio
   const sitioQuery = new Parse.Query(SITIO_MODEL);
   const sitioObject = await sitioQuery.get(reservationData.sitio.objectId);
@@ -891,17 +892,17 @@ export async function createReservationClinic(reservationData) {
   const clinic = await clinicObj.save();
 
   // Create users entry
-  reservationData.socios.forEach(async socioId => {
-    // Get socio
-    const socioQuery = new Parse.Query(USER_MODEL);
-    const socioObj = await socioQuery.get(socioId);
+  //reservationData.socios.forEach(async socioId => {
+  //  // Get socio
+  //  const socioQuery = new Parse.Query(USER_MODEL);
+  //  const socioObj = await socioQuery.get(socioId);
     
-    // Creata new ReservacionClinica entry
-    const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
-    clinicReservationObj.set('user', socioObj);
-    clinicReservationObj.set('clinica', clinic);
-    await clinicReservationObj.save();
-  })
+  //  // Creata new ReservacionClinica entry
+  //  const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
+  //  clinicReservationObj.set('user', socioObj);
+  //  clinicReservationObj.set('clinica', clinic);
+  //  await clinicReservationObj.save();
+  //})
 }
 
 async function deleteClinicReservations(clinicObject) {
@@ -934,10 +935,10 @@ export async function updateClinicsReservations(reservationData, users) {
     await deleteClinicReservations(clinicObject);
     
     // Create users entry
-    reservationData.socios.forEach(socio => {
+    users.forEach(async user => {
       // Get socio
       const socioQuery = new Parse.Query(USER_MODEL);
-      const socioObj = await socioQuery.get(users);
+      const socioObj = await socioQuery.get(user);
       
       // Creata new ReservacionClinica entry
       const clinicReservationObj = new RESERVACION_CLINICA_MODEL();

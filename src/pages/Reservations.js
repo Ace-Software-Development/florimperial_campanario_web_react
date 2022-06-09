@@ -27,7 +27,6 @@ export default function Reservations(props) {
         setReservationsData(data);
         setLoading(false);
     }, []);
-    
   
     const addAppointmentSlot = (dateClickInfo) => {
         setNewSlotStart(dateClickInfo.date);
@@ -39,8 +38,6 @@ export default function Reservations(props) {
         setSelectedAppointment(reservationsData.find(row => row.objectId == id));
         setOpenEdit(true);
     }
-
-
     
     if (loading){
           return (

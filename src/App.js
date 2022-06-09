@@ -128,8 +128,11 @@ export default function App() {
 
         <Route path="/salones/clinicas">
           <ReservationsClinicas 
+            screenTitle="Clases de salones"
+            screenPath="salones/clases"
             module="Salones"
             sitios={sitiosData.salones}
+
           />
         </Route>
 
