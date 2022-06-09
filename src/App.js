@@ -49,7 +49,7 @@ export default function App() {
           <Home />
         </Route>
         <Route
-          path="/socios/:socioId"
+          path="/reservaciones/socios/:socioId"
           render={() => {
             return (
               <div>
