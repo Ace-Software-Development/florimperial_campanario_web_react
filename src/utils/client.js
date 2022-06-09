@@ -902,21 +902,30 @@ export async function createReservationClinic(reservationData) {
   reservationData.socios.forEach(socio => {
     // Get socio
     const socioQuery = new Parse.Query(USER_MODEL);
-    const socio = await socioQuery.get(socio);
+    const socioObj = await socioQuery.get(socio);
     
     // Creata new ReservacionClinica entry
     const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
-    clinicReservationObj.set('user', socio);
+    clinicReservationObj.set('user', socioObj);
     clinicReservationObj.set('clinica', clinic);
     await clinicReservationObj.save();
   })
 }
 
+async function deleteClinicReservations(clinicObject) {
+  const clinicReservationsQuery = new Parse.Query(RESERVACION_CLINICA_MODEL);
+  clinicReservationsQuery.equalTo('clinica', clinicObject);
+  const response = await clinicReservationsQuery.find();
+  await Parse.Object.destroyAll(response);
+}
+
 export async function updateClinicsReservations(reservationData, users) {
   try {
+    // Get sitio
     const sitioQuery = new Parse.Query(SITIO_MODEL);
     const sitioObject = await sitioQuery.get(reservationData.sitio.objectId);
 
+    // Update clinic data
     const clinicQuery = new Parse.Query(CLINICA_MODEL);
     const clinicObject = await clinicQuery.get(reservationData.objectId);
     clinicObject.set('nombre', reservationData.nombre);
@@ -929,9 +938,63 @@ export async function updateClinicsReservations(reservationData, users) {
 
     await clinicObject.save();
 
+    // Delete al clinic reservations
+    await deleteClinicReservations(clinicObject);
+    
+    // Create users entry
+    reservationData.socios.forEach(socio => {
+      // Get socio
+      const socioQuery = new Parse.Query(USER_MODEL);
+      const socioObj = await socioQuery.get(users);
+      
+      // Creata new ReservacionClinica entry
+      const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
+      clinicReservationObj.set('user', socioObj);
+      clinicReservationObj.set('clinica', clinicObject);
+      await clinicReservationObj.save();
+  })
+
     return true;
   } catch (error) {
     console.log(`Ha ocurrido un error ${error}`);
     return false;
   }
 }
+
+
+// async function updateUsersEntry(reservationId) {
+//   // borrar todos los registros de ReservacionMultiple de una Reservacion
+//   const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+//   reservationQuery.equalTo('objectId', reservationId);
+
+//   const multipleReservationsQuery = new Parse.Query(MULTIPLE_RESERVATION_MODEL);
+//   multipleReservationsQuery.matchesQuery('reservacion', reservationQuery);
+//   multipleReservationsQuery.include('user');
+//   const response = await multipleReservationsQuery.find();
+//   await Parse.Object.destroyAll(response);
+// }
+
+// async function updateGuestsEntry(reservationId) {
+//   const guestsIds = [];
+//   // borrar todos los registros de reservacionInvitado e Invitado de una Reservacion
+//   const reservationQuery = new Parse.Query(RESERVACION_MODEL);
+//   reservationQuery.equalTo('objectId', reservationId);
+
+//   const guestReservation = new Parse.Query(RESERVACION_INVITADO_MODEL);
+//   guestReservation.matchesQuery('reservacion', reservationQuery);
+//   guestReservation.include('invitado');
+
+//   const results = await guestReservation.find();
+//   results.forEach(guest => {
+//     guestsIds.push(guest.get('invitado').id);
+//   });
+//   Parse.Object.destroyAll(results);
+
+//   for (let id of guestsIds) {
+//     let guestQuery = new Parse.Query(INVITADO_MODEL);
+//     guestQuery.equalTo('objectId', id);
+//     guestQuery.find().then(results => {
+//       Parse.Object.destroyAll(results);
+//     });
+//   }
+// }
