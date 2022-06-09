@@ -1,8 +1,8 @@
 export function toISOString(date){
-  const tzOffset = -date.getTimezoneOffset();
-  const diff = tzOffset >= 0 ? '+' : '-';
-  const pad = n => `${Math.floor(Math.abs(n))}`.padStart(2, '0');
-  return date.getFullYear() +
+    const tzOffset = -date.getTimezoneOffset();
+    const diff = tzOffset >= 0 ? '+' : '-';
+    const pad = n => `${Math.floor(Math.abs(n))}`.padStart(2, '0');
+    return date.getFullYear() +
     '-' + pad(date.getMonth() + 1) +
     '-' + pad(date.getDate()) +
     'T' + pad(date.getHours()) +
@@ -11,3 +11,7 @@ export function toISOString(date){
     diff + pad(tzOffset / 60) +
     ':' + pad(tzOffset % 60);
 };
+
+export function toDateString(date) {
+    return date.toLocaleDateString('es-MX');
+}
