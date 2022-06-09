@@ -9,12 +9,52 @@ import FormControl from 'react-bootstrap/FormControl';
 import FormSelect from 'react-bootstrap/FormSelect';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import { getAllActiveUsers, crearRutinasUsuario, getRoutines, getTrainings } from '../utils/client';
 
 const TablaRutinas = () => {
     const [showAdd, setShowFalse] = useState(false);
+    const [user, setUsername] = useState("");
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedUserName, setSelectedUserName] = useState("Buscar Socio");
+    const [searchResults, setSearchResults] = useState([]);
+    const [routines, setRoutines] = useState([]);
+    const [selectedRoutine, setSelectedRotuine] = useState(null);
+    const [trainings, setTrainings] = useState([])
     const handleCloseAdd = () => setShowFalse(false);
     const handleShowAdd = () => setShowFalse(true);
+
+    /*Get all active users*/
+    useEffect(() =>{
+        getAllActiveUsers().then( response => {
+            const data = [];
+            response.forEach(i => {
+                data.push({id: i.id, username: i.get('username')});
+            });
+            setSearchResults(data);
+        });
+    }, [])
+
+    useEffect(() =>{
+        crearRutinasUsuario(selectedUser);
+
+        getRoutines(selectedUser)
+        .then(data => setRoutines(data));
+    }, [selectedUser])
+
+    useEffect(() =>{
+        getTrainings(selectedRoutine)
+        .then(data => setTrainings(data));
+    }, [selectedRoutine])
+
+    const filterUsers = (i) => {
+        if(user === ""){
+            return false;
+        }else{
+            return i.username.toLowerCase().includes(user.toLowerCase());
+        }    
+    }
+
   return (
       <div>
         <div onClick={e => e.stopPropagation()}>
@@ -29,17 +69,17 @@ const TablaRutinas = () => {
                         <Col xs={7}>
                             <Form.Group className="mb-3">
                             <Form.Label> <h6>Nombre</h6></Form.Label>
-                            <Form.Control  placeholder="Nombre del ejericio" /></Form.Group>
+                            <Form.Control  placeholder="Nombre del ejericio" required/></Form.Group>
                         </Col>
                         <Col>
                             <Form.Group className="mb-3">
                             <Form.Label> <h6>Repeticiones</h6></Form.Label>
-                            <Form.Control  placeholder="No. de Repeticiones" /></Form.Group>
+                            <Form.Control  placeholder="No. de Repeticiones" required/></Form.Group>
                         </Col>
                         <Col>
                             <Form.Group className="mb-3">
                             <Form.Label> <h6>Series</h6></Form.Label>
-                            <Form.Control  placeholder="No. de Series" /></Form.Group>
+                            <Form.Control  placeholder="No. de Series" required/></Form.Group>
                         </Col>
                     </Row>
                     <Row>
@@ -61,31 +101,42 @@ const TablaRutinas = () => {
               <Row>
                     <Col xs={8}>
                         <Form className="d-flex">
-                            <FormControl
-                                type="search"
-                                placeholder="Search"
+                            <input 
                                 className="me-2"
-                                aria-label="Search"
+                                type="text"
+                                placeholder={selectedUserName}
+                                value={user}
+                                onChange={(text) => setUsername(text.target.value)}
                             />
-                            <Button variant="outline-success">Search</Button>
+                            <Button variant="outline-success">Buscar</Button>
                         </Form>
+                        <div>
+                            {searchResults.filter(i => filterUsers(i)).map(item => {
+                                return(
+                                    <div key={item.id} onClick={() => {setSelectedUser(item.id); setSelectedUserName(item.username)}}>
+                                    <p>{item.username}</p>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </Col>
                     <Col>
                         <Form>
-                            <FormSelect id="roleSelection">
-                            <option>Lunes</option>
-                            <option>Martes</option>
-                            <option>Miercoles</option>
-                            <option>Jueves</option>
-                            <option>Viernes</option>
-                            <option>Sabado</option>
-                            <option>Domingo</option>
+                            <FormSelect id="roleSelection" onChange={event => setSelectedRotuine(event.target.value)}>
+                                <option value="none" selected disabled hidden>Seleccione un dia</option>
+                            {routines.map(item => {
+                                return(
+                                    <option key={item.id} value={item.id}>{item.get('titulo')}</option>
+                                )
+                            })
+
+                            }
                             </FormSelect>
                         </Form>
                     </Col>
                     <Col>
                         <Button className= "btn-rutinas" onClick={handleShowAdd}>
-                            Crear rutina
+                            Agregar ejercicio
                         </Button>
                     </Col>
                 </Row>
@@ -106,14 +157,18 @@ const TablaRutinas = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                        <td>1</td>
-                        <td>Ejericio 1</td>
-                        <td>16</td>
-                        <td>4</td>
-                        <td>Nota ejemplo</td>
-                        <td style={{textAlign:'center'}}> <Button className= "btn-rutinas-eliminar" >Eliminar</Button></td>
-                        </tr>   
+                        {trainings.map((item, index) => {
+                            return(
+                                <tr key={item.id}>
+                                <td>{index}</td>
+                                <td>{item.get('nombre')}</td>
+                                <td>{item.get('repeticiones')}</td>
+                                <td>{item.get('series')}</td>
+                                <td>{item.get('notas')}</td>
+                                <td style={{textAlign:'center'}}> <Button className= "btn-rutinas-eliminar" >Eliminar</Button></td>
+                                </tr>  
+                            )
+                        })}  
                     </tbody>
             </Table>
         </Card>
