@@ -17,17 +17,20 @@ export default function ReservationsClinicas(props) {
 	const [selectedClinic, setSelectedClinic] = useState(null);
 
 	useEffect(async () => {
-		getAllClinicsReservations(props.module)
-		.then(data => {
-			const formatedData = formatClinicDataRows(data);
-			//setClinicsData(formatedData);
-			setLoading(false);
-		})
-		.catch(error => {
-			setLoading(false);
-			console.log(error);
-			window.alert('Ha ocurrido un error, intente volver a cargar la página');
+		const data = await getAllClinicsReservations(props.module);
+		const parsedData = [];
+		data.forEach(i => {
+			const formatedData = formatClinicDataRows(i);
+			parsedData.push(formatedData);
 		});
+		console.log(parsedData);
+		setClinicsData(parsedData);
+		setLoading(false);
+		//.catch(error => {
+		//	setLoading(false);
+		//	console.log(error);
+		//	window.alert('Ha ocurrido un error, intente volver a cargar la página');
+		//});
 	}, []);
 
 	const handleEditClick = event => {

@@ -83,7 +83,6 @@ export function formatClinicDataRows(clinic){
 			objectId: clinic.get('sitio').get('area').id,
 			nombre: clinic.get('sitio').get('area').get('nombre'),
 			tableName: 'Area'
-		},
-		socios : ['']
+		}
 	};
 }

@@ -399,14 +399,6 @@ export async function updateReservation(dataReservation, guests, users) {
 }
 
 /**
- * @description get all clinics
- * @returns {ParseObject} An object containing the relation table
- */
-export async function getAllClinicsReservations(module) {
-return new Promise();
-}
-
-/**
  * @description return an Area query given a name
  * @returns {ParseObject} An object containing the relation table
  */
@@ -899,14 +891,14 @@ export async function createReservationClinic(reservationData) {
   const clinic = await clinicObj.save();
 
   // Create users entry
-  reservationData.socios.forEach(socio => {
+  reservationData.socios.forEach(async socioId => {
     // Get socio
     const socioQuery = new Parse.Query(USER_MODEL);
-    const socio = await socioQuery.get(socio);
+    const socioObj = await socioQuery.get(socioId);
     
     // Creata new ReservacionClinica entry
     const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
-    clinicReservationObj.set('user', socio);
+    clinicReservationObj.set('user', socioObj);
     clinicReservationObj.set('clinica', clinic);
     await clinicReservationObj.save();
   })

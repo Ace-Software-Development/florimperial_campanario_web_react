@@ -128,7 +128,7 @@ export default function App() {
 
         <Route path="/salones/clinicas">
           <ReservationsClinicas 
-            module="salones"
+            module="Salones"
             sitios={sitiosData.salones}
           />
         </Route>
