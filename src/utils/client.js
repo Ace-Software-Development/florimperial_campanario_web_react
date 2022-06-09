@@ -879,7 +879,6 @@ export async function getAllClinicsReservations(module) {
 
   const data = await clinicaQuery.find();
   return data;
-  //hacer query de ReservacionCLinica
 }
 
 export async function createReservationClinic(reservationData) {
@@ -914,5 +913,25 @@ export async function createReservationClinic(reservationData) {
 }
 
 export async function updateClinicsReservations(reservationData, users) {
+  try {
+    const sitioQuery = new Parse.Query(SITIO_MODEL);
+    const sitioObject = await sitioQuery.get(reservationData.sitio.objectId);
 
+    const clinicQuery = new Parse.Query(CLINICA_MODEL);
+    const clinicObject = await clinicQuery.get(reservationData.objectId);
+    clinicObject.set('nombre', reservationData.nombre);
+    clinicObject.set('fechaInicio', reservationData.fechaInicio);
+    clinicObject.set('fechaFin', reservationData.fechaFin);
+    clinicObject.set('horario', reservationData.horario);
+    clinicObject.set('maximoJugadores', reservationData.maximoJugadores);
+    clinicObject.set('dias', reservationData.dias);
+    clinicObject.set('sitio', sitioObject);
+
+    await clinicObject.save();
+
+    return true;
+  } catch (error) {
+    console.log(`Ha ocurrido un error ${error}`);
+    return false;
+  }
 }
