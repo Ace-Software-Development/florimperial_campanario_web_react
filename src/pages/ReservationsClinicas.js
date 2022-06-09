@@ -6,13 +6,15 @@ import EditReservationClinic from './EditReservationClinic';
 import { getAllClinicsReservations } from '../utils/client';
 import { formatClinicDataRows } from '../utils/formatData';
 import CirculoCarga from '../components/CirculoCarga';
+import Table from 'react-bootstrap/Table';
+import '../css/Clinics.css';
 
 export default function ReservationsClinicas(props) {
     const [loading, setLoading] = useState(true);
 	const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
 	const [clinicsData, setClinicsData] = useState([]);
-	const [selectedClinic, setSelectedClinic] = useState([]);
+	const [selectedClinic, setSelectedClinic] = useState(null);
 
 	useEffect(async () => {
 		getAllClinicsReservations(props.module)
@@ -34,7 +36,7 @@ export default function ReservationsClinicas(props) {
 
 	return (
 		<Screen title={props.screenTitle} screenPath={props.screenPath}>
-			<table>
+			<Table striped bordered hover>
 				<thead>
 					<tr>
 						<td>Nombre de la clínica</td>
@@ -68,14 +70,23 @@ export default function ReservationsClinicas(props) {
 					})
 					}
 				</tbody>
-			</table>
+			</Table>
 
 			{openEdit &&
-				<EditReservationClinic />
+				<EditReservationClinic 
+					onClose={setOpenEdit}
+					open={openEdit}
+					sitios={props.sitios}
+					clinicData={selectedClinic}
+				/>
 			}
 
 			{openCreate && 
-				<CreateReservationClinic />
+				<CreateReservationClinic 
+					onClose={setOpenCreate}
+					open={openCreate}
+					sitios={props.sitios}
+				/>
 			}
 		</Screen>
 	);

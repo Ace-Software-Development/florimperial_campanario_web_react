@@ -5,6 +5,8 @@ import { DialogContent, DialogActions } from '@mui/material';
 import { Button } from '@mui/material';
 import CirculoCarga from '../components/CirculoCarga';
 import InputSelector from '../components/InputSelector';
+import { getAllCoaches } from '../utils/client';
+import Datetime from 'react-datetime';
 
 
 export default function CreateReservationClinic(props) {
@@ -33,21 +35,131 @@ export default function CreateReservationClinic(props) {
                 'nombre': props.sitios[0].nombre,
                 'tableName': 'Sitio'
             };
-			setAppointment({...clinicData, sitio: sitioNewData});
+			setClinicData({...clinicData, sitio: sitioNewData});
 		}
 	}, [props.sitios]);
 
-	const handleClose = () => {}
+	const clinicOnChange = (key, value) => {
+		const updatedAppointment = {...clinicData, [key]: value};
+        setClinicData(updatedAppointment);
+	}
 
-	const onSubmit = () => {}
+	const onSubmit = () => {
+		// Validations
+        //await createGolfReservation(appointment);
+        return true;
+	}
 
 	if (!loading)
 		return (
-			<Dialog open={props.open} onClose={handleClose}>
+			<Dialog open={props.open} onClose={() => props.onClose(false)}>
 				<DialogTitle>Nueva clínica</DialogTitle>
 				<DialogContent>
 					<DialogActions>
-						<Button onClick={handleClose}>Cancelar</Button>
+
+						<table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>Fecha de inicio</p>
+                                    </td>
+                                    <td>
+                                        <Datetime
+                                            inputProps={{className:'input'}}
+                                            initialValue={clinicData.fechaInicio}
+                                            input={false}
+                                            onChange={date => clinicOnChange('reservacion', 'fechaInicio', new Date(date.toISOString()))} 
+                                        />
+                                    </td>
+                                </tr>
+
+								<tr>
+                                    <td>
+                                        <p>Fecha a terminar</p>
+                                    </td>
+                                    <td>
+                                        <Datetime
+                                            inputProps={{className:'input'}}
+                                            initialValue={clinicData.fechaInicio}
+                                            input={false}
+                                            onChange={date => clinicOnChange('reservacion', 'fechaInicio', new Date(date.toISOString()))} 
+                                        />
+                                    </td>
+                                </tr>
+
+                                {props.sitios && props.sitios.length > 1 &&
+                                    <tr>
+                                        <td>
+                                            <p>Sitio</p>
+                                        </td>
+                                        <td>
+                                            {props.sitios.map((sitio, index) => {
+                                                return(
+                                                    <div key={`${sitio.objectId}-sitio-div`}>
+                                                        <input
+                                                            key={`${sitio.objectId}-sitio-input`}
+                                                            type="radio"
+                                                            id={sitio.objectId}
+                                                            value={sitio.objectId}
+                                                            name="sitio"
+                                                            defaultChecked={index === 0}
+                                                            onChange={event => clinicOnChange('sitio', {nombre: sitio.nombre, objectId: event.target.value, tableName: 'Sitio'})}
+                                                        />
+                                                        <label htmlFor={sitio.objectId}>{sitio.nombre}</label>
+                                                    </div>
+                                                    );
+                                                })
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td>
+                                        <p>Máximo de asistentes</p>
+                                    </td>
+                                    <td>
+                                        <input
+                                            className='input'
+                                            type="number"
+                                            min="1"
+                                            value={clinicData.maximoJugadores}
+                                            onChange={event => {
+                                                if (event.target.value)
+                                                    return clinicOnChange('maximoJugadores', parseInt(event.target.value));
+                                            }} 
+                                        />
+                                    </td>
+                                </tr>
+                                
+                                {props.coachInput &&
+                                    <tr>
+                                        <td>
+                                            <p>Profesor responsable</p>
+                                        </td>
+                                        <td>
+                                            <InputSelector
+                                                getDisplayText={i => i.nombre}
+                                                getElementId={i => i.objectId}
+                                                placeholder='Nombre del coach'
+                                                defaultValue={clinicData.profesor}
+                                                onChange={coach => {clinicOnChange('profesor', coach)}}
+                                                getListData={async () => {
+                                                    const response = await getAllCoaches();
+                                                    const data = [];
+                                                    response.forEach(i => {
+                                                        data.push({objectId: i.id, nombre: i.get('nombre'), tableName: 'Profesor'});
+                                                    });
+                                                    return data;
+                                                }}
+                                            />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+						<Button onClick={() => props.onClose(false)}>Cancelar</Button>
 						<Button onClick={async () => {
 									if(disabledButton)
 										return;

@@ -25,17 +25,20 @@ export default function App() {
     const gymArea = await getAreaByName('Gimnasio');
     const raquetaArea = await getAreaByName('Raqueta');
     const poolArea = await getAreaByName('Alberca');
+    const salonArea = await getAreaByName('Salones');
 
     const golfSitios = await getSitiosByArea(golfArea.id);
     const gymSitios = await getSitiosByArea(gymArea.id);
     const raquetaSitios = await getSitiosByArea(raquetaArea.id);
     const poolSitios = await getSitiosByArea(poolArea.id);
+    const salonSitios = await getSitiosByArea(salonArea.id);
 
     setSitiosData({
       golf: golfSitios.map(i => formatSitioData(i)),
       gym: gymSitios.map(i => formatSitioData(i)),
       raqueta: raquetaSitios.map(i => formatSitioData(i)),
       pool: poolSitios.map(i => formatSitioData(i)),
+      salones: salonSitios.map(i => formatSitioData(i))
     });
   }, []);
 
@@ -124,7 +127,10 @@ export default function App() {
         </Route>
 
         <Route path="/salones/clinicas">
-          <ReservationsClinicas module="salones" />
+          <ReservationsClinicas 
+            module="salones"
+            sitios={sitiosData.salones}
+          />
         </Route>
 
         <Route path="/anuncios">
