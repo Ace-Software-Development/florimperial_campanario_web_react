@@ -42,7 +42,7 @@ export default function InputSelector(props) {
 	}, [selectedElement])
 	
 	return(
-		<div className="input-elements-container" onBlur={handleInputChange}>
+		<div className={"input-elements-container"} onBlur={handleInputChange}>
 			{/* Partners list */}
 				{displayText && focused ? (
 					<div className="suggested-elements-container">
@@ -59,7 +59,7 @@ export default function InputSelector(props) {
 					</div>
 						) : null}
 			<input 
-				className="input"
+				className={`input ${props.className}`}
 				type="text"
 				placeholder={props.placeholder}
 				value={displayText}

@@ -90,5 +90,11 @@ header.app-header h1 {
     margin-top: 125px !important;
  }
 
+ .input-selector-rutinas{
+   width: 100% !important;
+   border-radius: 0.25rem !important;
+   background-color: #fff !important;
+ }
+
 
 

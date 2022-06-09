@@ -11,6 +11,7 @@ import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
 import {useState, useEffect} from 'react';
 import { getAllActiveUsers, crearRutinasUsuario, getRoutines, getTrainings } from '../utils/client';
+import InputSelector from '../components/InputSelector';
 
 const TablaRutinas = () => {
     const [showAdd, setShowFalse] = useState(false);
@@ -100,7 +101,23 @@ const TablaRutinas = () => {
           <Container>
               <Row>
                     <Col xs={8}>
-                        <Form className="d-flex">
+                        <InputSelector
+                        className="input-selector-rutinas"
+                        getDisplayText={i => i.username}
+                        getElementId={i => i.objectId}
+                        placeholder='Nombre del socio'
+                        onChange={(text) => setUsername(text)}
+                        getListData={async () => {
+                            const response = await getAllActiveUsers();
+                            const data = [];
+                            response.forEach(i => {
+                                console.log(i);
+                                data.push({objectId: i.id, username: i.get('username'), tableName: 'User'});
+                            });
+                            return data;
+                        }}
+                        />
+                        {/* <Form className="d-flex">
                             <input 
                                 className="me-2"
                                 type="text"
@@ -109,8 +126,8 @@ const TablaRutinas = () => {
                                 onChange={(text) => setUsername(text.target.value)}
                             />
                             <Button variant="outline-success">Buscar</Button>
-                        </Form>
-                        <div>
+                        </Form> */}
+                        {/* <div>
                             {searchResults.filter(i => filterUsers(i)).map(item => {
                                 return(
                                     <div key={item.id} onClick={() => {setSelectedUser(item.id); setSelectedUserName(item.username)}}>
@@ -118,7 +135,7 @@ const TablaRutinas = () => {
                                     </div>
                                 )
                             })}
-                        </div>
+                        </div> */}
                     </Col>
                     <Col>
                         <Form>

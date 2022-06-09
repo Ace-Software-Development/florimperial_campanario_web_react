@@ -7,6 +7,7 @@ import CirculoCarga from '../components/CirculoCarga';
 import TablaRutinas from '../components/TablaRutinas';
 
 
+
 export default function Home() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
