@@ -24,13 +24,15 @@ export default function ReservationsClinicas(props) {
 			const formatedData = formatClinicDataRows(i);
 			parsedData.push(formatedData);
 		});
-		console.log(parsedData);
 		setClinicsData(parsedData);
 		setLoading(false);
 	}, []);
 
 	const handleEditClick = event => {
-		console.log(event.target.data);
+		let clinicObj = [];
+		clinicsData.forEach(clinic => {if(clinic.objectId === event.target.value) clinicObj = clinic});
+		setSelectedClinic(clinicObj);
+		setOpenEdit(true);
 	}
 
 	return (
@@ -66,7 +68,7 @@ export default function ReservationsClinicas(props) {
 								<td key={`${row.objectId}-td-6`}>{toDateString(row.fechaInicio)}</td>
 								<td key={`${row.objectId}-td-7`}>{toDateString(row.fechaFin)}</td>
 								<td key={`${row.objectId}-td-8`}>
-									<button key={`${row.objectId}-btn-edit`} onClick={event => handleEditClick(event)}>Editar</button>
+									<button key={`${row.objectId}-btn-edit`} value={row.objectId} onClick={event => handleEditClick(event)}>Editar</button>
 									<button key={`${row.objectId}-btn-dlt`}>Eliminar</button>
 								</td>
 							</tr>

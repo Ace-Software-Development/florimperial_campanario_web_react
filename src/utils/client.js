@@ -926,7 +926,7 @@ export async function updateClinicsReservations(reservationData, users) {
     clinicObject.set('fechaFin', reservationData.fechaFin);
     clinicObject.set('horario', reservationData.horario);
     clinicObject.set('maximoJugadores', reservationData.maximoJugadores);
-    clinicObject.set('dias', reservationData.dias);
+    // clinicObject.set('dias', reservationData.dias);
     clinicObject.set('sitio', sitioObject);
 
     await clinicObject.save();
@@ -938,7 +938,7 @@ export async function updateClinicsReservations(reservationData, users) {
     users.forEach(async user => {
       // Get socio
       const socioQuery = new Parse.Query(USER_MODEL);
-      const socioObj = await socioQuery.get(user);
+      const socioObj = await socioQuery.get(user.id);
       
       // Creata new ReservacionClinica entry
       const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
@@ -952,4 +952,18 @@ export async function updateClinicsReservations(reservationData, users) {
     console.log(`Ha ocurrido un error ${error}`);
     return false;
   }
+}
+
+export async function deleteClinic(clinicData, users) {
+  // Get sitio
+  const sitioQuery = new Parse.Query(SITIO_MODEL);
+  const sitioObject = await sitioQuery.get(clinicData.sitio.objectId);
+
+  // Update clinic data
+  const clinicQuery = new Parse.Query(CLINICA_MODEL);
+  const clinicObject = await clinicQuery.get(clinicData.objectId);
+  const clinic = await clinicQuery.find();
+
+  await deleteClinicReservations(clinicObject);
+  await Parse.Object.destroyAll(clinic);
 }
