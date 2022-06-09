@@ -19,12 +19,40 @@ const TablaRutinas = () => {
       <div>
         <div onClick={e => e.stopPropagation()}>
             <Modal size="lg" show={showAdd} onHide={handleCloseAdd}>
+            <Modal.Header closeButton>
+              <Modal.Title>Crear rutina</Modal.Title>
+            </Modal.Header>
             <Modal.Body>
-                Modal prueba
+                <Container>
+                    <Form>
+                    <Row>
+                        <Col xs={7}>
+                            <Form.Group className="mb-3">
+                            <Form.Label> <h6>Nombre</h6></Form.Label>
+                            <Form.Control  placeholder="Nombre del ejericio" /></Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group className="mb-3">
+                            <Form.Label> <h6>Repeticiones</h6></Form.Label>
+                            <Form.Control  placeholder="No. de Repeticiones" /></Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group className="mb-3">
+                            <Form.Label> <h6>Series</h6></Form.Label>
+                            <Form.Control  placeholder="No. de Series" /></Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                            <Form.Group className="mb-3">
+                            <Form.Label> <h6>Notas</h6></Form.Label>
+                            <Form.Control  placeholder="Notas adicionales" as="textarea" rows={3} /></Form.Group>
+                    </Row>
+                    </Form>
+                </Container>
             </Modal.Body>
             <Modal.Footer>
                 <Button className="btn-publicar" onClick={handleCloseAdd}>
-                Cerrar
+                Crear
                 </Button>
             </Modal.Footer>
             </Modal>
@@ -57,7 +85,7 @@ const TablaRutinas = () => {
                     </Col>
                     <Col>
                         <Button className= "btn-rutinas" onClick={handleShowAdd}>
-                            Agregar ejericio
+                            Crear rutina
                         </Button>
                     </Col>
                 </Row>
@@ -84,7 +112,7 @@ const TablaRutinas = () => {
                         <td>16</td>
                         <td>4</td>
                         <td>Nota ejemplo</td>
-                        <td> <Button className= "btn-rutinas">Modificar</Button></td>
+                        <td style={{textAlign:'center'}}> <Button className= "btn-rutinas-eliminar" >Eliminar</Button></td>
                         </tr>   
                     </tbody>
             </Table>
