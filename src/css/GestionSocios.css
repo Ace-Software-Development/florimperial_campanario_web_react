@@ -1,0 +1,22 @@
+.cargar-datos {
+  height: 250px;
+  margin-left: 485px;
+  background-color: #ebebeb;
+}
+
+.icon-plus {
+  color: #2b4066;
+  margin-top: 10px;
+  margin-left: 640px;
+  font-size: 40px;
+}
+
+.card-title {
+  margin-top: 45px;
+  font-size: 25px;
+}
+
+.btn-information {
+  border-color: transparent;
+  background-color: transparent;
+}

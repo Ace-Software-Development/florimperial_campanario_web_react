@@ -1,0 +1,76 @@
+.sidenav---sidenav---_2tBP {
+  background: #2b4066;
+  position: relative;
+}
+
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL {
+  position: relative;
+}
+
+.sidenav--overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  visibility: hidden;
+  opacity: 0;
+}
+.sidenav---expanded---1KdUL .sidenav--overlay {
+  visibility: visible;
+  opacity: 1;
+}
+header.app-header {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 0px;
+  text-align: lef t;
+  color: white;
+  position: relative;
+}
+header.app-header h1 {
+  color: #2b4066;
+  text-decoration: underline #519d78 5px;
+}
+
+.spacing {
+  margin: 10px;
+}
+.home-icons-container.card-img {
+  object-fit: cover;
+  border-radius: 5px;
+  height: 190px;
+  width: 300px;
+}
+
+.btn-submit-pases-socio{
+  background-color: #2B4066 !important;
+  color: #fff !important;
+}
+
+.btn-submit-pases-socio{
+  background-color: #2B4066 !important;
+  color: #fff !important;
+}
+.btn-submit-pases-socio:hover {
+  background-color: #56738B !important; 
+  color: #2B4066;
+}
+
+.home-card-img{
+
+  width: auto !important;
+  border-radius: 0px !important;
+ }
+ .home-card-overlay{
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.5));
+ }
+ .home-card-title {
+    margin-top: 125px !important;
+ }
+
+
+

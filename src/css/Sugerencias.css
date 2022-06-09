@@ -1,0 +1,35 @@
+.btn-eliminar-sugerencia{
+    border-color: transparent;
+    background-color: transparent;
+    color: #2b4066;
+    margin-left:330px;
+}
+.card-sugerencias{
+    background-color:#ebebeb;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+
+}    
+.card-footer{
+    margin-top: 10px;
+    background-color:rgba(0,0,0,0) !important;
+    border-top: 0px;
+}
+.card-text{
+    height: 100px;
+}
+
+.card-sugerencias-contenido{
+    overflow: hidden;
+    height: 100px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+/* .sugerencias-container{
+    display: flex; 
+    flex-direction: row;
+} */

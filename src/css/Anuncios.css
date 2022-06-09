@@ -1,0 +1,158 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+a.menu_links {
+  cursor: pointer;
+}
+
+header.app-header {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 100px;
+  text-align: left;
+  color: white;
+  font-family: "Lato", sans-serif;
+}
+
+.spacing {
+  margin: 10px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+main h1 {
+  margin-bottom: 20px;
+}
+
+.btn-campanario {
+  background-color: transparent;
+  border-color: transparent;
+  font-family: "Lato", sans-serif;
+  color: #fff;
+}
+
+.btn-campanario:active {
+  background-color: transparent;
+  font-family: "Lato", sans-serif;
+  color: #ebebeb;
+  border-color: transparent;
+}
+.btn-campanario:hover {
+  background-color: transparent;
+  border-color: transparent;
+  font-family: "Lato", sans-serif;
+  color: #ebebeb;
+}
+.btn-campanario:focus {
+  background-color: transparent;
+  border-color: transparent;
+  font-family: "Lato", sans-serif;
+  color: #ebebeb;
+}
+
+.btn-publicar {
+  background: #56738b;
+  font-family: "Lato", sans-serif;
+  color: #ebebeb;
+}
+
+.btn-publicar:active {
+  background: #ebebeb;
+  font-family: "Lato", sans-serif;
+  color: #56738b;
+}
+.btn-publicar:hover {
+  background: #ebebeb;
+  font-family: "Lato", sans-serif;
+  color: #56738b;
+}
+.btn-publicar:focus {
+  background: #ebebeb;
+  font-family: "Lato", sans-serif;
+  color: #56738b;
+}
+.react-confirm-alert {
+  font-family: "Lato", sans-serif;
+}
+
+.react-confirm-alert-button-group button:last-child {
+  background: #56738b;
+  font-family: "Lato", sans-serif;
+  color: #ebebeb;
+}
+
+.react-confirm-alert-button-group button:first-child {
+  background: #ebebeb;
+  font-family: "Lato", sans-serif;
+  color: #56738b;
+}
+
+.react-confirm-alert-button-group button:last-child:hover {
+  background: #ebebeb;
+  font-family: "Lato", sans-serif;
+  color: #56738b;
+}
+
+.react-confirm-alert-button-group button:hover {
+  background: #56738b;
+  font-family: "Lato", sans-serif;
+  color: #ebebeb;
+}
+
+.btn-trash {
+  font-family: "Lato", sans-serif;
+  color: #2b4066;
+}
+
+.card-container {
+  width: 300px;
+  height: 100px;
+  border-radius: 5px;
+  margin-bottom: 156px;
+  margin-top: 50px;
+}
+
+.card-anouncements {
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.card-imgs {
+  object-fit: cover;
+  border-radius: 5px;
+  height: 450px;
+  width: 300px;
+  background-color: #ebebeb;
+}
+.card-img {
+  object-fit: cover;
+  border-radius: 5px;
+  height: 190px;
+  width: 300px;
+}
+
+.card-title-anuncios {
+  margin-top: 135px;
+  font-size: 25px;
+}
+
+.icon-plus-anuncios {
+  margin-top: 15px;
+  margin-left: 130px;
+  font-size: 40px;
+}
+
+.card-title-anouncement {
+  color: #fff;
+}

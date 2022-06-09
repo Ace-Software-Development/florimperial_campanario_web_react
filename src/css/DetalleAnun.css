@@ -2,19 +2,8 @@
   padding: 0;
   margin: 0;
 }
-
-header.app-header {
-  background-color: #208aec;
-  display: flex;
-  flex-direction: column;
-  padding: 20px 100px;
-  justify-content: center;
-  color: white;
-  font-family: "Lato", sans-serif;
-}
-
-.spacing {
-  margin: 10px;
+a.menu_links {
+  cursor: pointer;
 }
 
 .logo {
@@ -27,12 +16,10 @@ main {
   align-items: center;
   flex-direction: column;
   margin-top: 20px;
-  font-family: "Lato", sans-serif;
 }
 
 main h1 {
   margin-bottom: 20px;
-  font-family: "Lato", sans-serif;
 }
 
 .posts-container {
@@ -91,4 +78,16 @@ button:focus {
 .post p {
   margin-left: 20px;
   margin-top: 10px;
+}
+
+ion-icon {
+  font-size: 2em;
+}
+
+.arrow-icon {
+  margin-left: -1em;
+}
+
+.img-anuncio {
+  width: 30em;
 }
