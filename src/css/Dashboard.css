@@ -60,6 +60,16 @@ header.app-header h1 {
   color: #2B4066;
 }
 
+.btn-rutinas{
+  background-color: #2B4066 !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+.btn-rutinas:hover{
+  background-color: #56738B !important; 
+  color: #2B4066;
+}
+
 .home-card-img{
 
   width: auto !important;
