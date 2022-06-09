@@ -56,7 +56,7 @@ export default function Screen(props) {
   return (
     <div style={{display: 'flex', flexDirection: 'row', height: '100vh'}}>
       <Sidebar permissions={permissions} screenPath={props.screenPath} />
-      <div style={{flexGrow: 1, padding: '2rem'}}>
+      <div style={{flexGrow: 1}}>
         {header}
         {props.children}
       </div>

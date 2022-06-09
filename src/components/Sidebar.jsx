@@ -36,6 +36,7 @@ export default function Sidebar(props) {
         render={({location, history}) => (
           <React.Fragment>
             <SideNav
+              className= "sidebar-nav"
               onSelect={selected => {
                 const to = '/' + selected;
                 if (location.pathname !== to) {

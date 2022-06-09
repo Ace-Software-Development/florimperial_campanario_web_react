@@ -1,36 +1,23 @@
 .sidenav---sidenav---_2tBP {
   background: #2b4066;
-  position: relative;
+  position: sticky;
 }
+
 
 .sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL {
-  position: relative;
+  position: fixed;
 }
 
-.sidenav--overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(2px);
-  visibility: hidden;
-  opacity: 0;
-}
-.sidenav---expanded---1KdUL .sidenav--overlay {
-  visibility: visible;
-  opacity: 1;
-}
 header.app-header {
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  padding: 0px 0px;
-  text-align: lef t;
+  padding: 1rem 3.5rem;
+  text-align: left;
   color: white;
   position: relative;
 }
+
 header.app-header h1 {
   color: #2b4066;
   text-decoration: underline #519d78 5px;

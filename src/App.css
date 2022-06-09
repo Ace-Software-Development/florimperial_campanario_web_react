@@ -3,7 +3,7 @@
   margin: 0;
 }
 
-header.app-header {
+/* header.app-header {
   background-color: #208aec;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@ header.app-header {
 
 .spacing {
   margin: 10px;
-}
+} */
 
 .logo {
   width: 400px;
