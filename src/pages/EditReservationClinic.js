@@ -233,8 +233,8 @@ export default function EditReservationClinic(props) {
 							return;
 						const status = await onSubmit();
 						if (status) {
-							// setDisabledButton(true);
-							// window.location.reload();
+							setDisabledButton(true);
+							window.location.reload();
 						}
 					}} type="submit">Actualizar</Button>
 				</DialogActions> 
