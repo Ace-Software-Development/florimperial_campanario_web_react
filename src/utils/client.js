@@ -1,4 +1,5 @@
 import Parse from 'parse';
+import ParseObject from 'parse/lib/browser/ParseObject';
 import ParseUser from 'parse/lib/browser/ParseUser';
 import {formatReservationData} from './formatData';
 
@@ -873,8 +874,30 @@ export async function getAllClinicsReservations(module) {
   return data;
 }
 
-export async function createReservationClinic(reservationData) {
-  console.log(reservationData);
+/**
+ * Retrieves all clinics from DB
+ * @param {string} clinicId 
+ * @returns {array} data
+ */
+export async function getReservacionClinica(clinicId) {
+  const clinicaQuery = new Parse.Query(CLINICA_MODEL);
+  clinicaQuery.equalTo('objectId', clinicId);
+  
+  const clinicReservation = new Parse.Query(RESERVACION_CLINICA_MODEL);
+  clinicReservation.matchesQuery('clinica', clinicaQuery);
+  clinicReservation.include('reservacion');
+  clinicReservation.include('user');
+
+  const data = await clinicReservation.find();
+  return data;
+}
+
+/**
+ * Creates new clinic in DB
+ * @param {array} reservationData 
+ * @param {array} users 
+ */
+export async function createReservationClinic(reservationData, users) {
   // Get sitio
   const sitioQuery = new Parse.Query(SITIO_MODEL);
   const sitioObject = await sitioQuery.get(reservationData.sitio.objectId);
@@ -892,19 +915,23 @@ export async function createReservationClinic(reservationData) {
   const clinic = await clinicObj.save();
 
   // Create users entry
-  //reservationData.socios.forEach(async socioId => {
-  //  // Get socio
-  //  const socioQuery = new Parse.Query(USER_MODEL);
-  //  const socioObj = await socioQuery.get(socioId);
+  users.forEach(async socioId => {
+   // Get socio
+   const socioQuery = new Parse.Query(USER_MODEL);
+   const socioObj = await socioQuery.get(socioId);
     
-  //  // Creata new ReservacionClinica entry
-  //  const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
-  //  clinicReservationObj.set('user', socioObj);
-  //  clinicReservationObj.set('clinica', clinic);
-  //  await clinicReservationObj.save();
-  //})
+   // Creata new ReservacionClinica entry
+   const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
+   clinicReservationObj.set('user', socioObj);
+   clinicReservationObj.set('clinica', clinic);
+   await clinicReservationObj.save();
+  })
 }
 
+/**
+ * deletes ReservacionClinica in DB
+ * @param {object} clinicObject 
+ */
 async function deleteClinicReservations(clinicObject) {
   const clinicReservationsQuery = new Parse.Query(RESERVACION_CLINICA_MODEL);
   clinicReservationsQuery.equalTo('clinica', clinicObject);
@@ -912,6 +939,12 @@ async function deleteClinicReservations(clinicObject) {
   await Parse.Object.destroyAll(response);
 }
 
+/**
+ * Updates clinic data
+ * @param {array} reservationData 
+ * @param {array} users 
+ * @returns 
+ */
 export async function updateClinicsReservations(reservationData, users) {
   try {
     // Get sitio
@@ -926,8 +959,8 @@ export async function updateClinicsReservations(reservationData, users) {
     clinicObject.set('fechaFin', reservationData.fechaFin);
     clinicObject.set('horario', reservationData.horario);
     clinicObject.set('maximoJugadores', reservationData.maximoJugadores);
-    // clinicObject.set('dias', reservationData.dias);
     clinicObject.set('sitio', sitioObject);
+    clinicObject.set('dias', reservationData.dias);
 
     await clinicObject.save();
 
@@ -954,7 +987,12 @@ export async function updateClinicsReservations(reservationData, users) {
   }
 }
 
-export async function deleteClinic(clinicData, users) {
+/**
+ * Deletes clinic in DB
+ * @param {array} clinicData 
+ * @param {*} users 
+ */
+export async function deleteClinic(clinicData) {
   // Get sitio
   const sitioQuery = new Parse.Query(SITIO_MODEL);
   const sitioObject = await sitioQuery.get(clinicData.sitio.objectId);

@@ -19,6 +19,8 @@ export default function ReservationsClinicas(props) {
 
 	useEffect(async () => {
 		const data = await getAllClinicsReservations(props.module);
+		console.log(data.id);
+		// const usersData = await getReservacionClinica(data.get())
 		const parsedData = [];
 		data.forEach(i => {
 			const formatedData = formatClinicDataRows(i);
@@ -34,6 +36,11 @@ export default function ReservationsClinicas(props) {
 		setSelectedClinic(clinicObj);
 		setOpenEdit(true);
 	}
+
+	// const handleDelete = async () => {
+	// 	await deleteClinic(clinic, users);
+	// 	return true;
+	// }
 
 	return (
 		<Screen title={props.screenTitle} screenPath={props.screenPath}>
@@ -69,7 +76,6 @@ export default function ReservationsClinicas(props) {
 								<td key={`${row.objectId}-td-7`}>{toDateString(row.fechaFin)}</td>
 								<td key={`${row.objectId}-td-8`}>
 									<button key={`${row.objectId}-btn-edit`} value={row.objectId} onClick={event => handleEditClick(event)}>Editar</button>
-									<button key={`${row.objectId}-btn-dlt`}>Eliminar</button>
 								</td>
 							</tr>
 						)

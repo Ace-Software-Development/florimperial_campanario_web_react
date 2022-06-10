@@ -11,6 +11,7 @@ import { getAllCoaches, createReservationClinic } from '../utils/client';
 export default function CreateReservationClinic(props) {
 	const [loading, setLoading] = useState(true);
 	const [disabledButton, setDisabledButton] = useState(false);
+    const [users, setUsers] = useState([]);
 	const [clinicData, setClinicData] = useState({
 		nombre: '',
 		maximoJugadores: 5,
@@ -62,7 +63,7 @@ export default function CreateReservationClinic(props) {
             diasObj[dia] = true;
         })
         clinicData.dias = diasObj;
-        await createReservationClinic(clinicData);
+        await createReservationClinic(clinicData, users);
         return true;
 	}
 
@@ -244,6 +245,7 @@ export default function CreateReservationClinic(props) {
                                     </td>
                                 </tr>
                             }
+
                         </tbody>
                     </table>
 

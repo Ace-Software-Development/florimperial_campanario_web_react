@@ -2,10 +2,10 @@
 import React, { useEffect, useState, createRef } from 'react';
 import CreateReservationClinic from './CreateReservationClinic';
 import Screen from "../components/Screen";
-import { getAllClinicsReservations, deleteClinic, updateClinicsReservations } from '../utils/client';
+import { getAllClinicsReservations, deleteClinic, updateClinicsReservations, getReservacionClinica } from '../utils/client';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import MultipleUsers from '../components/MultipleUsers';
+import ClinicUsers from '../components/ClinicUsers';
 import Datetime from 'react-datetime';
 import { DialogContent, DialogActions } from '@mui/material';
 import { formatClinicDataRows } from '../utils/formatData';
@@ -14,32 +14,50 @@ import Table from 'react-bootstrap/Table';
 import { Button } from '@mui/material';
 import '../css/Clinics.css';
 
+
 export default function EditReservationClinic(props) {
 	const [clinic, setClinic] = useState(props.clinicData); 
 	const [users, setUsers] = useState([]);
 	const [disabledButton, setDisabledButton] = useState(false);
 	const [deleteDisabledButton, setDeleteDisabledButton] = useState(false);
 
+    useEffect(async () => {
+        getReservacionClinica(props.clinicData.objectId).then(response => {
+            let data = [];
+            response.forEach(i => {
+                const usersData = {id: i.get('user').id, username: i.get('user').get('username')}
+                data.push(usersData);
+            });
+            setUsers(data);
+        });
+    }, []);
+
 	const handleClose = () => {
 		props.onClose(false);
 	}
 
 	const clinicOnChange = (key, data) => {
-		const updatedClinic = {...clinic, [key]: data};
+        if (key === 'dias') {
+            data = clinic.dias.includes(data) ? clinic.dias.filter(x => x!==data) : [...clinic.dias, data];
+        }
+        const updatedClinic = {...clinic, [key]: data};
 		setClinic(updatedClinic);
 	}
 
 	const handleDelete = async () => {
-		await deleteClinic(clinic, users);
+		await deleteClinic(clinic);
 		return true;
 	}
 
 	const onSubmit = async () => {
-        console.log(users);
+        // Change dias array to object
+        const diasObj = {LUNES:false, MARTES:false, MIERCOLES:false, JUEVES:false, VIERNES:false, SABADO:false}
+        clinic.dias.forEach(dia => {
+            diasObj[dia] = true;
+        })
+        clinic.dias = diasObj;
         await updateClinicsReservations(clinic, users);
 	}
-
-    // useEffect(() => {console.log(clinic.fechaInicio)}, [])
 
 	return (
 		<Dialog open={props.open} onClose={handleClose} fullWidth={true} maxWidth="md">
@@ -87,38 +105,89 @@ export default function EditReservationClinic(props) {
                                             onChange={time => clinicOnChange('horario', time.target.value)} />
 									</td>
 								</tr>
+                                
+                                {props.sitios.lenght > 1 &&
+                                    <tr>
+                                        <td>
+                                            <p>Sitio de salida</p>
+                                        </td>
+                                        <td>
+                                            {props.sitios.map(sitio => {
+                                                return(
+                                                    <div key={`${sitio.objectId}-sitio-div`}>
+                                                        <input
+                                                            key={`${sitio.objectId}-sitio-input`}
+                                                            type="radio"
+                                                            id={sitio.objectId}
+                                                            value={sitio.objectId}
+                                                            name="sitio"
+                                                            defaultChecked={clinic.sitio.objectId === sitio.objectId}
+                                                            onChange={event => clinicOnChange('sitio', {nombre: sitio.nombre, objectId: event.target.value, tableName: 'Sitio'})}
+                                                        />
+                                                        <label htmlFor={sitio.objectId}>{sitio.nombre}</label>
+                                                    </div>
+                                                    );
+                                                })
+                                            }
+                                        </td>
+                                    </tr>
+                                }
 
-								{props.sitios && props.sitios.length > 1 &&
-									<tr>
-										<td>
-											<p>Sitio de salida</p>
-										</td>
-										<td>
-											{props.sitios.map(sitio => {
-												return(
-													<div key={`${sitio.objectId}-sitio-div`}>
-														<input
-															key={`${sitio.objectId}-sitio-input`}
-															type="radio"
-															id={sitio.objectId}
-															value={sitio.objectId}
-															name="sitio"
-															// defaultChecked={appointment.sitio.objectId === sitio.objectId}
-															// onChange={event => appointmentOnChange('sitio', {
-															// 	nombre: sitio.nombre, 
-															// 	objectId: event.target.value, 
-															// 	variasReservaciones: sitio.variasReservaciones,
-															// 	tableName: 'Sitio',
-															// })}
-														/>
-														<label htmlFor={sitio.objectId}>{sitio.nombre}</label>
-													</div>
-													);
-												})
-											}
-										</td>
-									</tr>
-								}
+                                <tr>
+                                <td>
+                                    <p>Días a la semana</p>
+                                </td>
+                                <td>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            value="LUNES"
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Lunes
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="MARTES"
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Martes
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="MIERCOLES"
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Miércoles
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="JUEVES"
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Jueves
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="VIERNES"
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Viernes
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="SABADO"
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Sábado
+                                    </label>
+                                </td>
+                            </tr>
 
 								<tr>
 									<td>
@@ -143,7 +212,7 @@ export default function EditReservationClinic(props) {
 						
 						{/* Same logic for multiple users reservations as for guests */}
                         <div>
-                        <MultipleUsers 
+                        <ClinicUsers 
                             maxUsers={clinic.maximoJugadores} 
                             users={users} 
                             setUsers={setUsers} 
