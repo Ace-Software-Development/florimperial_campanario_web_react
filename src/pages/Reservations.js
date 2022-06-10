@@ -54,6 +54,7 @@ export default function Reservations(props) {
           return (
               
             <Screen title={props.screenTitle} screenPath={props.screenPath} >
+                <div className="reservations-padding">
                 <FullCalendar
                     locale={esLocale}
                     dateClick={addAppointmentSlot}
@@ -100,6 +101,7 @@ export default function Reservations(props) {
                         sitios={props.sitios}
                     />
                 }
+                </div>
             </Screen>
         );
     }

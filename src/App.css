@@ -3,19 +3,10 @@
   margin: 0;
 }
 
-/* header.app-header {
-  background-color: #208aec;
-  display: flex;
-  flex-direction: column;
-  padding: 20px 100px;
-  justify-content: center;
-  color: white;
-  font-family: "Lato", sans-serif;
+.App{
+  padding-left: 3rem;
 }
 
-.spacing {
-  margin: 10px;
-} */
 
 .logo {
   width: 400px;

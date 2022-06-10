@@ -3,6 +3,7 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import '../css/Dashboard.css';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import React from 'react';
+import {useState} from 'react';
 
 export default function Sidebar(props) {
   let anuncios,
@@ -136,7 +137,7 @@ export default function Sidebar(props) {
 
                 <NavItem eventKey="gym" style={{display: `${salones_gym}`}}>
                   <NavIcon>
-                    <ion-icon name="barbell"></ion-icon>
+                    <ion-icon name="barbell" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Gimnasio</NavText>
                   <NavItem eventKey="gym/reservaciones">
