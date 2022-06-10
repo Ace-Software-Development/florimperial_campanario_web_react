@@ -70,7 +70,7 @@ export default function ReservationsClinicas(props) {
 								<td key={`${row.objectId}-td-1`}>{row.nombre}</td>
 								<td key={`${row.objectId}-td-2`}>{row.maximoJugadores}</td>
 								<td key={`${row.objectId}-td-4`}>{row.horario}</td>
-								<td key={`${row.objectId}-td-5`}>{row.dias}</td>
+								<td key={`${row.objectId}-td-5`}>{Object.keys(row.dias).map(x => row.dias [x] ? x.slice(0, 2)+' ' : '')}</td>
 								<td key={`${row.objectId}-td-6`}>{toDateString(row.fechaInicio)}</td>
 								<td key={`${row.objectId}-td-7`}>{toDateString(row.fechaFin)}</td>
 								<td key={`${row.objectId}-td-8`}>

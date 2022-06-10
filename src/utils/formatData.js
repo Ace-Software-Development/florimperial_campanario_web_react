@@ -73,7 +73,7 @@ export function formatClinicDataRows(clinic){
 		horario: clinic.get('horario'),
 		fechaInicio: clinic.get('fechaInicio'),
 		fechaFin: clinic.get('fechaFin'),
-		dias: clinic.get('dias') ? Object.keys(clinic.get('dias')).map(x => clinic.get('dias')[x] ? x.slice(0, 2)+' ' : '') : [],
+		dias: clinic.get('dias'),
 		sitio: {
 			objectId: clinic.get('sitio').id,
 			nombre: clinic.get('sitio').get('nombre'),
