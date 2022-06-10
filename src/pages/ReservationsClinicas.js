@@ -83,8 +83,8 @@ export default function ReservationsClinicas(props) {
 					}
 				</tbody>
 			</Table>
-
-			{openEdit &&
+			
+			{openEdit && props.sitios &&
 				<EditReservationClinic 
 					onClose={setOpenEdit}
 					open={openEdit}
