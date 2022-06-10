@@ -71,6 +71,16 @@ export default function App() {
           />
         </Route>
 
+        <Route path="/golf/clinicas">
+          <ReservationsClinicas 
+            screenTitle="Clases de golf"
+            screenPath="golf/clases"
+            module="Golf"
+            sitios={sitiosData.golf}
+
+          />
+        </Route>
+
         <Route path="/golf/reglamento">
           <RegulationsPage module={'Golf'} />
         </Route>
@@ -85,6 +95,16 @@ export default function App() {
             sitios={sitiosData.gym}
             coachInput={true}
             guestsInput={false}
+          />
+        </Route>
+
+        <Route path="/gym/clinicas">
+          <ReservationsClinicas 
+            screenTitle="Clases de gimnasio"
+            screenPath="gym/clases"
+            module="Gimnasio"
+            sitios={sitiosData.gym}
+
           />
         </Route>
 
@@ -105,6 +125,16 @@ export default function App() {
           />
         </Route>
 
+        <Route path="/raqueta/clinicas">
+          <ReservationsClinicas 
+            screenTitle="Clases de raqueta"
+            screenPath="raqueta/clases"
+            module="Raqueta"
+            sitios={sitiosData.raqueta}
+
+          />
+        </Route>
+
         <Route path="/raqueta/reglamento">
           <RegulationsPage module={'Raqueta'} />
         </Route>
@@ -119,6 +149,16 @@ export default function App() {
             sitios={sitiosData.pool}
             coachInput={true}
             guestsInput={false}
+          />
+        </Route>
+
+        <Route path="/alberca/clinicas">
+          <ReservationsClinicas 
+            screenTitle="Clases de golf"
+            screenPath="alberca/clases"
+            module="Alberca"
+            sitios={sitiosData.pool}
+
           />
         </Route>
 

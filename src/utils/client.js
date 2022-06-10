@@ -961,7 +961,7 @@ export async function updateClinicsReservations(reservationData, users) {
     clinicObject.set('maximoJugadores', reservationData.maximoJugadores);
     clinicObject.set('sitio', sitioObject);
     clinicObject.set('dias', reservationData.dias);
-
+    
     await clinicObject.save();
 
     // Delete al clinic reservations

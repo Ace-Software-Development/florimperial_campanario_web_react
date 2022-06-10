@@ -19,7 +19,6 @@ export default function ReservationsClinicas(props) {
 
 	useEffect(async () => {
 		const data = await getAllClinicsReservations(props.module);
-		console.log(data.id);
 		// const usersData = await getReservacionClinica(data.get())
 		const parsedData = [];
 		data.forEach(i => {

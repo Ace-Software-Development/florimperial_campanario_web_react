@@ -103,6 +103,9 @@ export default function Sidebar(props) {
                   <NavItem eventKey="golf/salidas">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
+                  <NavItem eventKey="golf/clinicas">
+                    <NavText>Clínicas</NavText>
+                  </NavItem>
                   <NavItem eventKey="golf/reglamento">
                     <NavText>Reglamento</NavText>
                   </NavItem>
@@ -118,6 +121,9 @@ export default function Sidebar(props) {
                   </NavItem>
                   <NavItem eventKey="raqueta/canchas">
                     <NavText>Canchas</NavText>
+                  </NavItem>
+                  <NavItem eventKey="raqueta/clinicas">
+                    <NavText>Clínicas</NavText>
                   </NavItem>
                   <NavItem eventKey="raqueta/reglamento">
                     <NavText>Reglamento</NavText>
@@ -135,6 +141,9 @@ export default function Sidebar(props) {
                   <NavItem eventKey="gym/rutinas">
                     <NavText>Rutinas</NavText>
                   </NavItem>
+                  <NavItem eventKey="gym/clinicas">
+                    <NavText>Clínicas</NavText>
+                  </NavItem>
                   <NavItem eventKey="gym/reglamento">
                     <NavText>Reglamento</NavText>
                   </NavItem>
@@ -147,6 +156,9 @@ export default function Sidebar(props) {
                   <NavText>Alberca</NavText>
                   <NavItem eventKey="alberca/reservaciones">
                     <NavText>Reservaciones</NavText>
+                  </NavItem>
+                  <NavItem eventKey="alberca/clinicas">
+                    <NavText>Clínicas</NavText>
                   </NavItem>
                   <NavItem eventKey="alberca/reglamento">
                     <NavText>Reglamento</NavText>
