@@ -985,3 +985,31 @@ export async function getTrainings(rutinaId){
 	let data = await trainingsQuery.find();
 	return data;
 }
+
+export async function saveExcercise(routineId, name, repetitions, series, notes) {
+  const Rutina = Parse.Object.extend(RUTINA_MODEL);
+  const routine = new Rutina();
+  routine.set("objectId", routineId);
+
+  const Ejercicio = Parse.Object.extend(EJERCICIO_MODEL);
+  const newExcercise = new Ejercicio();
+
+  newExcercise.set("rutina", routine);
+  newExcercise.set("nombre", name);
+  if (repetitions) {
+      newExcercise.set("repeticiones", repetitions);
+  }
+  if (series) {
+      newExcercise.set("series", series);
+  }
+  if (notes) {
+      newExcercise.set("notas", notes);
+  }
+
+  return newExcercise.save();
+  // newExcercise.save().then(function() {
+  //   getTrainings(selectedRoutine).then(data => setTrainings(data));
+  // }, function(error) {
+  //     alert(`Hubo un error en la creación del ejercicio.`);
+  // });
+}
