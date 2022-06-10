@@ -55,6 +55,7 @@ export default function EditReservationClinic(props) {
         })
         clinic.dias = diasObj;
         await updateClinicsReservations(clinic, users);
+        return true;
 	}
 
 	return (
