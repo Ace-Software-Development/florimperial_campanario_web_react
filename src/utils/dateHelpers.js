@@ -15,3 +15,7 @@ export function toISOString(date){
 export function toDateString(date) {
     return date.toLocaleDateString('es-MX');
 }
+
+export function toYYMMDD(date) {
+    return date.toISOString().split('T')[0];
+}
