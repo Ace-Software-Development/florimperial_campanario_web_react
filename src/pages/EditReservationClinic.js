@@ -17,8 +17,6 @@ export default function EditReservationClinic(props) {
 	const [disabledButton, setDisabledButton] = useState(false);
 	const [deleteDisabledButton, setDeleteDisabledButton] = useState(false);
 
-    console.log(clinic)
-
     useEffect(async () => {
         getReservacionClinica(props.clinicData.objectId).then(response => {
             let data = [];
@@ -100,7 +98,7 @@ export default function EditReservationClinic(props) {
                                 </td>
                             </tr>
                             
-                            {props.sitios.lenght > 1 &&
+                            {props.sitios.length > 1 &&
                                 <tr>
                                     <td>
                                         <p>Sitio de salida</p>
@@ -228,8 +226,8 @@ export default function EditReservationClinic(props) {
 							return;
 						const status = await onSubmit();
 						if (status) {
-							// setDisabledButton(true);
-							// window.location.reload();
+							setDisabledButton(true);
+							window.location.reload();
 						}
 					}} type="submit">Actualizar</Button>
 				</DialogActions> 
