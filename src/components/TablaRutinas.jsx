@@ -9,19 +9,18 @@ import FormControl from 'react-bootstrap/FormControl';
 import FormSelect from 'react-bootstrap/FormSelect';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
+import Parse from 'parse';
 import {useState, useEffect} from 'react';
-import { getAllActiveUsers, crearRutinasUsuario, getRoutines, getTrainings } from '../utils/client';
 import InputSelector from '../components/InputSelector';
+import { getAllActiveUsers, crearRutinasUsuario, getRoutines, getTrainings, saveExcercise, deleteExcersize } from '../utils/client';
 
 const TablaRutinas = () => {
     const [showAdd, setShowFalse] = useState(false);
-    const [user, setUsername] = useState("");
     const [selectedUser, setSelectedUser] = useState(null);
-    const [selectedUserName, setSelectedUserName] = useState("Buscar Socio");
     const [searchResults, setSearchResults] = useState([]);
     const [routines, setRoutines] = useState([]);
     const [selectedRoutine, setSelectedRotuine] = useState(null);
-    const [trainings, setTrainings] = useState([])
+    const [trainings, setTrainings] = useState([]);
     const handleCloseAdd = () => setShowFalse(false);
     const handleShowAdd = () => setShowFalse(true);
 
@@ -38,80 +37,98 @@ const TablaRutinas = () => {
 
     useEffect(() =>{
         if(selectedUser !== null){
-            crearRutinasUsuario(selectedUser.objectId);
-
-            getRoutines(selectedUser.objectId)
-            .then(data => setRoutines(data));
+            crearRutinasUsuario(selectedUser.objectId).then(function() {
+                getRoutines(selectedUser.objectId)
+                .then(data => setRoutines(data));
+            })
         }
         setSelectedRotuine(null);   
     }, [selectedUser])
 
     useEffect(() =>{
-        console.log(selectedRoutine)
         getTrainings(selectedRoutine)
         .then(data => setTrainings(data));
     }, [selectedRoutine])
+    
+    const createExcercise = async event => {
+        event.preventDefault();
+        event.stopPropagation();
 
-    const userRoutines = () => {
-        if(selectedUser !== null){
-            getRoutines(selectedUser.objectId)
-            .then(data => setRoutines(data));
-        } 
-    }
+        const newExcerciseForm = event.currentTarget;
+        const name = newExcerciseForm.newExcerciseName.value;
+        const repetitions = Number(newExcerciseForm.newExcerciseRepetitions.value);
+        const series = Number(newExcerciseForm.newExcerciseSeries.value);
+        const notes = newExcerciseForm.newExcerciseNotes.value;
 
-    const filterUsers = (i) => {
-        if(user === ""){
-            return false;
-        }else{
-            return i.username.toLowerCase().includes(user.toLowerCase());
+        try {
+            saveExcercise(selectedRoutine, name, repetitions, series, notes).then(function() {
+                alert(`Se ha guardado el ejercico correctamente.`);
+                getTrainings(selectedRoutine).then(data => {
+                    setTrainings(data);
+                    handleCloseAdd();
+                });
+            });
+        } catch (error) {
+            alert(`Ha ocurrido un error.`);
+            handleCloseAdd();
         }    
     }
 
+    const deleteTraining = (excersizeId) => {
+        deleteExcersize(excersizeId).then(function() {
+            getTrainings(selectedRoutine)
+            .then(data => setTrainings(data));
+        });
+    }
+
   return (
-      <div>
-        <div onClick={e => e.stopPropagation()}>
-            <Modal size="lg" show={showAdd} onHide={handleCloseAdd}>
+    <div>
+    <div onClick={e => e.stopPropagation()}>
+        <Modal size="lg" show={showAdd} onHide={handleCloseAdd}>
             <Modal.Header closeButton>
-              <Modal.Title>Crear rutina</Modal.Title>
+                <Modal.Title>Crear rutina</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Container>
-                    <Form>
-                    <Row>
-                        <Col xs={7}>
+                    <Form id="formCreateExcercise" onSubmit={createExcercise}>
+                        <Row>
+                            <Col xs={7}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label> <h6>Nombre</h6></Form.Label>
+                                    <Form.Control id="newExcerciseName" placeholder="Nombre del ejericio" type="text" maxLength={32} required/>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className="mb-3">
+                                    <Form.Label> <h6>Repeticiones</h6></Form.Label>
+                                    <Form.Control id="newExcerciseRepetitions" placeholder="No. de Repeticiones" type="number" min="0" max="500"/>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className="mb-3">
+                                    <Form.Label> <h6>Series</h6></Form.Label>
+                                    <Form.Control id="newExcerciseSeries" placeholder="No. de Series" type="number" min="0" max="500"/>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
                             <Form.Group className="mb-3">
-                            <Form.Label> <h6>Nombre</h6></Form.Label>
-                            <Form.Control  placeholder="Nombre del ejericio" required/></Form.Group>
-                        </Col>
-                        <Col>
-                            <Form.Group className="mb-3">
-                            <Form.Label> <h6>Repeticiones</h6></Form.Label>
-                            <Form.Control  placeholder="No. de Repeticiones" required/></Form.Group>
-                        </Col>
-                        <Col>
-                            <Form.Group className="mb-3">
-                            <Form.Label> <h6>Series</h6></Form.Label>
-                            <Form.Control  placeholder="No. de Series" required/></Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                            <Form.Group className="mb-3">
-                            <Form.Label> <h6>Notas</h6></Form.Label>
-                            <Form.Control  placeholder="Notas adicionales" as="textarea" rows={3} /></Form.Group>
-                    </Row>
+                                <Form.Label> <h6>Notas</h6></Form.Label>
+                                <Form.Control id="newExcerciseNotes" placeholder="Notas adicionales" type="text" maxLength={512} as="textarea" rows={3} />
+                            </Form.Group>
+                        </Row>
                     </Form>
                 </Container>
             </Modal.Body>
-            <Modal.Footer>
-                <Button className="btn-publicar" onClick={handleCloseAdd}>
-                Crear
-                </Button>
-            </Modal.Footer>
-            </Modal>
-        </div>
-          <Container>
+                <Modal.Footer>
+                    <Button className="btn-publicar" onClick={handleCloseAdd}>Cancelar</Button>
+                    <Button type="submit" className="btn-publicar" form="formCreateExcercise">Crear</Button>
+                </Modal.Footer>
+                </Modal>
+                </div>
+            <Container>
               <Row>
-                    <Col xs={6}>
+                    <Col xs={8}>
                         <InputSelector
                         className="input-selector-rutinas"
                         getDisplayText={i => i.username}
@@ -127,28 +144,6 @@ const TablaRutinas = () => {
                             return data;
                         }}
                         />
-                        {/* <Form className="d-flex">
-                            <input 
-                                className="me-2"
-                                type="text"
-                                placeholder={selectedUserName}
-                                value={user}
-                                onChange={(text) => setUsername(text.target.value)}
-                            />
-                            <Button variant="outline-success">Buscar</Button>
-                        </Form> */}
-                        {/* <div>
-                            {searchResults.filter(i => filterUsers(i)).map(item => {
-                                return(
-                                    <div key={item.id} onClick={() => {setSelectedUser(item.id); setSelectedUserName(item.username)}}>
-                                    <p>{item.username}</p>
-                                    </div>
-                                )
-                            })}
-                        </div> */}
-                    </Col>
-                    <Col>
-                        <Button variant="outline-success" onClick={() => userRoutines()}>Buscar</Button>
                     </Col>
                     <Col>
                         <Form>
@@ -199,12 +194,12 @@ const TablaRutinas = () => {
                         {trainings.map((item, index) => {
                             return(
                                 <tr key={item.id}>
-                                <td>{index}</td>
+                                <td>{index+1}</td>
                                 <td>{item.get('nombre')}</td>
                                 <td>{item.get('repeticiones')}</td>
                                 <td>{item.get('series')}</td>
                                 <td>{item.get('notas')}</td>
-                                <td style={{textAlign:'center'}}> <Button className= "btn-rutinas-eliminar" >Eliminar</Button></td>
+                                <td style={{textAlign:'center'}}> <Button className= "btn-rutinas-eliminar" onClick={() => deleteTraining(item.id)}>Eliminar</Button></td>
                                 </tr>  
                             )
                         })}  
