@@ -37,16 +37,27 @@ const TablaRutinas = () => {
     }, [])
 
     useEffect(() =>{
-        crearRutinasUsuario(selectedUser);
+        if(selectedUser !== null){
+            crearRutinasUsuario(selectedUser.objectId);
 
-        getRoutines(selectedUser)
-        .then(data => setRoutines(data));
+            getRoutines(selectedUser.objectId)
+            .then(data => setRoutines(data));
+        }
+        setSelectedRotuine(null);   
     }, [selectedUser])
 
     useEffect(() =>{
+        console.log(selectedRoutine)
         getTrainings(selectedRoutine)
         .then(data => setTrainings(data));
     }, [selectedRoutine])
+
+    const userRoutines = () => {
+        if(selectedUser !== null){
+            getRoutines(selectedUser.objectId)
+            .then(data => setRoutines(data));
+        } 
+    }
 
     const filterUsers = (i) => {
         if(user === ""){
@@ -100,18 +111,17 @@ const TablaRutinas = () => {
         </div>
           <Container>
               <Row>
-                    <Col xs={8}>
+                    <Col xs={6}>
                         <InputSelector
                         className="input-selector-rutinas"
                         getDisplayText={i => i.username}
                         getElementId={i => i.objectId}
                         placeholder='Nombre del socio'
-                        onChange={(text) => setUsername(text)}
+                        onChange={(text) => setSelectedUser(text)}
                         getListData={async () => {
                             const response = await getAllActiveUsers();
                             const data = [];
                             response.forEach(i => {
-                                console.log(i);
                                 data.push({objectId: i.id, username: i.get('username'), tableName: 'User'});
                             });
                             return data;
@@ -138,9 +148,12 @@ const TablaRutinas = () => {
                         </div> */}
                     </Col>
                     <Col>
+                        <Button variant="outline-success" onClick={() => userRoutines()}>Buscar</Button>
+                    </Col>
+                    <Col>
                         <Form>
                             <FormSelect id="roleSelection" onChange={event => setSelectedRotuine(event.target.value)}>
-                                <option value="none" selected disabled hidden>Seleccione un dia</option>
+                                <option value="null" selected>Seleccione un dia</option>
                             {routines.map(item => {
                                 return(
                                     <option key={item.id} value={item.id}>{item.get('titulo')}</option>
@@ -152,9 +165,13 @@ const TablaRutinas = () => {
                         </Form>
                     </Col>
                     <Col>
+                    {selectedRoutine !== null && selectedRoutine !== "null" ?
                         <Button className= "btn-rutinas" onClick={handleShowAdd}>
                             Agregar ejercicio
                         </Button>
+                    :
+                        null
+                    } 
                     </Col>
                 </Row>
             </Container>
@@ -174,6 +191,11 @@ const TablaRutinas = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {trainings.length === 0 ?
+                            <tr>No hay ejercicios disponibles favor de agregar nuevos.</tr>
+                            :
+                            null
+                        }
                         {trainings.map((item, index) => {
                             return(
                                 <tr key={item.id}>
