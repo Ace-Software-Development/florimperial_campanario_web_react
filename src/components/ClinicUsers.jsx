@@ -8,8 +8,6 @@ export default function ClinicUsers(props) {
 	const [guest, setGuest] = useState("");
     const [partnersList, setPartnersList] = useState([]);
     const maxGuests = props.maxUsers;
-    const reservationId = props.reservationId;
-	var pressed = 0;
 
     /* Get all Users from DB */
     useEffect(() => {

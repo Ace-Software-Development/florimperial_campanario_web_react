@@ -12,12 +12,10 @@ import '../css/Clinics.css';
 
 
 export default function EditReservationClinic(props) {
-	const [clinic, setClinic] = useState(props.clinicData); 
+	const [clinic, setClinic] = useState({...props.clinicData, dias: Object.keys(props.clinicData.dias).filter(key => props.clinicData.dias[key])}); 
 	const [users, setUsers] = useState([]);
 	const [disabledButton, setDisabledButton] = useState(false);
 	const [deleteDisabledButton, setDeleteDisabledButton] = useState(false);
-
-    console.log(clinic)
 
     useEffect(async () => {
         getReservacionClinica(props.clinicData.objectId).then(response => {
@@ -35,6 +33,7 @@ export default function EditReservationClinic(props) {
 	}
 
 	const clinicOnChange = (key, data) => {
+        console.log(clinic.dias)
         if (key === 'dias') {
             data = clinic.dias.includes(data) ? clinic.dias.filter(x => x!==data) : [...clinic.dias, data];
         }
@@ -48,7 +47,6 @@ export default function EditReservationClinic(props) {
 	}
 
 	const onSubmit = async () => {
-        // Change dias array to object
         const diasObj = {LUNES:false, MARTES:false, MIERCOLES:false, JUEVES:false, VIERNES:false, SABADO:false}
         clinic.dias.forEach(dia => {
             diasObj[dia] = true;
@@ -100,7 +98,7 @@ export default function EditReservationClinic(props) {
                                 </td>
                             </tr>
                             
-                            {props.sitios.lenght > 1 &&
+                            {props.sitios.length > 1 &&
                                 <tr>
                                     <td>
                                         <p>Sitio de salida</p>
@@ -128,60 +126,67 @@ export default function EditReservationClinic(props) {
                             }
 
                             <tr>
-                            <td>
-                                <p>Días a la semana</p>
-                            </td>
-                            <td>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        value="LUNES"
-                                        onChange={e => clinicOnChange('dias', e.target.value)} 
-                                    />
-                                    Lunes
-                                </label>
-                                <label>
-                                    <input 
-                                        type="checkbox"
-                                        value="MARTES"
-                                        onChange={e => clinicOnChange('dias', e.target.value)} 
-                                    />
-                                    Martes
-                                </label>
-                                <label>
-                                    <input 
-                                        type="checkbox"
-                                        value="MIERCOLES"
-                                        onChange={e => clinicOnChange('dias', e.target.value)} 
-                                    />
-                                    Miércoles
-                                </label>
-                                <label>
-                                    <input 
-                                        type="checkbox"
-                                        value="JUEVES"
-                                        onChange={e => clinicOnChange('dias', e.target.value)} 
-                                    />
-                                    Jueves
-                                </label>
-                                <label>
-                                    <input 
-                                        type="checkbox"
-                                        value="VIERNES"
-                                        onChange={e => clinicOnChange('dias', e.target.value)} 
-                                    />
-                                    Viernes
-                                </label>
-                                <label>
-                                    <input 
-                                        type="checkbox"
-                                        value="SABADO"
-                                        onChange={e => clinicOnChange('dias', e.target.value)} 
-                                    />
-                                    Sábado
-                                </label>
-                            </td>
-                        </tr>
+                                <td>
+                                    <p>Días a la semana</p>
+                                </td>
+                                <td>
+                                    {console.log(clinic.dias)}
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            value="LUNES"
+                                            defaultChecked={clinic.dias.includes("LUNES")}
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Lunes
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="MARTES"
+                                            defaultChecked={clinic.dias.includes("MARTES")}
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Martes
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="MIERCOLES"
+                                            defaultChecked={clinic.dias.includes("MIERCOLES")}
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Miércoles
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="JUEVES"
+                                            defaultChecked={clinic.dias.includes("JUEVES")}
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Jueves
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="VIERNES"
+                                            defaultChecked={clinic.dias.includes("VIERNES")}
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Viernes
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type="checkbox"
+                                            value="SABADO"
+                                            defaultChecked={clinic.dias.includes("SABADO")}
+                                            onChange={e => clinicOnChange('dias', e.target.value)} 
+                                        />
+                                        Sábado
+                                    </label>
+                                </td>
+                            </tr>
 
                             <tr>
                                 <td>
