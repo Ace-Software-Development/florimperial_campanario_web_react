@@ -1,3 +1,4 @@
+// W15 W16
 import '../css/PerfilSocios.css';
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
