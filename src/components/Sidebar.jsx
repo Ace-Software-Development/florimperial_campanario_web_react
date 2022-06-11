@@ -57,7 +57,15 @@ export default function Sidebar(props) {
                   <NavIcon>
                     <ion-icon name="people" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
-                  <NavText>Gestión de socios</NavText>
+                  <NavText>Socios</NavText>
+
+                  <NavItem eventKey="lista-de-socios">
+                    <NavText>Lista de socios</NavText>
+                  </NavItem>
+
+                  <NavItem eventKey="gestion-de-socios">
+                    <NavText>Gestión de socios</NavText>
+                  </NavItem>
                 </NavItem>
 
                 <NavItem eventKey="anuncios" style={{display: `${anuncios}`}}>
@@ -88,12 +96,12 @@ export default function Sidebar(props) {
                   <NavText>Panel de administradores</NavText>
                 </NavItem>
 
-                <NavItem eventKey="reglas" style={{display: `${gestion}`}}>
+                {/* <NavItem eventKey="reglas" style={{display: `${gestion}`}}>
                   <NavIcon>
                     <ion-icon name="book" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Reglas</NavText>
-                </NavItem>
+            </NavItem>*/}
 
                 <NavItem eventKey="golf" style={{display: `${golf}`}}>
                   <NavIcon>
@@ -106,6 +114,7 @@ export default function Sidebar(props) {
                   <NavItem eventKey="golf/clinicas">
                     <NavText>Clínicas</NavText>
                   </NavItem>
+
                   <NavItem eventKey="golf/reglamento">
                     <NavText>Reglamento</NavText>
                   </NavItem>
@@ -138,7 +147,8 @@ export default function Sidebar(props) {
                   <NavItem eventKey="gym/reservaciones">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
-                  <NavItem eventKey="gym/rutinas">
+
+                   <NavItem eventKey="gym/rutinas">
                     <NavText>Rutinas</NavText>
                   </NavItem>
                   <NavItem eventKey="gym/clinicas">
@@ -146,6 +156,9 @@ export default function Sidebar(props) {
                   </NavItem>
                   <NavItem eventKey="gym/reglamento">
                     <NavText>Reglamento</NavText>
+                  </NavItem>
+                  <NavItem eventKey="gym/rutinas">
+                    <NavText>Rutinas</NavText>
                   </NavItem>
                 </NavItem>
 

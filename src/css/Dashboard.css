@@ -4,7 +4,7 @@
 }
 
 .sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL {
-  position: fixed;
+  position: relative;
 }
 
 .sidenav--overlay {
@@ -45,3 +45,56 @@ header.app-header h1 {
   height: 190px;
   width: 300px;
 }
+
+.btn-submit-pases-socio{
+  background-color: #2B4066 !important;
+  color: #fff !important;
+}
+
+.btn-submit-pases-socio{
+  background-color: #2B4066 !important;
+  color: #fff !important;
+}
+.btn-submit-pases-socio:hover {
+  background-color: #56738B !important; 
+  color: #2B4066;
+}
+
+.btn-rutinas{
+  background-color: #2B4066 !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+.btn-rutinas:hover{
+  background-color: #56738B !important; 
+  color: #2B4066;
+}
+.btn-rutinas-eliminar{
+  background-color: #D92232 !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+.btn-rutinas-eliminar:hover{
+  background-color: #ff5363  !important; 
+}
+
+.home-card-img{
+
+  width: auto !important;
+  border-radius: 0px !important;
+ }
+ .home-card-overlay{
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.5));
+ }
+ .home-card-title {
+    margin-top: 125px !important;
+ }
+
+ .input-selector-rutinas{
+   width: 100% !important;
+   border-radius: 0.25rem !important;
+   background-color: #fff !important;
+ }
+
+
+

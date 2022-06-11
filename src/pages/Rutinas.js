@@ -1,10 +1,12 @@
+import '../css/Rutinas.css';
 import {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import '../css/Home.css';
 import Screen from '../components/Screen';
 import {checkUser} from '../utils/client';
 import CirculoCarga from '../components/CirculoCarga';
-import HomeIcons from '../components/HomeIcons';
+import TablaRutinas from '../components/TablaRutinas';
+
+
 
 export default function Home() {
   const history = useHistory();
@@ -43,9 +45,9 @@ export default function Home() {
     );
 
   return (
-    <Screen screenPath="home" title="Inicio">
-      <div className="home-cards">
-        <HomeIcons permissions={permissions} />
+    <Screen permissions={permissions} title="Rutinas">
+      <div className="App">
+          <TablaRutinas/>
       </div>
     </Screen>
   );

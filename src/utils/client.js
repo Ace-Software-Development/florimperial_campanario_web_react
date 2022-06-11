@@ -1,3 +1,4 @@
+import {queryByTestId} from '@testing-library/react';
 import Parse from 'parse';
 import ParseObject from 'parse/lib/browser/ParseObject';
 import ParseUser from 'parse/lib/browser/ParseUser';
@@ -15,6 +16,8 @@ const REGLAMENTO_MODEL = Parse.Object.extend('Reglamento');
 const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend('ReservacionMultiple');
 const CLINICA_MODEL = Parse.Object.extend('Clinica');
 const RESERVACION_CLINICA_MODEL = Parse.Object.extend('ReservacionClinica');
+const RUTINA_MODEL = Parse.Object.extend("Rutina");
+const EJERCICIO_MODEL = Parse.Object.extend("Ejercicio");
 
 /**
  * Returns all the data of golf appoinntments
@@ -643,12 +646,16 @@ export async function createMember(email, pass, membershipNumber) {
   else {
     accountId = result[0].get('objectId');
   }
-
+  let accountPointer = {
+    __type: 'Pointer',
+    className: 'Cuenta',
+    objectId: accountId,
+  };
   const newUser = new Parse.User();
   newUser.set('username', email);
   newUser.set('email', email);
   newUser.set('password', pass);
-  newUser.set('account', accountId);
+  newUser.set('account', accountPointer);
   try {
     await newUser.save();
   } catch (e) {
@@ -798,34 +805,35 @@ export async function getReservations(userId) {
   const reservationQuery = new Parse.Query(RESERVACION_MODEL);
   reservationQuery.equalTo('user', userObj);
   reservationQuery.equalTo('eliminado', false);
-  reservationQuery.equalTo('estatus', 2);
+  // reservationQuery.equalTo('estatus', 2);
   reservationQuery.include('sitio');
 
   let data = await reservationQuery.find();
 
   const multipleReservationIdQuery = new Parse.Query(MULTIPLE_RESERVATION_MODEL);
-  multipleReservationIdQuery.select('reservacion');
   multipleReservationIdQuery.equalTo('user', userObj);
+  //multipleReservationIdQuery.include('reservacion');
+  //multipleReservationIdQuery.include('reservacion.sitio');
+  //multipleReservationIdQuery.include('reservacion.sitio.area');
+  let reservacionMultipeList = await multipleReservationIdQuery.find();
+  /*
+  await Promise.all(
+    reservacionMultipeList.map(async object => {
+      const multipleReservationQuery = new Parse.Query(RESERVACION_MODEL);
+      multipleReservationQuery.equalTo('objectId', object.get('reservacion').id);
+      multipleReservationQuery.include('sitio');
+      multipleReservationQuery.include('sitio.area');
+      let reservacion = await multipleReservationQuery.find();
+      console.log(reservacion, object.get('reservacion').id);
+      data.push(reservacion[0]);
+    })
+  ); */
+  /*
+  reservacionMultipeList.forEach(async object => {
+    await object.get('reservacion').fetch();
+  });*/
 
-  let reservacionMultipeId = await multipleReservationIdQuery.find();
-  const reservacionIDS = [];
-
-  for (let i of reservacionMultipeId) {
-    reservacionIDS.push(i.get('reservacion').id);
-  }
-
-  for (let i of reservacionIDS) {
-    const multipleReservationQuery = new Parse.Query(RESERVACION_MODEL);
-    multipleReservationQuery.equalTo('objectId', i);
-    multipleReservationQuery.equalTo('eliminado', false);
-    multipleReservationQuery.matchesQuery('sitio', sitiosQuery);
-    multipleReservationQuery.include('sitio');
-
-    let reservacion = await multipleReservationQuery.find();
-
-    data.push(reservacion[0]);
-  }
-
+  //  console.log('dataxd', reservacionMultipeList);
   data.sort(function(a, b) {
     return a.get('fechaInicio').toISOString() > b.get('fechaInicio').toISOString()
       ? -1
@@ -833,7 +841,6 @@ export async function getReservations(userId) {
       ? 1
       : 0;
   });
-
   return data;
 }
 
@@ -871,6 +878,23 @@ export async function getAllClinicsReservations(module) {
   clinicaQuery.include('sitio');
 
   const data = await clinicaQuery.find();
+}
+
+export async function getCuenta() {
+  const cuentaQuery = new Parse.Query('_User');
+  let data = await cuentaQuery.find();
+  return data;
+}
+
+export async function getMembers() {
+  const cuentaQuery = new Parse.Query('_User');
+  cuentaQuery.equalTo('isAdmin', false);
+  cuentaQuery.include('account');
+  cuentaQuery.include('account.noAccion'); // if user is the column name
+  cuentaQuery.include('account.pases'); // if activity is the column name
+  cuentaQuery.include('email');
+  //cuentaQuery.notEqualTo('email', 'null');
+  let data = await cuentaQuery.find();
   return data;
 }
 
@@ -1005,4 +1029,152 @@ export async function deleteClinic(clinicData) {
 
   await deleteClinicReservations(clinicObject);
   await Parse.Object.destroyAll(clinic);
+}
+
+/** setSupportNumber
+ * @description it sets a new support number
+ * @param {number} idNumero: the Number objectId
+ * @param {number} nuevoNum: the new value for attribute Numero
+ */
+export async function setPasesSocio(objId, numPases) {
+  const query = new Parse.Query('Cuenta');
+  query.equalTo('objectId', objId);
+  const result = await query.find();
+  const cuentaEnDb = result[0];
+  await cuentaEnDb.set('pases', numPases);
+  await cuentaEnDb.save();
+  return 0;
+}
+
+export async function getSugerencias() {
+  const query = new Parse.Query('Sugerencia');
+  query.equalTo('eliminado', false);
+  query.include('area');
+  query.include('user');
+  let data = await query.find();
+  return data;
+}
+
+export async function deleteSugerencia(sugerenciaId) {
+  const query = new Parse.Query('Sugerencia');
+  query.equalTo('objectId', sugerenciaId);
+  let data = await query.find();
+  let sugerenciaEliminar = data[0];
+  sugerenciaEliminar.set('eliminado', true);
+  await sugerenciaEliminar.save();
+  return 0;
+}
+
+/**
+ * crearRutinasUsuario
+ * @description creates the routines for a user if they do not already have them.
+ * @param {number} userId: the selected user
+ */
+export async function crearRutinasUsuario(userId) {
+  const userQuery = new Parse.Query(USER_MODEL);
+  userQuery.equalTo('objectId', userId);
+  let user = await userQuery.first();
+
+  const rutinaQuery = new Parse.Query(RUTINA_MODEL);
+  rutinaQuery.equalTo('user', user);
+  let data = await rutinaQuery.find();
+
+  if(data.length === 0){
+    console.log(data.length);
+    const rutina1 = new RUTINA_MODEL();
+    rutina1.set('user', user);
+    rutina1.set('titulo', 'Lunes');
+    await rutina1.save();
+
+    const rutina2 = new RUTINA_MODEL();
+    rutina2.set('user', user);
+    rutina2.set('titulo', 'Martes');
+    await rutina2.save();
+
+    const rutina3 = new RUTINA_MODEL();
+    rutina3.set('user', user);
+    rutina3.set('titulo', 'Miércoles');
+    await rutina3.save();
+
+    const rutina4 = new RUTINA_MODEL();
+    rutina4.set('user', user);
+    rutina4.set('titulo', 'Jueves');
+    await rutina4.save();
+
+    const rutina5 = new RUTINA_MODEL();
+    rutina5.set('user', user);
+    rutina5.set('titulo', 'Viernes');
+    await rutina5.save();
+
+    const rutina6 = new RUTINA_MODEL();
+    rutina6.set('user', user);
+    rutina6.set('titulo', 'Sábado');
+    await rutina6.save();
+
+    const rutina7 = new RUTINA_MODEL();
+    rutina7.set('user', user);
+    rutina7.set('titulo', 'Domingo');
+    await rutina7.save();
+  }
+
+  return 0;
+}
+
+export async function getRoutines(userId) {
+	const userQuery = new Parse.Query(USER_MODEL);
+  userQuery.equalTo('objectId', userId);
+  let user = await userQuery.first();
+
+  const rutinaQuery = new Parse.Query(RUTINA_MODEL);
+  rutinaQuery.equalTo('user', user);
+  let data = await rutinaQuery.find();
+
+	return data;
+}
+
+export async function getTrainings(rutinaId){
+	const rutinaQuery = new Parse.Query(RUTINA_MODEL);
+	rutinaQuery.equalTo('objectId', rutinaId);
+	const rutina = await rutinaQuery.first();
+
+	const trainingsQuery = new Parse.Query(EJERCICIO_MODEL);
+	trainingsQuery.equalTo('rutina', rutina);
+
+	let data = await trainingsQuery.find();
+	return data;
+}
+
+export async function saveExcercise(routineId, name, repetitions, series, notes) {
+  const Rutina = Parse.Object.extend(RUTINA_MODEL);
+  const routine = new Rutina();
+  routine.set("objectId", routineId);
+
+  const Ejercicio = Parse.Object.extend(EJERCICIO_MODEL);
+  const newExcercise = new Ejercicio();
+
+  newExcercise.set("rutina", routine);
+  newExcercise.set("nombre", name);
+  if (repetitions) {
+      newExcercise.set("repeticiones", repetitions);
+  }
+  if (series) {
+      newExcercise.set("series", series);
+  }
+  if (notes) {
+      newExcercise.set("notas", notes);
+  }
+
+  return newExcercise.save();
+  // newExcercise.save().then(function() {
+  //   getTrainings(selectedRoutine).then(data => setTrainings(data));
+  // }, function(error) {
+  //     alert(`Hubo un error en la creación del ejercicio.`);
+  // });
+}
+
+export async function deleteExcersize(excersizeId){
+  console.log(excersizeId);
+  let excersize = new EJERCICIO_MODEL();
+  excersize.set('objectId', excersizeId);
+  await excersize.destroy();
 }
