@@ -20,3 +20,8 @@
   border-color: transparent;
   background-color: transparent;
 }
+
+.numero-soporte-padding{
+  padding-left: 8rem;
+  padding-right: 5rem;
+}

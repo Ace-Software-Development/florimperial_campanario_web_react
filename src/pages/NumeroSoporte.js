@@ -53,7 +53,7 @@ export default function NumeroSoporte() {
   return (
     <Screen permissions={permissions} title="Números de soporte">
       {console.log(supportNumbers)}
-      <div className="App">
+      <div className="App numero-soporte-padding">
         <TablaNumeros supportNumbers={supportNumbers} />
       </div>
     </Screen>
