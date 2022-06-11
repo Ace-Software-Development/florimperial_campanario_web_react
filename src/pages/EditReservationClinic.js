@@ -33,7 +33,6 @@ export default function EditReservationClinic(props) {
 	}
 
 	const clinicOnChange = (key, data) => {
-        console.log(clinic.dias)
         if (key === 'dias') {
             data = clinic.dias.includes(data) ? clinic.dias.filter(x => x!==data) : [...clinic.dias, data];
         }
@@ -50,9 +49,9 @@ export default function EditReservationClinic(props) {
         const diasObj = {LUNES:false, MARTES:false, MIERCOLES:false, JUEVES:false, VIERNES:false, SABADO:false}
         clinic.dias.forEach(dia => {
             diasObj[dia] = true;
-        })
-        clinic.dias = diasObj;
-        await updateClinicsReservations(clinic, users);
+        });
+        const clinicCopy = {...clinic, dias: diasObj};
+        await updateClinicsReservations(clinicCopy, users);
         return true;
 	}
 
@@ -130,7 +129,6 @@ export default function EditReservationClinic(props) {
                                     <p>Días a la semana</p>
                                 </td>
                                 <td>
-                                    {console.log(clinic.dias)}
                                     <label>
                                         <input
                                             type="checkbox"
