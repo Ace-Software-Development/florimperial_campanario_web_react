@@ -148,6 +148,9 @@ export default function Sidebar(props) {
                   <NavItem eventKey="gym/reglamento">
                     <NavText>Reglamento</NavText>
                   </NavItem>
+                  <NavItem eventKey="gym/rutinas">
+                    <NavText>Rutinas</NavText>
+                  </NavItem>
                 </NavItem>
 
                 <NavItem eventKey="Alberca" style={{display: `${alberca}`}}>

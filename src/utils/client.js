@@ -13,6 +13,8 @@ const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend('Invitado');
 const REGLAMENTO_MODEL = Parse.Object.extend('Reglamento');
 const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend('ReservacionMultiple');
+const RUTINA_MODEL = Parse.Object.extend('Rutina');
+const EJERCICIO_MODEL = Parse.Object.extend('Ejercicio');
 
 /**
  * Returns all the data of golf appoinntments
@@ -921,4 +923,118 @@ export async function createAnnouncment(fileUploadControl) {
   await newAnuncio.save();
   alert('Se ha creado un nuevo anuncio');
   window.location.reload();
+}
+
+/**
+ * crearRutinasUsuario
+ * @description creates the routines for a user if they do not already have them.
+ * @param {number} userId: the selected user
+ */
+export async function crearRutinasUsuario(userId) {
+  const userQuery = new Parse.Query(USER_MODEL);
+  userQuery.equalTo('objectId', userId);
+  let user = await userQuery.first();
+
+  const rutinaQuery = new Parse.Query(RUTINA_MODEL);
+  rutinaQuery.equalTo('user', user);
+  let data = await rutinaQuery.find();
+
+  if (data.length === 0) {
+    console.log(data.length);
+    const rutina1 = new RUTINA_MODEL();
+    rutina1.set('user', user);
+    rutina1.set('titulo', 'Lunes');
+    await rutina1.save();
+
+    const rutina2 = new RUTINA_MODEL();
+    rutina2.set('user', user);
+    rutina2.set('titulo', 'Martes');
+    await rutina2.save();
+
+    const rutina3 = new RUTINA_MODEL();
+    rutina3.set('user', user);
+    rutina3.set('titulo', 'Miércoles');
+    await rutina3.save();
+
+    const rutina4 = new RUTINA_MODEL();
+    rutina4.set('user', user);
+    rutina4.set('titulo', 'Jueves');
+    await rutina4.save();
+
+    const rutina5 = new RUTINA_MODEL();
+    rutina5.set('user', user);
+    rutina5.set('titulo', 'Viernes');
+    await rutina5.save();
+
+    const rutina6 = new RUTINA_MODEL();
+    rutina6.set('user', user);
+    rutina6.set('titulo', 'Sábado');
+    await rutina6.save();
+
+    const rutina7 = new RUTINA_MODEL();
+    rutina7.set('user', user);
+    rutina7.set('titulo', 'Domingo');
+    await rutina7.save();
+  }
+
+  return 0;
+}
+
+export async function getRoutines(userId) {
+  const userQuery = new Parse.Query(USER_MODEL);
+  userQuery.equalTo('objectId', userId);
+  let user = await userQuery.first();
+
+  const rutinaQuery = new Parse.Query(RUTINA_MODEL);
+  rutinaQuery.equalTo('user', user);
+  let data = await rutinaQuery.find();
+
+  return data;
+}
+
+export async function getTrainings(rutinaId) {
+  const rutinaQuery = new Parse.Query(RUTINA_MODEL);
+  rutinaQuery.equalTo('objectId', rutinaId);
+  const rutina = await rutinaQuery.first();
+
+  const trainingsQuery = new Parse.Query(EJERCICIO_MODEL);
+  trainingsQuery.equalTo('rutina', rutina);
+
+  let data = await trainingsQuery.find();
+  return data;
+}
+
+export async function saveExcercise(routineId, name, repetitions, series, notes) {
+  const Rutina = Parse.Object.extend(RUTINA_MODEL);
+  const routine = new Rutina();
+  routine.set('objectId', routineId);
+
+  const Ejercicio = Parse.Object.extend(EJERCICIO_MODEL);
+  const newExcercise = new Ejercicio();
+
+  newExcercise.set('rutina', routine);
+  newExcercise.set('nombre', name);
+  if (repetitions) {
+    newExcercise.set('repeticiones', repetitions);
+  }
+  if (series) {
+    newExcercise.set('series', series);
+  }
+  if (notes) {
+    newExcercise.set('notas', notes);
+  }
+
+  return newExcercise.save();
+  // newExcercise.save().then(function() {
+  //   getTrainings(selectedRoutine).then(data => setTrainings(data));
+  // }, function(error) {
+  //     alert(`Hubo un error en la creación del ejercicio.`);
+  // });
+}
+
+export async function deleteExcersize(excersizeId) {
+  console.log(excersizeId);
+  let excersize = new EJERCICIO_MODEL();
+  excersize.set('objectId', excersizeId);
+  await excersize.destroy();
 }

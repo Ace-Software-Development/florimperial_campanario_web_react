@@ -19,6 +19,7 @@ import MiPerfil from './pages/MiPerfil';
 import ListaSocios from './pages/ListaSocios';
 import PerfilSocio from './pages/PerfilSocio';
 import Sugerencias from './pages/Sugerencias';
+import Rutinas from './pages/Rutinas';
 
 export default function App() {
   const [sitiosData, setSitiosData] = useState([]);
@@ -90,6 +91,10 @@ export default function App() {
 
         <Route path="/gym/reglamento">
           <RegulationsPage module={'Gimnasio'} />
+        </Route>
+
+        <Route path="/gym/rutinas">
+          <Rutinas/>
         </Route>
 
         <Route path="/raqueta/reservaciones">
