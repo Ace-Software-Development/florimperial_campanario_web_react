@@ -68,7 +68,7 @@ export default function PanelAdmins() {
     <Screen permissions={permissions} title="Panel de administradores">
       <div className="App">
         <div style={{marginLeft: '145px'}}>
-          <Card style={{width: '70%'}}>
+          <Card style={{width: '90%'}}>
             <TablaAdmins adminList={props} />
           </Card>
         </div>

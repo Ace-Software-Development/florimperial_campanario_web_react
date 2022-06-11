@@ -14,7 +14,7 @@ import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from '../components/CirculoCarga';
 import Screen from '../components/Screen';
-import {getAnuncios, checkUser} from '../utils/client';
+import {getAnuncios, checkUser, createAnnouncment} from '../utils/client';
 
 export default function Anuncios() {
   const history = useHistory();
@@ -118,51 +118,18 @@ export default function Anuncios() {
   ));
 
   function FormExample() {
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
       const form = event.currentTarget;
+      event.preventDefault();
+      event.stopPropagation();
       if (form.checkValidity() === false) {
-        event.preventDefault();
-        event.stopPropagation();
         setValidated(true);
       } else {
-        const Anuncio = Parse.Object.extend('Anuncio');
-        const fileUploadControl = document.getElementById('formImg').files[0];
-        const img2 = new Parse.File(`img-anuncio`, fileUploadControl);
         setButtonDisabled(true); // <-- disable the button here
-        img2.save().then(
-          function() {
-            // The file has been saved to Parse.
-            const newAnuncio = new Anuncio();
-            newAnuncio
-              .save({
-                /*   titulo: anuncioTitle,
-              contenido: anuncioContent,*/
-                imagen: img2,
-              })
-              .then(
-                newAnuncio => {
-                  // Execute any logic that should take place after the object is saved.
-                  alert('Se ha creado un nuevo anuncio');
-                  window.location.reload();
-                },
-                error => {
-                  // Execute any logic that should take place if the save fails.
-                  // error is a Parse.Error with an error code and message.
-                  setButtonDisabled(false); // <-- disable the button here
-
-                  alert('Ha ocurrido un error al crear el anuncio:  ' + error.message);
-                  console.log(error.message);
-                }
-              );
-
-            handleClose();
-            setValidated(true);
-          },
-          function(error) {
-            // The file either could not be read, or could not be saved to Parse.
-            alert('No se pudo crear el anuncio. El error es: ', error);
-          }
-        );
+        const fileUploadControl = document.getElementById('formImg').files[0];
+        await createAnnouncment(fileUploadControl);
+        handleClose();
+        setValidated(true);
       }
     };
 

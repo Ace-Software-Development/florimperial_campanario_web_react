@@ -1,19 +1,33 @@
-// W13
-import '../css/GestionSocios.css';
+// W14
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import {useEffect, useState} from 'react';
 import CirculoCarga from '../components/CirculoCarga';
-import { checkUser, getSupportNumbers} from '../utils/client';
+import {
+  checkUser,
+  getAdminUsers,
+  getRolesNames,
+  getAdminRole,
+  getSugerencias,
+} from '../utils/client';
 import {useHistory} from 'react-router-dom';
 import Screen from '../components/Screen';
-import TablaNumeros from '../components/TablaNumeros';
+import Parse from 'parse';
+import ParseObject from 'parse/lib/browser/ParseObject';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
+import '../css/Sugerencias.css';
+import Button from 'react-bootstrap/Button';
+import SugerenciaCard from '../components/SugerenciaCard';
 
-export default function NumeroSoporte() {
+export default function ListaSocios() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
-  const [supportNumbers, setSupportNumbers] = useState([]);
+  const [sugerencias, setSugerencias] = useState(new ParseObject());
 
   useEffect(async () => {
     const permissionsJson = await checkUser();
@@ -27,20 +41,22 @@ export default function NumeroSoporte() {
       alert('Tu sesión ha finalizado. Por favor, inicia sesión nuevamente.');
       history.push('/');
     }
-    if (permissionsJson.Gestion === false) {
-      alert('No tienes acceso a esta página. Para más ayuda contacta con tu administrador.');
-      history.push('/home');
-    }
     setPermissions(permissionsJson);
+
     try {
       setLoading(true);
       const permissionsJson = await checkUser();
-      const numbers = await getSupportNumbers();
       setPermissions(permissionsJson);
-      setSupportNumbers(numbers);
-      setLoading(false);
+      // const user = await Parse.User.current();
+
+      getSugerencias().then(sugerencias => {
+        setSugerencias(sugerencias);
+        console.log(sugerencias);
+        setLoading(false);
+      });
     } catch (error) {
       setLoading(false);
+      console.log(error);
     }
   }, []);
 
@@ -50,13 +66,19 @@ export default function NumeroSoporte() {
         <CirculoCarga />
       </span>
     );
+  const listItems = sugerencias.map(sugerencia => (
+    <Col> 
+      <SugerenciaCard props={sugerencia} />
+    </Col>
+));
 
   return (
-    <Screen permissions={permissions} title="Números de soporte">
-      {console.log(supportNumbers)}
-      <div className="App">
-        <TablaNumeros supportNumbers={supportNumbers} />
-      </div>
+    <Screen permissions={permissions} title="Sugerencias">
+      <Container>
+        <Row xs={1} s={2} md={3} className="g-4">
+        {listItems}
+        </Row>
+      </Container>
     </Screen>
   );
 }

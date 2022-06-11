@@ -1,16 +1,20 @@
+import React from 'react';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import {useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
-import '../css/Home.css';
-import Screen from '../components/Screen';
-import {checkUser} from '../utils/client';
 import CirculoCarga from '../components/CirculoCarga';
-import HomeIcons from '../components/HomeIcons';
+import {checkUser, getCuenta, getMembers} from '../utils/client';
+import {useHistory} from 'react-router-dom';
+import Screen from '../components/Screen';
+import Parse from 'parse';
+import ParseObject from 'parse/lib/browser/ParseObject';
+import Card from 'react-bootstrap/Card';
+import TablaSocios from '../components/TablaSocios';
 
-export default function Home() {
+export default function ListaSocios() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({});
-
+  const [cuentas, setCuentas] = useState([]);
   useEffect(async () => {
     const permissionsJson = await checkUser();
     if (permissionsJson === 'NO_USER') {
@@ -24,11 +28,18 @@ export default function Home() {
       history.push('/');
     }
     setPermissions(permissionsJson);
+
     try {
       setLoading(true);
       const permissionsJson = await checkUser();
       setPermissions(permissionsJson);
-      setLoading(false);
+      // const user = await Parse.User.current();
+
+      //      getCuenta().then(cuenta => {
+      getMembers().then(cuenta => {
+        setCuentas(cuenta);
+        setLoading(false);
+      });
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -43,9 +54,13 @@ export default function Home() {
     );
 
   return (
-    <Screen screenPath="home" title="Inicio">
-      <div className="home-cards">
-        <HomeIcons permissions={permissions} />
+    <Screen permissions={permissions} title="Lista de socios">
+      <div className="App">
+        <div style={{marginLeft: '145px'}}>
+          <Card style={{width: '90%'}}>
+            <TablaSocios props={cuentas} />
+          </Card>
+        </div>
       </div>
     </Screen>
   );

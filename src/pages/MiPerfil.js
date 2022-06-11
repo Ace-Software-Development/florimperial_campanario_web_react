@@ -1,3 +1,4 @@
+// W12
 import '../css/MiPerfil.css';
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
