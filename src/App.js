@@ -16,6 +16,7 @@ import PanelAdmins from './pages/PanelAdmins';
 import NumeroSoporte from './pages/NumeroSoporte';
 import ReservacionesSocio from './pages/ReservacionesSocio';
 import MiPerfil from './pages/MiPerfil';
+import ReservationsClinicas from './pages/ReservationsClinicas';
 import ListaSocios from './pages/ListaSocios';
 import PerfilSocio from './pages/PerfilSocio';
 import Sugerencias from './pages/Sugerencias';
@@ -29,17 +30,20 @@ export default function App() {
     const gymArea = await getAreaByName('Gimnasio');
     const raquetaArea = await getAreaByName('Raqueta');
     const poolArea = await getAreaByName('Alberca');
+    const salonArea = await getAreaByName('Salones');
 
     const golfSitios = await getSitiosByArea(golfArea.id);
     const gymSitios = await getSitiosByArea(gymArea.id);
     const raquetaSitios = await getSitiosByArea(raquetaArea.id);
     const poolSitios = await getSitiosByArea(poolArea.id);
+    const salonSitios = await getSitiosByArea(salonArea.id);
 
     setSitiosData({
       golf: golfSitios.map(i => formatSitioData(i)),
       gym: gymSitios.map(i => formatSitioData(i)),
       raqueta: raquetaSitios.map(i => formatSitioData(i)),
       pool: poolSitios.map(i => formatSitioData(i)),
+      salones: salonSitios.map(i => formatSitioData(i))
     });
   }, []);
 
@@ -72,6 +76,16 @@ export default function App() {
           />
         </Route>
 
+        <Route path="/golf/clinicas">
+          <ReservationsClinicas 
+            screenTitle="Clases de golf"
+            screenPath="golf/clases"
+            module="Golf"
+            sitios={sitiosData.golf}
+
+          />
+        </Route>
+
         <Route path="/golf/reglamento">
           <RegulationsPage module={'Golf'} />
         </Route>
@@ -86,6 +100,16 @@ export default function App() {
             sitios={sitiosData.gym}
             coachInput={true}
             guestsInput={false}
+          />
+        </Route>
+
+        <Route path="/gym/clinicas">
+          <ReservationsClinicas 
+            screenTitle="Clases de gimnasio"
+            screenPath="gym/clases"
+            module="Gimnasio"
+            sitios={sitiosData.gym}
+
           />
         </Route>
 
@@ -110,6 +134,16 @@ export default function App() {
           />
         </Route>
 
+        <Route path="/raqueta/clinicas">
+          <ReservationsClinicas 
+            screenTitle="Clases de raqueta"
+            screenPath="raqueta/clases"
+            module="Raqueta"
+            sitios={sitiosData.raqueta}
+
+          />
+        </Route>
+
         <Route path="/raqueta/reglamento">
           <RegulationsPage module={'Raqueta'} />
         </Route>
@@ -127,8 +161,28 @@ export default function App() {
           />
         </Route>
 
+        <Route path="/alberca/clinicas">
+          <ReservationsClinicas 
+            screenTitle="Clases de golf"
+            screenPath="alberca/clases"
+            module="Alberca"
+            sitios={sitiosData.pool}
+
+          />
+        </Route>
+
         <Route path="/alberca/reglamento">
           <RegulationsPage module={'Alberca'} />
+        </Route>
+
+        <Route path="/salones/clinicas">
+          <ReservationsClinicas 
+            screenTitle="Clases de salones"
+            screenPath="salones/clases"
+            module="Salones"
+            sitios={sitiosData.salones}
+
+          />
         </Route>
 
         <Route path="/anuncios">

@@ -1,5 +1,6 @@
 import {queryByTestId} from '@testing-library/react';
 import Parse from 'parse';
+import ParseObject from 'parse/lib/browser/ParseObject';
 import ParseUser from 'parse/lib/browser/ParseUser';
 import {formatReservationData} from './formatData';
 
@@ -13,6 +14,8 @@ const RESERVACION_INVITADO_MODEL = Parse.Object.extend('ReservacionInvitado');
 const INVITADO_MODEL = Parse.Object.extend('Invitado');
 const REGLAMENTO_MODEL = Parse.Object.extend('Reglamento');
 const MULTIPLE_RESERVATION_MODEL = Parse.Object.extend('ReservacionMultiple');
+const CLINICA_MODEL = Parse.Object.extend('Clinica');
+const RESERVACION_CLINICA_MODEL = Parse.Object.extend('ReservacionClinica');
 const RUTINA_MODEL = Parse.Object.extend('Rutina');
 const EJERCICIO_MODEL = Parse.Object.extend('Ejercicio');
 
@@ -837,6 +840,49 @@ export async function getArea() {
   }
   return areas;
 }
+
+/**
+ * Retrieves all clinics from a scecific site
+ * @param {string} module 
+ * @returns {array} data
+ */
+export async function getAllClinicsReservations(module) {
+  const areaQuery = new Parse.Query(AREA_MODEL);
+  areaQuery.equalTo('eliminado', false);
+  areaQuery.equalTo('nombre', module);
+
+  const sitiosQuery = new Parse.Query(SITIO_MODEL);
+  sitiosQuery.select('nombre');
+  sitiosQuery.equalTo('eliminado', false);
+  sitiosQuery.matchesQuery('area', areaQuery);
+  sitiosQuery.include('area');
+  
+  const clinicaQuery = new Parse.Query(CLINICA_MODEL);
+  clinicaQuery.matchesQuery('sitio', sitiosQuery);
+  clinicaQuery.include('sitio');
+
+  const data = await clinicaQuery.find();
+  return data;
+}
+
+/**
+ * Retrieves all clinics from DB
+ * @param {string} clinicId 
+ * @returns {array} data
+ */
+export async function getReservacionClinica(clinicId) {
+  const clinicaQuery = new Parse.Query(CLINICA_MODEL);
+  clinicaQuery.equalTo('objectId', clinicId);
+  
+  const clinicReservation = new Parse.Query(RESERVACION_CLINICA_MODEL);
+  clinicReservation.matchesQuery('clinica', clinicaQuery);
+  clinicReservation.include('reservacion');
+  clinicReservation.include('user');
+
+  const data = await clinicReservation.find();
+  return data;
+}
+
 /**
  * getCuenta
  * obtains the detail of a specific user account
@@ -847,6 +893,7 @@ export async function getCuenta() {
   let data = await cuentaQuery.find();
   return data;
 }
+
 /**
  * getMembers
  * gets all the members in the system, their action number and their passes
@@ -865,6 +912,118 @@ export async function getMembers() {
 }
 
 /**
+ * Creates new clinic in DB
+ * @param {array} reservationData 
+ * @param {array} users 
+ */
+export async function createReservationClinic(reservationData, users) {
+  // Get sitio
+  const sitioQuery = new Parse.Query(SITIO_MODEL);
+  const sitioObject = await sitioQuery.get(reservationData.sitio.objectId);
+  
+  // Create new Clinic entry
+  const clinicObj = new CLINICA_MODEL();
+  clinicObj.set('nombre', reservationData.nombre);
+  clinicObj.set('maximoJugadores', reservationData.maximoJugadores);
+  clinicObj.set('horario', reservationData.horario);
+  clinicObj.set('dias', reservationData.dias);
+  clinicObj.set('fechaInicio', reservationData.fechaInicio);
+  clinicObj.set('fechaFin', reservationData.fechaFin);
+  clinicObj.set('sitio', sitioObject);
+
+  const clinic = await clinicObj.save();
+
+  // Create users entry
+  users.forEach(async socioId => {
+   // Get socio
+   const socioQuery = new Parse.Query(USER_MODEL);
+   const socioObj = await socioQuery.get(socioId);
+    
+   // Creata new ReservacionClinica entry
+   const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
+   clinicReservationObj.set('user', socioObj);
+   clinicReservationObj.set('clinica', clinic);
+   await clinicReservationObj.save();
+  })
+}
+
+/**
+ * deletes ReservacionClinica in DB
+ * @param {object} clinicObject 
+ */
+async function deleteClinicReservations(clinicObject) {
+  const clinicReservationsQuery = new Parse.Query(RESERVACION_CLINICA_MODEL);
+  clinicReservationsQuery.equalTo('clinica', clinicObject);
+  const response = await clinicReservationsQuery.find();
+  await Parse.Object.destroyAll(response);
+}
+
+/**
+ * Updates clinic data
+ * @param {array} reservationData 
+ * @param {array} users 
+ * @returns 
+ */
+export async function updateClinicsReservations(reservationData, users) {
+  try {
+    // Get sitio
+    const sitioQuery = new Parse.Query(SITIO_MODEL);
+    const sitioObject = await sitioQuery.get(reservationData.sitio.objectId);
+    // Update clinic data
+    const clinicQuery = new Parse.Query(CLINICA_MODEL);
+    const clinicObject = await clinicQuery.get(reservationData.objectId);
+    clinicObject.set('nombre', reservationData.nombre);
+    clinicObject.set('fechaInicio', reservationData.fechaInicio);
+    clinicObject.set('fechaFin', reservationData.fechaFin);
+    clinicObject.set('horario', reservationData.horario);
+    clinicObject.set('maximoJugadores', reservationData.maximoJugadores);
+    clinicObject.set('sitio', sitioObject);
+    clinicObject.set('dias', reservationData.dias);
+    await clinicObject.save();
+
+    // Delete al clinic reservations
+    await deleteClinicReservations(clinicObject);
+
+    // Create users entry
+    for(let user of users){
+      // Get socio
+      const socioQuery = new Parse.Query(USER_MODEL);
+      const socioObj = await socioQuery.get(user.id);
+      
+      // Creata new ReservacionClinica entry
+      const clinicReservationObj = new RESERVACION_CLINICA_MODEL();
+      clinicReservationObj.set('user', socioObj);
+      clinicReservationObj.set('clinica', clinicObject);
+      await clinicReservationObj.save();
+    }
+    
+    return true;
+  } catch (error) {
+    console.log(`Ha ocurrido un error ${error}`);
+    return false;
+  }
+}
+
+/**
+ * Deletes clinic in DB
+ * @param {array} clinicData 
+ * @param {*} users 
+ */
+export async function deleteClinic(clinicData) {
+  // Get sitio
+  const sitioQuery = new Parse.Query(SITIO_MODEL);
+  const sitioObject = await sitioQuery.get(clinicData.sitio.objectId);
+
+  // Update clinic data
+  const clinicQuery = new Parse.Query(CLINICA_MODEL);
+  const clinicObject = await clinicQuery.get(clinicData.objectId);
+  const clinic = await clinicQuery.find();
+
+  await deleteClinicReservations(clinicObject);
+  await Parse.Object.destroyAll(clinic);
+}
+
+/*
  * setSupportNumber
  * @description it sets a new support number
  * @param {number} idNumero: the Number objectId
@@ -893,6 +1052,7 @@ export async function getSugerencias() {
   let data = await query.find();
   return data;
 }
+
 /**
  * deleteSugerencia
  * It deletes a suggerence in the database
@@ -908,6 +1068,7 @@ export async function deleteSugerencia(sugerenciaId) {
   await sugerenciaEliminar.save();
   return 0;
 }
+
 /**
  * createAnnouncement
  * create a new announcement in the database

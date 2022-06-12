@@ -1,0 +1,12 @@
+.clinics-table {
+	width: 100%
+}
+
+.clinics-table thead {
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.clinics-table td {
+	padding: .3em .3em
+}
