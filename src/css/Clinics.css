@@ -10,3 +10,15 @@
 .clinics-table td {
 	padding: .3em .3em
 }
+
+.clinic-dias {
+	display: flex;
+	justify-content: space-between;
+}
+
+.clinic-dias div {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	max-width: max-content;
+}

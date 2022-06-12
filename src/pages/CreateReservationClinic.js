@@ -125,54 +125,60 @@ export default function CreateReservationClinic(props) {
                                     <p>Días a la semana</p>
                                 </td>
                                 <td>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            value="LUNES"
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Lunes
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="MARTES"
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Martes
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="MIERCOLES"
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Miércoles
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="JUEVES"
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Jueves
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="VIERNES"
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Viernes
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="SABADO"
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Sábado
-                                    </label>
+                                    <div className="clinic-dias">
+                                        <div>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    value="LUNES"
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Lunes
+                                            </label>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="MARTES"
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Martes
+                                            </label>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="MIERCOLES"
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Miércoles
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="JUEVES"
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Jueves
+                                            </label>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="VIERNES"
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Viernes
+                                            </label>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="SABADO"
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Sábado
+                                            </label>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
 

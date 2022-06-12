@@ -26,25 +26,29 @@ export default function App() {
   const [sitiosData, setSitiosData] = useState([]);
 
   useEffect(async () => {
-    const golfArea = await getAreaByName('Golf');
-    const gymArea = await getAreaByName('Gimnasio');
-    const raquetaArea = await getAreaByName('Raqueta');
-    const poolArea = await getAreaByName('Alberca');
-    const salonArea = await getAreaByName('Salones');
-
-    const golfSitios = await getSitiosByArea(golfArea.id);
-    const gymSitios = await getSitiosByArea(gymArea.id);
-    const raquetaSitios = await getSitiosByArea(raquetaArea.id);
-    const poolSitios = await getSitiosByArea(poolArea.id);
-    const salonSitios = await getSitiosByArea(salonArea.id);
-
-    setSitiosData({
-      golf: golfSitios.map(i => formatSitioData(i)),
-      gym: gymSitios.map(i => formatSitioData(i)),
-      raqueta: raquetaSitios.map(i => formatSitioData(i)),
-      pool: poolSitios.map(i => formatSitioData(i)),
-      salones: salonSitios.map(i => formatSitioData(i))
-    });
+    try {
+      const golfArea = await getAreaByName('Golf');
+      const gymArea = await getAreaByName('Gimnasio');
+      const raquetaArea = await getAreaByName('Raqueta');
+      const poolArea = await getAreaByName('Alberca');
+      const salonArea = await getAreaByName('Salones');
+  
+      const golfSitios = await getSitiosByArea(golfArea.id);
+      const gymSitios = await getSitiosByArea(gymArea.id);
+      const raquetaSitios = await getSitiosByArea(raquetaArea.id);
+      const poolSitios = await getSitiosByArea(poolArea.id);
+      const salonSitios = await getSitiosByArea(salonArea.id);
+  
+      setSitiosData({
+        golf: golfSitios.map(i => formatSitioData(i)),
+        gym: gymSitios.map(i => formatSitioData(i)),
+        raqueta: raquetaSitios.map(i => formatSitioData(i)),
+        pool: poolSitios.map(i => formatSitioData(i)),
+        salones: salonSitios.map(i => formatSitioData(i))
+      });
+    } catch {
+      console.log('No se ha iniciado sesión');
+    }
   }, []);
 
   return (

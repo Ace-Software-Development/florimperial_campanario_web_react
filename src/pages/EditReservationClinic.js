@@ -129,60 +129,66 @@ export default function EditReservationClinic(props) {
                                     <p>Días a la semana</p>
                                 </td>
                                 <td>
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            value="LUNES"
-                                            defaultChecked={clinic.dias.includes("LUNES")}
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Lunes
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="MARTES"
-                                            defaultChecked={clinic.dias.includes("MARTES")}
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Martes
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="MIERCOLES"
-                                            defaultChecked={clinic.dias.includes("MIERCOLES")}
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Miércoles
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="JUEVES"
-                                            defaultChecked={clinic.dias.includes("JUEVES")}
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Jueves
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="VIERNES"
-                                            defaultChecked={clinic.dias.includes("VIERNES")}
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Viernes
-                                    </label>
-                                    <label>
-                                        <input 
-                                            type="checkbox"
-                                            value="SABADO"
-                                            defaultChecked={clinic.dias.includes("SABADO")}
-                                            onChange={e => clinicOnChange('dias', e.target.value)} 
-                                        />
-                                        Sábado
-                                    </label>
+                                    <div className="clinic-dias">
+                                        <div>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    value="LUNES"
+                                                    defaultChecked={clinic.dias.includes("LUNES")}
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Lunes
+                                            </label>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="MARTES"
+                                                    defaultChecked={clinic.dias.includes("MARTES")}
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Martes
+                                            </label>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="MIERCOLES"
+                                                    defaultChecked={clinic.dias.includes("MIERCOLES")}
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Miércoles
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="JUEVES"
+                                                    defaultChecked={clinic.dias.includes("JUEVES")}
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Jueves
+                                            </label>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="VIERNES"
+                                                    defaultChecked={clinic.dias.includes("VIERNES")}
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Viernes
+                                            </label>
+                                            <label>
+                                                <input 
+                                                    type="checkbox"
+                                                    value="SABADO"
+                                                    defaultChecked={clinic.dias.includes("SABADO")}
+                                                    onChange={e => clinicOnChange('dias', e.target.value)} 
+                                                />
+                                                Sábado
+                                            </label>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
 
