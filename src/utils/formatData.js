@@ -1,3 +1,5 @@
+import { changeDateToRecurringEvent } from './eventHelpers';
+
 export function formatReservationData(reservation, golfReservation=null, multipleReservations=null){
 	let title = '';
 	if (reservation.get('estatus') === 1)
@@ -10,10 +12,14 @@ export function formatReservationData(reservation, golfReservation=null, multipl
 		title = reservation.get('user').get('username');
 
 	const formatedData = {
+		// FullCalendar Attributes
+		groupId: reservation.id,
+		title: title,
+		...changeDateToRecurringEvent(reservation.get('fechaInicio')),
+
+		// DB attributes
 		objectId: reservation.id,
 		id: reservation.id,
-		title: title,
-		start: reservation.get('fechaInicio'),
 		estatus: reservation.get('estatus'),
 		maximoJugadores: reservation.get('maximoJugadores'),
 		sitio: {

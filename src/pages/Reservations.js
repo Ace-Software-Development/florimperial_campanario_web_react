@@ -35,6 +35,8 @@ export default function Reservations(props) {
 
     const editAppointment = (eventClick) => {
         const id = eventClick.event._def.publicId;
+        const recurranceData = eventClick.event._def.recurringDef;
+        console.log(eventClick.event);
         setSelectedAppointment(reservationsData.find(row => row.objectId == id));
         setOpenEdit(true);
     }
