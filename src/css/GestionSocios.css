@@ -1,6 +1,6 @@
 .cargar-datos {
   height: 250px;
-  margin-left: 485px;
+  margin-left: 26rem;
   background-color: #ebebeb;
 }
 
@@ -19,4 +19,9 @@
 .btn-information {
   border-color: transparent;
   background-color: transparent;
+}
+
+.numero-soporte-padding{
+  padding-left: 8rem;
+  padding-right: 5rem;
 }

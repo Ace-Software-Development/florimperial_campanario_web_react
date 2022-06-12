@@ -51,8 +51,8 @@ export default function ReservacionesSocio() {
   }
   console.log(reservations);
   return (
-    <div className="App d-flex flex-column align-items-center">
-      <Header processName="Reservaciones del socio" />
+    <div className="App mobile-reservations d-flex flex-column align-items-center">
+      <Header processName="Reservaciones del socio" className="reservaciones-socio-header"/>
 
       {reservations.map((reservation, i) => {
         return (

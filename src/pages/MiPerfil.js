@@ -63,12 +63,10 @@ export default function MiPerfil() {
 
   return (
     <Screen permissions={permissions} title="Mi perfil">
-      <div className="App">
-        <div style={{marginLeft: '15px'}}>
+      <div className="App profile-padding">
           <InfoUsuario props={[currentUser, currentRole]} />
           <br />
         </div>
-      </div>
     </Screen>
   );
 }

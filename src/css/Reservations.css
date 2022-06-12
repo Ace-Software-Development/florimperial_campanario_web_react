@@ -12,3 +12,43 @@
 	flex-grow: 1;
 	margin: 0 .5rem;
 }
+
+.reservations-padding{
+	padding-left: 8rem;
+	padding-right: 5rem;
+}
+  
+ 
+.mobile-reservations {
+	padding: 0 !important;
+}
+  
+.mobile-reservations h1 {
+	text-align: center;
+}
+
+.reservaciones-socio-card{
+	height:18rem;
+	border-color: transparent !important;
+}
+
+.reservaciones-socio-card .card-header{
+	border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+	background-color: #EBEBEB;
+}
+.reservaciones-socio-card .h5{
+	text-align: center;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #2B4066;
+}
+
+.reservaciones-socio-card .card-body{
+	background-color: #57738B;
+	border-bottom-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+.reservaciones-socio-card .card-body .card-text{
+	color:#fff;
+}

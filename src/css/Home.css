@@ -1,26 +1,3 @@
-* {
-  padding: 0;
-  margin: 0;
-}
-
-header.app-header {
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  padding: 20px 100px;
-  text-align: left;
-  color: white;
-  position: relative;
-}
-header.app-header h1 {
-  color: #2b4066;
-  text-decoration: underline #519d78 5px;
-}
-
-.spacing {
-  margin: 10px;
-}
-
 .logo {
   width: 400px;
 }
@@ -146,6 +123,3 @@ button:focus {
   transform: translateX(50%);
 }
 
-.home-cards {
-  margin-left: 75px;
-}

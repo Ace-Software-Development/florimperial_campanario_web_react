@@ -1,8 +1,9 @@
 // W11 W20 W23 W26 W27
-import { Button } from '@mui/material';
+import Button from 'react-bootstrap/Button';
 import React, { useEffect, useState } from 'react';
 import Screen from "../components/Screen";
 import { getRegulations, updateRegulations } from '../utils/client';
+import '../css/Regulations.css';
 
 export default function RegulationsPage(props) {
     const [regulations, setRegulations] = useState({
@@ -42,19 +43,23 @@ export default function RegulationsPage(props) {
     
     return (
         <Screen title={regulations.titulo}>
+            <div className="regulations-padding">
             <div>
                 <textarea 
+                    className ="regulations-textarea"
                     value={regulations.contenido}
+                    as="textarea" 
+                    rows={10}
                     onChange={text => handleOnChangeText(text.target.value)}
                 />
             </div>
 
             <div>
-                <Button onClick={onSubmit} type='submit'>
+                <Button onClick={onSubmit} type='submit' className= "btn-guardar-regulations" >
                     Actualizar
                 </Button>
             </div>
-
+            </div>
         </Screen>
     );
 }

@@ -3,6 +3,7 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import '../css/Dashboard.css';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import React from 'react';
+import {useState} from 'react';
 
 export default function Sidebar(props) {
   let anuncios,
@@ -36,6 +37,7 @@ export default function Sidebar(props) {
         render={({location, history}) => (
           <React.Fragment>
             <SideNav
+              className= "sidebar-nav"
               onSelect={selected => {
                 const to = '/' + selected;
                 if (location.pathname !== to) {
@@ -66,6 +68,11 @@ export default function Sidebar(props) {
                   <NavItem eventKey="gestion-de-socios">
                     <NavText>Gestión de socios</NavText>
                   </NavItem>
+                
+
+                <NavItem eventKey="numero-soporte">
+                  <NavText>Numero de soporte</NavText>
+                </NavItem>
                 </NavItem>
 
                 <NavItem eventKey="anuncios" style={{display: `${anuncios}`}}>
@@ -135,7 +142,7 @@ export default function Sidebar(props) {
 
                 <NavItem eventKey="gym" style={{display: `${salones_gym}`}}>
                   <NavIcon>
-                    <ion-icon name="barbell"></ion-icon>
+                    <ion-icon name="barbell" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Gimnasio</NavText>
                   <NavItem eventKey="gym/reservaciones">

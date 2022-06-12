@@ -40,7 +40,7 @@ export default function Screen(props) {
     header = <div style={{flexGrow: 1, padding: '1rem'}}></div>;
   } else {
     header = (
-      <div style={{flexGrow: 1, padding: '1rem'}}>
+      <div style={{flexGrow: 1, paddingLeft: '4rem', paddingTop: '1rem', paddingBottom: '1rem'}}>
         <Header processName={props.title} />
       </div>
     );
@@ -56,7 +56,7 @@ export default function Screen(props) {
   return (
     <div style={{display: 'flex', flexDirection: 'row', height: '100vh'}}>
       <Sidebar permissions={permissions} screenPath={props.screenPath} />
-      <div style={{flexGrow: 1, padding: '2rem'}}>
+      <div style={{flexGrow: 1}}>
         {header}
         {props.children}
       </div>

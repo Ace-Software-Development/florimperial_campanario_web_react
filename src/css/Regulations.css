@@ -1,0 +1,47 @@
+.regulations-padding
+{
+  padding-left: 8rem;
+}
+.regulations-textarea{
+    width: 92%;
+    border-radius: 0.25rem;
+    outline: none;
+    padding: 1rem;
+    border: solid 2px #555555;
+}
+
+.regulations-textarea:hover{
+    border: solid 3px #519d78;
+}
+
+.regulations-textarea:focus{
+    border: solid 3px #519d78 !important;
+}
+
+.regulations-textarea:focus{
+    border: solid 3px #519d78  !important;
+}
+.btn-guardar-regulations{
+    background: #2b4066;
+    font-family: 'Lato', sans-serif;
+    color: #ebebeb;
+    margin-left: 85%;
+    margin-top:1rem;
+}
+  
+  .btn-guardar-regulations:active {
+    background: #ebebeb;
+    font-family: 'Lato', sans-serif;
+    color: #2b4066;
+
+  }
+  .btn-guardar-regulations:hover {
+    background: #ebebeb;
+    font-family: 'Lato', sans-serif;
+    color: #2b4066;
+  }
+  .btn-guardar-regulations:focus {
+    background: #ebebeb;
+    font-family: 'Lato', sans-serif;
+    color: #2b4066;
+  }

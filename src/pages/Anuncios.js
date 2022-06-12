@@ -98,20 +98,29 @@ export default function Anuncios() {
         <div class="d-flex justify-content-center">
           <Card.Img className="card-imgs card-anouncements" variant="top" src={`${anuncio[2]}`} />
         </div>
-        <Card.ImgOverlay>
-          <Card.Text className="d-flex justify-content-between mt-auto">
-            <h5 className="card-title-anouncement"> {anuncio[3]} </h5>
-            <Button
-              variant="primary"
-              class="btn-trash"
-              className="btn-campanario"
-              onClick={() => {
-                confirmDelete(anuncio[4]);
+        <Card.ImgOverlay className= "anuncios-card-overlay">
+            <Container className="card-container-anuncios">
+              <Row>
+                <Card.Text className="d-flex justify-content-between mt-auto">
+                <Col style={{textAlign:'left'}} >
+                <h5 className="card-title-anouncement"> {anuncio[3]} </h5>
+                </Col>
+                <Col md={{ offset: 7 }}>
+                <Button
+                style={{fontSize: '1.25em'}}
+                  variant="primary"
+                  className ="btn-trash-anuncios"
+                  onClick={() => {
+                  confirmDelete(anuncio[4]);
               }}
             >
               <ion-icon name="trash-outline" />
-            </Button>
-          </Card.Text>
+              </Button>
+                </Col>
+              </Card.Text>
+              </Row>
+            </Container>
+
         </Card.ImgOverlay>
       </Card>
     </Col>
@@ -175,15 +184,17 @@ export default function Anuncios() {
           </Modal>
         </div>
 
-        <Container>
-          <Row xs={1} s={2} md={3} className="g-4">
+        <Container className="anuncios-content">
+          <Row xs={1} s={2} md={3} className="g-5">
             <Col>
               <Card className="card-imgs top-50 start-50 translate-middle " onClick={handleShow}>
+                <div className="center-content-anuncios">
                 <Card.Title className="text-center card-title-anuncios">
                   <br /> Agregar un anuncio
                 </Card.Title>
                 <div className="d-flex">
                   <ion-icon name="add-circle-outline" class="icon-plus-anuncios"></ion-icon>
+                </div>
                 </div>
 
                 <a href="#" class="stretched-link"></a>
