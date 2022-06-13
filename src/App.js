@@ -189,6 +189,10 @@ export default function App() {
           />
         </Route>
 
+        <Route path="/salones/reglamento">
+          <RegulationsPage module={'Salones'} />
+        </Route>
+
         <Route path="/anuncios">
           <Anuncios />
         </Route>
