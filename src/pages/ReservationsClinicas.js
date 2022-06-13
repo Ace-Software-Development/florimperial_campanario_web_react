@@ -45,6 +45,7 @@ export default function ReservationsClinicas(props) {
 
   return (
     <Screen title={props.screenTitle} screenPath={props.screenPath}>
+      <div className="clinic-padding">
       <button className="primary-btn" onClick={() => setOpenCreate(true)}>
         Crear clase
       </button>
@@ -102,6 +103,7 @@ export default function ReservationsClinicas(props) {
       {openCreate && (
         <CreateReservationClinic onClose={setOpenCreate} open={openCreate} sitios={props.sitios} />
       )}
+      </div>
     </Screen>
   );
 }
