@@ -22,3 +22,8 @@
 	align-items: flex-start;
 	max-width: max-content;
 }
+
+.clinic-padding{
+	padding-left: 8em;
+	padding-right:5em;
+}
