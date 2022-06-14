@@ -167,7 +167,7 @@ export default function App() {
 
         <Route path="/alberca/clinicas">
           <ReservationsClinicas 
-            screenTitle="Clases de golf"
+            screenTitle="Clases de Alberca"
             screenPath="alberca/clases"
             module="Alberca"
             sitios={sitiosData.pool}

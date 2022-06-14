@@ -135,9 +135,7 @@ export default function Sidebar(props) {
                   <NavItem eventKey="raqueta/reservaciones">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
-                  <NavItem eventKey="raqueta/canchas">
-                    <NavText>Canchas</NavText>
-                  </NavItem>
+          
                   <NavItem eventKey="raqueta/clinicas">
                     <NavText>Clínicas</NavText>
                   </NavItem>

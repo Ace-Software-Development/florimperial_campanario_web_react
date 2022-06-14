@@ -48,6 +48,7 @@ export default function Home() {
   return (
     <Screen permissions={permissions} title="Rutinas">
       <div className="App">
+          <br/>
           <TablaRutinas/>
       </div>
     </Screen>

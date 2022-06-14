@@ -36,7 +36,7 @@
 .suggested-guests-container {
 	position: absolute;
 	width: 75%;
-	height: 150px;
+	height: 100px;
 	bottom: 100%;
 	background-color: white;
 	overflow-y: scroll;
