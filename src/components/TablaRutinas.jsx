@@ -62,7 +62,6 @@ const TablaRutinas = () => {
 
         try {
             saveExcercise(selectedRoutine, name, repetitions, series, notes).then(function() {
-                alert(`Se ha guardado el ejercico correctamente.`);
                 getTrainings(selectedRoutine).then(data => {
                     setTrainings(data);
                     handleCloseAdd();
