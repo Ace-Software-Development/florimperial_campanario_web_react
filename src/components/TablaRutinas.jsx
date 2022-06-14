@@ -170,7 +170,7 @@ const TablaRutinas = () => {
                 </Row>
             </Container>
             <br />
-            <div  style={{marginLeft: '55px'}}>
+            <div  style={{marginLeft: '7rem'}}>
             <Card style={{width: '92%'}}>
                 <Table striped bordered hover>
                     <thead>
