@@ -1,3 +1,4 @@
+// W14
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import {useEffect, useState} from 'react';
@@ -73,11 +74,13 @@ export default function ListaSocios() {
 
   return (
     <Screen permissions={permissions} title="Sugerencias">
-      <Container>
+      <div className="App">
+      <Container className= "sugrencias-container">
         <Row xs={1} s={2} md={3} className="g-4">
         {listItems}
         </Row>
       </Container>
+      </div>
     </Screen>
   );
 }

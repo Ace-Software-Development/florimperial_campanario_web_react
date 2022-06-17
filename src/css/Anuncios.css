@@ -1,23 +1,5 @@
-* {
-  padding: 0;
-  margin: 0;
-}
 a.menu_links {
   cursor: pointer;
-}
-
-header.app-header {
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  padding: 20px 100px;
-  text-align: left;
-  color: white;
-  font-family: "Lato", sans-serif;
-}
-
-.spacing {
-  margin: 10px;
 }
 
 main {
@@ -107,9 +89,24 @@ main h1 {
   color: #ebebeb;
 }
 
-.btn-trash {
-  font-family: "Lato", sans-serif;
-  color: #2b4066;
+.btn-trash-anuncios{
+  background-color: transparent;
+  border-color: transparent;
+  
+}
+
+.btn-trash-anuncios:hover{
+  background-color:rgba(0, 0, 0, 0.3) !important;
+  border-color: transparent;
+  
+}
+.btn-trash-anuncios:focus {
+  background-color:rgba(0, 0, 0, 0.3) !important;
+  border-color: transparent;
+}
+.btn-trash-anuncios:active {
+  background-color:rgba(0, 0, 0, 0.3) !important;
+  border-color: transparent;
 }
 
 .card-container {
@@ -143,16 +140,36 @@ main h1 {
 }
 
 .card-title-anuncios {
-  margin-top: 135px;
   font-size: 25px;
 }
 
 .icon-plus-anuncios {
-  margin-top: 15px;
-  margin-left: 130px;
+  margin-left: 3.5rem;
   font-size: 40px;
 }
 
 .card-title-anouncement {
   color: #fff;
+  text-align: left;
 }
+
+.anuncios-content{
+  margin-left: 1rem !important;
+}
+
+.anuncios-card-overlay{
+  background-image: linear-gradient(to top, rgba(0,0,0,0), rgba(0,0,0,.8));
+ }
+ .card-container-anuncios
+ {
+   padding-left: 0 !important;
+ }
+
+ .center-content-anuncios{
+  margin: 0;
+  position: absolute;
+  top: 37%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+ }

@@ -55,6 +55,7 @@
   padding: 5px 15px;
   border-radius: 5px;
   border: solid 1px #dadada;
+  margin-top: 2rem;
 }
 
 .auth-form button:hover {

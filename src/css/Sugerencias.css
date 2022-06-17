@@ -28,6 +28,9 @@
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
 }
+.sugrencias-container{
+    padding-left: 0 !important;
+}
 
 /* .sugerencias-container{
     display: flex; 

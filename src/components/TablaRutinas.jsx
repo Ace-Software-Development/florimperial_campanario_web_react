@@ -62,7 +62,6 @@ const TablaRutinas = () => {
 
         try {
             saveExcercise(selectedRoutine, name, repetitions, series, notes).then(function() {
-                alert(`Se ha guardado el ejercico correctamente.`);
                 getTrainings(selectedRoutine).then(data => {
                     setTrainings(data);
                     handleCloseAdd();
@@ -148,7 +147,7 @@ const TablaRutinas = () => {
                     <Col>
                         <Form>
                             <FormSelect id="roleSelection" onChange={event => setSelectedRotuine(event.target.value)}>
-                                <option value="null" selected>Seleccione un dia</option>
+                                <option value="null" selected>Seleccione un día</option>
                             {routines.map(item => {
                                 return(
                                     <option key={item.id} value={item.id}>{item.get('titulo')}</option>
@@ -171,7 +170,7 @@ const TablaRutinas = () => {
                 </Row>
             </Container>
             <br />
-            <div  style={{marginLeft: '55px'}}>
+            <div  style={{marginLeft: '7rem'}}>
             <Card style={{width: '92%'}}>
                 <Table striped bordered hover>
                     <thead>
@@ -187,7 +186,7 @@ const TablaRutinas = () => {
                     </thead>
                     <tbody>
                         {trainings.length === 0 ?
-                            <tr>No hay ejercicios disponibles favor de agregar nuevos.</tr>
+                            <tr>No hay ejercicios disponibles, favor de agregar nuevos.</tr>
                             :
                             null
                         }

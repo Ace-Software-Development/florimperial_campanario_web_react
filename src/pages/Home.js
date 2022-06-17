@@ -44,8 +44,10 @@ export default function Home() {
 
   return (
     <Screen screenPath="home" title="Inicio">
+      <div className="App">
       <div className="home-cards">
         <HomeIcons permissions={permissions} />
+      </div>
       </div>
     </Screen>
   );

@@ -3,6 +3,7 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import '../css/Dashboard.css';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import React from 'react';
+import {useState} from 'react';
 
 export default function Sidebar(props) {
   let anuncios,
@@ -36,6 +37,7 @@ export default function Sidebar(props) {
         render={({location, history}) => (
           <React.Fragment>
             <SideNav
+              className= "sidebar-nav"
               onSelect={selected => {
                 const to = '/' + selected;
                 if (location.pathname !== to) {
@@ -66,6 +68,11 @@ export default function Sidebar(props) {
                   <NavItem eventKey="gestion-de-socios">
                     <NavText>Gestión de socios</NavText>
                   </NavItem>
+                
+
+                <NavItem eventKey="numero-soporte">
+                  <NavText>Numero de soporte</NavText>
+                </NavItem>
                 </NavItem>
 
                 <NavItem eventKey="anuncios" style={{display: `${anuncios}`}}>
@@ -111,6 +118,9 @@ export default function Sidebar(props) {
                   <NavItem eventKey="golf/salidas">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
+                  <NavItem eventKey="golf/clinicas">
+                    <NavText>Clínicas</NavText>
+                  </NavItem>
 
                   <NavItem eventKey="golf/reglamento">
                     <NavText>Reglamento</NavText>
@@ -125,9 +135,10 @@ export default function Sidebar(props) {
                   <NavItem eventKey="raqueta/reservaciones">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
-                  {/* <NavItem eventKey="raqueta/canchas">
-                    <NavText>Canchas</NavText>
-            </NavItem>*/}
+          
+                  <NavItem eventKey="raqueta/clinicas">
+                    <NavText>Clínicas</NavText>
+                  </NavItem>
                   <NavItem eventKey="raqueta/reglamento">
                     <NavText>Reglamento</NavText>
                   </NavItem>
@@ -135,21 +146,21 @@ export default function Sidebar(props) {
 
                 <NavItem eventKey="gym" style={{display: `${salones_gym}`}}>
                   <NavIcon>
-                    <ion-icon name="barbell"></ion-icon>
+                    <ion-icon name="barbell" style={{fontSize: '1.25em'}}></ion-icon>
                   </NavIcon>
                   <NavText>Gimnasio</NavText>
                   <NavItem eventKey="gym/reservaciones">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
 
-                  {/*  <NavItem eventKey="gym/rutinas">
-                    <NavText>Rutinas</NavText>
-            </NavItem>*/}
-                  <NavItem eventKey="gym/reglamento">
-                    <NavText>Reglamento</NavText>
-                  </NavItem>
                   <NavItem eventKey="gym/rutinas">
                     <NavText>Rutinas</NavText>
+                  </NavItem>
+                  <NavItem eventKey="gym/clinicas">
+                    <NavText>Clínicas</NavText>
+                  </NavItem>
+                  <NavItem eventKey="gym/reglamento">
+                    <NavText>Reglamento</NavText>
                   </NavItem>
                 </NavItem>
 
@@ -161,10 +172,27 @@ export default function Sidebar(props) {
                   <NavItem eventKey="alberca/reservaciones">
                     <NavText>Reservaciones</NavText>
                   </NavItem>
+                  <NavItem eventKey="alberca/clinicas">
+                    <NavText>Clínicas</NavText>
+                  </NavItem>
                   <NavItem eventKey="alberca/reglamento">
                     <NavText>Reglamento</NavText>
                   </NavItem>
                 </NavItem>
+
+                <NavItem eventKey="salones" style={{display: `${salones_gym}`}}>
+                  <NavIcon>
+                    <ion-icon name="ticket" style={{fontSize: '1.25em'}}></ion-icon>
+                  </NavIcon>
+                  <NavText>Salones</NavText>
+                  <NavItem eventKey="salones/clinicas">
+                    <NavText>Reservaciones</NavText>
+                  </NavItem>
+                  <NavItem eventKey="salones/reglamento">
+                    <NavText>Reglamento</NavText>
+                  </NavItem>
+                </NavItem>
+
                 <NavItem eventKey="cerrar-sesion">
                   <NavIcon>
                     <ion-icon name="log-out" style={{fontSize: '1.25em'}}></ion-icon>

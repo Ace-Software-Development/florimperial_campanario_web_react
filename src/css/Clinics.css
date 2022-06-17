@@ -1,0 +1,29 @@
+.clinics-table {
+	width: 100%
+}
+
+.clinics-table thead {
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.clinics-table td {
+	padding: .3em .3em
+}
+
+.clinic-dias {
+	display: flex;
+	justify-content: space-between;
+}
+
+.clinic-dias div {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	max-width: max-content;
+}
+
+.clinic-padding{
+	padding-left: 8em;
+	padding-right:5em;
+}

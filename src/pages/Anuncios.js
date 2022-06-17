@@ -14,7 +14,7 @@ import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import CirculoCarga from '../components/CirculoCarga';
 import Screen from '../components/Screen';
-import {getAnuncios, checkUser} from '../utils/client';
+import {getAnuncios, checkUser, createAnnouncment} from '../utils/client';
 
 export default function Anuncios() {
   const history = useHistory();
@@ -98,71 +98,47 @@ export default function Anuncios() {
         <div class="d-flex justify-content-center">
           <Card.Img className="card-imgs card-anouncements" variant="top" src={`${anuncio[2]}`} />
         </div>
-        <Card.ImgOverlay>
-          <Card.Text className="d-flex justify-content-between mt-auto">
-            <h5 className="card-title-anouncement"> {anuncio[3]} </h5>
-            <Button
-              variant="primary"
-              class="btn-trash"
-              className="btn-campanario"
-              onClick={() => {
-                confirmDelete(anuncio[4]);
+        <Card.ImgOverlay className= "anuncios-card-overlay">
+            <Container className="card-container-anuncios">
+              <Row>
+                <Card.Text className="d-flex justify-content-between mt-auto">
+                <Col style={{textAlign:'left'}} >
+                <h5 className="card-title-anouncement"> {anuncio[3]} </h5>
+                </Col>
+                <Col md={{ offset: 7 }}>
+                <Button
+                style={{fontSize: '1.25em'}}
+                  variant="primary"
+                  className ="btn-trash-anuncios"
+                  onClick={() => {
+                  confirmDelete(anuncio[4]);
               }}
             >
               <ion-icon name="trash-outline" />
-            </Button>
-          </Card.Text>
+              </Button>
+                </Col>
+              </Card.Text>
+              </Row>
+            </Container>
+
         </Card.ImgOverlay>
       </Card>
     </Col>
   ));
 
   function FormExample() {
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
       const form = event.currentTarget;
+      event.preventDefault();
+      event.stopPropagation();
       if (form.checkValidity() === false) {
-        event.preventDefault();
-        event.stopPropagation();
         setValidated(true);
       } else {
-        const Anuncio = Parse.Object.extend('Anuncio');
-        const fileUploadControl = document.getElementById('formImg').files[0];
-        const img2 = new Parse.File(`img-anuncio`, fileUploadControl);
         setButtonDisabled(true); // <-- disable the button here
-        img2.save().then(
-          function() {
-            // The file has been saved to Parse.
-            const newAnuncio = new Anuncio();
-            newAnuncio
-              .save({
-                /*   titulo: anuncioTitle,
-              contenido: anuncioContent,*/
-                imagen: img2,
-              })
-              .then(
-                newAnuncio => {
-                  // Execute any logic that should take place after the object is saved.
-                  alert('Se ha creado un nuevo anuncio');
-                  window.location.reload();
-                },
-                error => {
-                  // Execute any logic that should take place if the save fails.
-                  // error is a Parse.Error with an error code and message.
-                  setButtonDisabled(false); // <-- disable the button here
-
-                  alert('Ha ocurrido un error al crear el anuncio:  ' + error.message);
-                  console.log(error.message);
-                }
-              );
-
-            handleClose();
-            setValidated(true);
-          },
-          function(error) {
-            // The file either could not be read, or could not be saved to Parse.
-            alert('No se pudo crear el anuncio. El error es: ', error);
-          }
-        );
+        const fileUploadControl = document.getElementById('formImg').files[0];
+        await createAnnouncment(fileUploadControl);
+        handleClose();
+        setValidated(true);
       }
     };
 
@@ -208,15 +184,17 @@ export default function Anuncios() {
           </Modal>
         </div>
 
-        <Container>
-          <Row xs={1} s={2} md={3} className="g-4">
+        <Container className="anuncios-content">
+          <Row xs={1} s={2} md={3} className="g-5">
             <Col>
               <Card className="card-imgs top-50 start-50 translate-middle " onClick={handleShow}>
+                <div className="center-content-anuncios">
                 <Card.Title className="text-center card-title-anuncios">
                   <br /> Agregar un anuncio
                 </Card.Title>
                 <div className="d-flex">
                   <ion-icon name="add-circle-outline" class="icon-plus-anuncios"></ion-icon>
+                </div>
                 </div>
 
                 <a href="#" class="stretched-link"></a>

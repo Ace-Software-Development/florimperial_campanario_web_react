@@ -1,3 +1,4 @@
+// W13
 import '../css/GestionSocios.css';
 import React from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
@@ -53,7 +54,7 @@ export default function NumeroSoporte() {
   return (
     <Screen permissions={permissions} title="Números de soporte">
       {console.log(supportNumbers)}
-      <div className="App">
+      <div className="App numero-soporte-padding">
         <TablaNumeros supportNumbers={supportNumbers} />
       </div>
     </Screen>

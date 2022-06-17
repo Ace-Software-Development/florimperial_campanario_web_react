@@ -1,3 +1,4 @@
+// 
 import '../css/Rutinas.css';
 import {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
@@ -46,7 +47,8 @@ export default function Home() {
 
   return (
     <Screen permissions={permissions} title="Rutinas">
-      <div className="App">
+      <div className="App rutinas-padding">
+          <br/>
           <TablaRutinas/>
       </div>
     </Screen>

@@ -58,7 +58,7 @@ const Auth = () => {
                       value={username}
                       onChange={e => setUsername(e.target.value)}
                       className="form-control form-control-lg"
-                      placeholder="Número de nomina"
+                      placeholder="Correo electrónico"
                     />
                   </div>
                   <label className="form-label" htmlFor="password"></label>

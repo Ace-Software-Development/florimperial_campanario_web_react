@@ -64,3 +64,25 @@ export function formatSitioData(sitio) {
 		tableName: 'Sitio'
 	};
 }
+
+export function formatClinicDataRows(clinic){
+	return {
+		objectId: clinic.id,
+		nombre: clinic.get('nombre'),
+		maximoJugadores: clinic.get('maximoJugadores'),
+		horario: clinic.get('horario'),
+		fechaInicio: clinic.get('fechaInicio'),
+		fechaFin: clinic.get('fechaFin'),
+		dias: clinic.get('dias'),
+		sitio: {
+			objectId: clinic.get('sitio').id,
+			nombre: clinic.get('sitio').get('nombre'),
+			tableName: 'Sitio',
+		},
+		area: {
+			objectId: clinic.get('sitio').get('area').id,
+			nombre: clinic.get('sitio').get('area').get('nombre'),
+			tableName: 'Area'
+		}
+	};
+}
