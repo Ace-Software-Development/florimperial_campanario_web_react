@@ -8,7 +8,7 @@ Esta aplicación es el panel administrativo para la aplicación móvil de socios
 En esta versión, se agrega soporte a las siguientes funcionalidades.
 * Clínicas: Ahora es posible manejar todo lo relacionado a clínicas de manera fácil y rápida. Podrás registrar en el sistema las clínicas activas en cada área deportiva, así como inscribir a los socios a dichas clínicas para que puedan verlas desde su app móvil.
 * Rutinas del gym: ¡Asignar rutinas nunca fue tan fácil! Ahora es posible hacerlo desde el panel del administrador de gym, contando con la posibilidad de definir las series y repeticiones, así como comentarios adicionales para cada ejercicio. 
-* Mejoras en la interfaz de usuario y en la experiencia del usuario.
+* Se hizo mejoras a la interfaz de usuario y a la experiencia del usuario.
 
 
 # Versión 1.0
